@@ -14,6 +14,9 @@ import android.util.SparseArray
 import at.huber.youtubeExtractor.VideoMeta
 import at.huber.youtubeExtractor.YouTubeExtractor
 import at.huber.youtubeExtractor.YtFile
+import com.github.hiteshsondhi88.libffmpeg.ExecuteBinaryResponseHandler
+import com.github.hiteshsondhi88.libffmpeg.FFmpeg
+import com.github.hiteshsondhi88.libffmpeg.exceptions.FFmpegCommandAlreadyRunningException
 import com.zavanton.youtube_downloader.ui.activity.MainActivity
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -101,7 +104,7 @@ class DownloadService : Service() {
 
                     val youtubeFile = ytFiles[FORMAT_TAG]
                     val url = youtubeFile.url
-                    Log.d("zavanton", url)
+                    Log.d("zavantondebug", url)
 
                     doItInBackground(url)
                 }
@@ -130,11 +133,46 @@ class DownloadService : Service() {
 
         inputStream?.toFile(filename)
 
+        convertToMp3()
+
         response.body()?.close()
-        Log.d("zavanton", "response closed")
+        Log.d("zavantondebug", "response closed")
     }
 
     private fun InputStream.toFile(path: String) {
         File(path).outputStream().use { this.copyTo(it) }
+    }
+
+    private fun convertToMp3() {
+        val ffmpeg = FFmpeg.getInstance(this)
+        try {
+            // to execute "ffmpeg -version" command you just need to pass "-version"
+            val command = arrayOf("-version")
+            ffmpeg.execute(command, object : ExecuteBinaryResponseHandler() {
+
+                override fun onStart() {
+                    Log.d("zavantondebug", "onStart")
+                }
+
+                override fun onProgress(message: String?) {
+                    Log.d("zavantondebug", "onProgress: $message")
+                }
+
+                override fun onFailure(message: String?) {
+                    Log.d("zavantondebug", "onFailure: $message")
+                }
+
+                override fun onSuccess(message: String?) {
+                    Log.d("zavantondebug", "onSuccess: $message")
+                }
+
+                override fun onFinish() {
+                    Log.d("zavantondebug", "onFinish")
+                }
+            })
+        } catch (e: FFmpegCommandAlreadyRunningException) {
+            Log.e("zavantondebug", "Failed to convert", e)
+        }
+
     }
 }
