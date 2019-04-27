@@ -1,25 +1,17 @@
-package com.zavanton.youtube_downloader
+package com.zavanton.youtube_downloader.ui
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import android.util.Log
-import android.util.SparseArray
 import android.view.Menu
 import android.view.MenuItem
-import at.huber.youtubeExtractor.VideoMeta
-import at.huber.youtubeExtractor.YouTubeExtractor
-import at.huber.youtubeExtractor.YtFile
+import com.zavanton.youtube_downloader.R
+import com.zavanton.youtube_downloader.service.DownloadService
 import kotlinx.android.synthetic.main.activity_main.*
-
 
 class MainActivity : AppCompatActivity() {
 
-    companion object {
-
-        val LINK = "https://www.youtube.com/watch?v=IGQBtbKSVhY"
-        val FORMAT_TAG = 22
-    }
 
     @SuppressLint("StaticFieldLeak")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -27,17 +19,10 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
 
+        val intent = Intent(this, DownloadService::class.java)
+
         fab.setOnClickListener { view ->
-
-
-            object : YouTubeExtractor(this) {
-                public override fun onExtractionComplete(ytFiles: SparseArray<YtFile>?, vMeta: VideoMeta) {
-                    if (ytFiles != null) {
-
-                        val url = ytFiles[FORMAT_TAG].url
-                    }
-                }
-            }.extract(LINK, true, true)
+            startService(intent)
         }
     }
 
