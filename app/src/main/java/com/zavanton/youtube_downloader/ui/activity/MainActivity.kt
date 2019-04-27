@@ -12,7 +12,6 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
-
     @SuppressLint("StaticFieldLeak")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -21,7 +20,7 @@ class MainActivity : AppCompatActivity() {
 
         val intent = Intent(this, DownloadService::class.java)
 
-        fab.setOnClickListener { view ->
+        fab.setOnClickListener {
             startService(intent)
         }
     }

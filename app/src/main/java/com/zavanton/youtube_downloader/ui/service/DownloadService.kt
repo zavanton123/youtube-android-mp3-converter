@@ -7,8 +7,7 @@ import android.app.PendingIntent
 import android.app.Service
 import android.content.Context
 import android.content.Intent
-import android.os.Build
-import android.os.IBinder
+import android.os.*
 import android.support.v4.app.NotificationCompat
 import android.util.Log
 import android.util.SparseArray
@@ -26,6 +25,9 @@ class DownloadService : Service() {
 
     companion object {
 
+        private val TARGET_FILENAME = "test.mp4"
+        private val DOWNLOADS_FOLDER =
+            Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).absolutePath
         private const val LINK = "https://www.youtube.com/watch?v=IGQBtbKSVhY"
         private const val FORMAT_TAG = 22
         private const val FOREGROUND_NOTIFICATION_ID = 123
@@ -97,13 +99,25 @@ class DownloadService : Service() {
             public override fun onExtractionComplete(ytFiles: SparseArray<YtFile>?, vMeta: VideoMeta) {
                 if (ytFiles != null) {
 
-                    val url = ytFiles[FORMAT_TAG].url
+                    val youtubeFile = ytFiles[FORMAT_TAG]
+                    val url = youtubeFile.url
                     Log.d("zavanton", url)
 
-                    downloadFile(url, "/path/filename")
+                    doItInBackground(url)
                 }
             }
         }.extract(LINK, true, true)
+    }
+
+    private fun doItInBackground(url: String) {
+        val handlerThread = HandlerThread("handlerThread")
+        handlerThread.start()
+        val handler = Handler(handlerThread.looper)
+        handler.post {
+
+            val filename = "$DOWNLOADS_FOLDER/$TARGET_FILENAME"
+            downloadFile(url, filename)
+        }
     }
 
     private fun downloadFile(url: String, filename: String) {
@@ -117,6 +131,7 @@ class DownloadService : Service() {
         inputStream?.toFile(filename)
 
         response.body()?.close()
+        Log.d("zavanton", "response closed")
     }
 
     private fun InputStream.toFile(path: String) {
