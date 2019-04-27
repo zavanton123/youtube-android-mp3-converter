@@ -13,7 +13,6 @@ import com.zavanton.youtube_downloader.R
 import com.zavanton.youtube_downloader.ui.service.DownloadService
 import kotlinx.android.synthetic.main.activity_main.*
 
-
 class MainActivity : AppCompatActivity() {
 
     @SuppressLint("StaticFieldLeak")

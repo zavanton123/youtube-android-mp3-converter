@@ -42,6 +42,9 @@ dependencies {
     // Youtube extractor
     implementation 'com.github.HaarigerHarald:android-youtubeExtractor:v1.8.0'
 
+    // FFmpeg
+    implementation 'com.github.WritingMinds:ffmpeg-android-java:v0.3.2'
+
     // OkHttp
     implementation 'com.squareup.okhttp3:okhttp:3.14.1'
 
