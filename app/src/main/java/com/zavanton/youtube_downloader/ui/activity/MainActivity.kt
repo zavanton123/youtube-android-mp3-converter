@@ -1,4 +1,4 @@
-package com.zavanton.youtube_downloader.ui
+package com.zavanton.youtube_downloader.ui.activity
 
 import android.annotation.SuppressLint
 import android.content.Intent
@@ -7,7 +7,7 @@ import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
 import com.zavanton.youtube_downloader.R
-import com.zavanton.youtube_downloader.service.DownloadService
+import com.zavanton.youtube_downloader.ui.service.DownloadService
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {

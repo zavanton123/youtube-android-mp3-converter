@@ -1,4 +1,4 @@
-package com.zavanton.youtube_downloader.service
+package com.zavanton.youtube_downloader.ui.service
 
 import android.annotation.SuppressLint
 import android.app.NotificationChannel
@@ -15,19 +15,17 @@ import android.util.SparseArray
 import at.huber.youtubeExtractor.VideoMeta
 import at.huber.youtubeExtractor.YouTubeExtractor
 import at.huber.youtubeExtractor.YtFile
-import com.zavanton.youtube_downloader.ui.MainActivity
-
+import com.zavanton.youtube_downloader.ui.activity.MainActivity
 
 class DownloadService : Service() {
 
     companion object {
 
-        private val LINK = "https://www.youtube.com/watch?v=IGQBtbKSVhY"
-        private val FORMAT_TAG = 22
-        private val FOREGROUND_NOTIFICATION_ID = 123
-        private val NOTIFICATION_CHANNEL_HIGH = "NOTIFICATION_CHANNEL_HIGH"
-        private val NOTIFICATION_CHANNEL_NORMAL = "NOTIFICATION_CHANNEL_NORMAL"
-        private val ACTIVITY_CODE = 234
+        private const val LINK = "https://www.youtube.com/watch?v=IGQBtbKSVhY"
+        private const val FORMAT_TAG = 22
+        private const val FOREGROUND_NOTIFICATION_ID = 123
+        private const val NOTIFICATION_CHANNEL_NORMAL = "NOTIFICATION_CHANNEL_NORMAL"
+        private const val ACTIVITY_CODE = 234
     }
 
     override fun onCreate() {

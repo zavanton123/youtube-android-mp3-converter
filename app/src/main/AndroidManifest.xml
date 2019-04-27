@@ -10,12 +10,12 @@
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
         <service
-                android:name=".service.DownloadService"
+                android:name="com.zavanton.youtube_downloader.ui.service.DownloadService"
                 android:exported="false">
         </service>
 
         <activity
-                android:name=".ui.MainActivity"
+                android:name=".ui.activity.MainActivity"
                 android:label="@string/app_name"
                 android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
