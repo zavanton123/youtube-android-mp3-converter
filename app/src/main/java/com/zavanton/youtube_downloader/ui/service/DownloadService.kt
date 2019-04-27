@@ -16,6 +16,11 @@ import at.huber.youtubeExtractor.VideoMeta
 import at.huber.youtubeExtractor.YouTubeExtractor
 import at.huber.youtubeExtractor.YtFile
 import com.zavanton.youtube_downloader.ui.activity.MainActivity
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import java.io.File
+import java.io.InputStream
+
 
 class DownloadService : Service() {
 
@@ -94,8 +99,27 @@ class DownloadService : Service() {
 
                     val url = ytFiles[FORMAT_TAG].url
                     Log.d("zavanton", url)
+
+                    downloadFile(url, "/path/filename")
                 }
             }
         }.extract(LINK, true, true)
+    }
+
+    private fun downloadFile(url: String, filename: String) {
+        val client = OkHttpClient()
+        val request = Request.Builder().url(url)
+            .build()
+        val response = client.newCall(request).execute()
+
+        val inputStream = response.body()?.byteStream()
+
+        inputStream?.toFile(filename)
+
+        response.body()?.close()
+    }
+
+    private fun InputStream.toFile(path: String) {
+        File(path).outputStream().use { this.copyTo(it) }
     }
 }
