@@ -36,6 +36,9 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 
+    // RxPermissions
+    implementation 'com.github.tbruyelle:RxPermissions:0.10.2'
+
     // Youtube extractor
     implementation 'com.github.HaarigerHarald:android-youtubeExtractor:v1.8.0'
 
