@@ -5,6 +5,7 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.app.Service
+import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
 import android.os.*
@@ -29,13 +30,12 @@ class DownloadService : Service() {
 
     companion object {
 
-        @SuppressLint("SimpleDateFormat")
+        val YOUTUBE_TAGS = arrayOf(37, 22, 18, 85, 84, 83, 82)
         private val TARGET_FILENAME = "Youtube-" + SimpleDateFormat("yyyy.MM.dd HH:mm:ss").format(Date())
         private val VIDEO_EXTENSION = "mp4"
         private val AUDIO_EXTENSION = "mp3"
         private val DOWNLOADS_FOLDER =
             Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).absolutePath
-        private const val LINK = "https://www.youtube.com/watch?v=IGQBtbKSVhY"
         private const val FORMAT_TAG = 22
         private const val FOREGROUND_NOTIFICATION_ID = 123
         private const val NOTIFICATION_CHANNEL_NORMAL = "NOTIFICATION_CHANNEL_NORMAL"
@@ -102,18 +102,35 @@ class DownloadService : Service() {
     @SuppressLint("StaticFieldLeak")
     private fun runTask() {
 
-        object : YouTubeExtractor(this) {
-            public override fun onExtractionComplete(ytFiles: SparseArray<YtFile>?, vMeta: VideoMeta) {
-                if (ytFiles != null) {
+        val clipboardManager: ClipboardManager = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
 
-                    val youtubeFile = ytFiles[FORMAT_TAG]
-                    val url = youtubeFile.url
-                    Log.d("zavantondebug", url)
+        val urlLink = clipboardManager.primaryClip
+            .getItemAt(0).text.toString()
+        Log.d("zavanton", "urlLink: $urlLink")
 
-                    doItInBackground(url)
+        if (urlLink.isNotEmpty()) {
+
+            object : YouTubeExtractor(this) {
+                public override fun onExtractionComplete(ytFiles: SparseArray<YtFile>?, vMeta: VideoMeta) {
+                    if (ytFiles != null) {
+
+                        var youtubeFile: YtFile? = null
+                        for (tag in YOUTUBE_TAGS) {
+                            if (ytFiles[tag] != null) {
+                                youtubeFile = ytFiles[tag]
+                            }
+                        }
+
+                        val url = youtubeFile?.url
+                        Log.d("zavantondebug", url)
+
+                        doItInBackground(url ?: "")
+                    }
                 }
-            }
-        }.extract(LINK, true, true)
+            }.extract(urlLink, true, true)
+        } else {
+            Log.d("zavantondebug", "The clipboard is empty!")
+        }
     }
 
     private fun doItInBackground(url: String) {
