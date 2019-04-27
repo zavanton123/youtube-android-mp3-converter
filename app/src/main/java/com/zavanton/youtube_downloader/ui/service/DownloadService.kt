@@ -22,13 +22,17 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import java.io.File
 import java.io.InputStream
-
+import java.text.SimpleDateFormat
+import java.util.*
 
 class DownloadService : Service() {
 
     companion object {
 
-        private val TARGET_FILENAME = "test.mp4"
+        @SuppressLint("SimpleDateFormat")
+        private val TARGET_FILENAME = "Youtube-" + SimpleDateFormat("yyyy.MM.dd HH:mm:ss").format(Date())
+        private val VIDEO_EXTENSION = "mp4"
+        private val AUDIO_EXTENSION = "mp3"
         private val DOWNLOADS_FOLDER =
             Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).absolutePath
         private const val LINK = "https://www.youtube.com/watch?v=IGQBtbKSVhY"
@@ -118,7 +122,7 @@ class DownloadService : Service() {
         val handler = Handler(handlerThread.looper)
         handler.post {
 
-            val filename = "$DOWNLOADS_FOLDER/$TARGET_FILENAME"
+            val filename = "$DOWNLOADS_FOLDER/$TARGET_FILENAME.$VIDEO_EXTENSION"
             downloadFile(url, filename)
         }
     }
@@ -146,9 +150,14 @@ class DownloadService : Service() {
     private fun convertToMp3() {
         val ffmpeg = FFmpeg.getInstance(this)
         try {
-            // to execute "ffmpeg -version" command you just need to pass "-version"
-            val command = arrayOf("-version")
-            ffmpeg.execute(command, object : ExecuteBinaryResponseHandler() {
+            val videoFile = "$DOWNLOADS_FOLDER/$TARGET_FILENAME.$VIDEO_EXTENSION"
+            Log.d("zavantondebug", "videofile: $videoFile")
+
+            val audioFile = "$DOWNLOADS_FOLDER/$TARGET_FILENAME.$AUDIO_EXTENSION"
+            Log.d("zavantondebug", "audiofile: $audioFile")
+
+            val commands = arrayOf("-i", videoFile, audioFile)
+            ffmpeg.execute(commands, object : ExecuteBinaryResponseHandler() {
 
                 override fun onStart() {
                     Log.d("zavantondebug", "onStart")
@@ -168,11 +177,11 @@ class DownloadService : Service() {
 
                 override fun onFinish() {
                     Log.d("zavantondebug", "onFinish")
+                    File("$DOWNLOADS_FOLDER/$TARGET_FILENAME.$VIDEO_EXTENSION").delete()
                 }
             })
         } catch (e: FFmpegCommandAlreadyRunningException) {
             Log.e("zavantondebug", "Failed to convert", e)
         }
-
     }
 }
