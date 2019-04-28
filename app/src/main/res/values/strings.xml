@@ -9,4 +9,5 @@
     <string name="clipboard_empty">The clipboard is empty! Please, copy the URL of the video you want to download as
         MP3!
     </string>
+    <string name="clipboard_full">Ready to go!</string>
 </resources>

@@ -11,7 +11,6 @@ import com.zavanton.yoump3.ui.service.DownloadService
 import kotlinx.android.synthetic.main.content_main.view.*
 import kotlinx.android.synthetic.main.fmt_main.view.*
 
-
 class MainFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -24,7 +23,7 @@ class MainFragment : Fragment() {
 
     private fun initUI(view: View) {
         initToolbar(view)
-        initImageView(view)
+        showClipboardStatus(view)
         initFab(view)
     }
 
@@ -32,18 +31,24 @@ class MainFragment : Fragment() {
         view.vToolbar.title = requireContext().getString(R.string.app_name)
     }
 
-    private fun initImageView(view: View) {
-        setFullBox(view)
+    private fun showClipboardStatus(view: View) {
+        val isEmpty = false
+        if (isEmpty) {
+            showEmptyClipboard(view)
+        } else {
+            showFullClipboard(view)
+        }
     }
 
-    private fun setEmptyBox(view: View) {
-        view.vBox.setImageResource(R.drawable.ic_empty_box)
-    }
-
-    private fun setFullBox(view: View) {
+    private fun showFullClipboard(view: View) {
         view.vBox.setImageResource(R.drawable.ic_full_box)
+        view.vClipboardState.text = getString(R.string.clipboard_full)
     }
 
+    private fun showEmptyClipboard(view: View) {
+        view.vBox.setImageResource(R.drawable.ic_empty_box)
+        view.vClipboardState.text = getString(R.string.clipboard_empty)
+    }
 
     private fun initFab(view: View) {
         view.vFab.setOnClickListener {
