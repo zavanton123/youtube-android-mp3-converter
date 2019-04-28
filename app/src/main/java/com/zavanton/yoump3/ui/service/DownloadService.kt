@@ -31,11 +31,11 @@ class DownloadService : Service() {
     companion object {
 
         val YOUTUBE_TAGS = arrayOf(37, 22, 18, 85, 84, 83, 82)
-        private val TARGET_FILENAME = "Youtube-" + SimpleDateFormat("yyyy.MM.dd HH:mm:ss", Locale.US).format(Date())
+        private val TARGET_FILENAME = "Youtube-" + SimpleDateFormat("yyyy.MM.dd-HH-mm-ss", Locale.US).format(Date())
         private const val VIDEO_EXTENSION = "mp4"
         private const val AUDIO_EXTENSION = "mp3"
         private val DOWNLOADS_FOLDER =
-            Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).absolutePath
+            Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MUSIC).absolutePath
         private const val FOREGROUND_NOTIFICATION_ID = 123
         private const val NOTIFICATION_CHANNEL_NORMAL = "NOTIFICATION_CHANNEL_NORMAL"
         private const val ACTIVITY_CODE = 234
@@ -172,7 +172,7 @@ class DownloadService : Service() {
             val audioFile = "$DOWNLOADS_FOLDER/$TARGET_FILENAME.$AUDIO_EXTENSION"
             Log.d("zavantondebug", "audiofile: $audioFile")
 
-            val commands = arrayOf("-i", videoFile, audioFile)
+            val commands = arrayOf("-i", videoFile, audioFile, "-b:a 192K -vn", audioFile)
             ffmpeg.execute(commands, object : ExecuteBinaryResponseHandler() {
 
                 override fun onStart() {
