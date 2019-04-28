@@ -9,7 +9,7 @@ import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
 import android.os.*
-import android.support.v4.app.NotificationCompat
+import androidx.core.app.NotificationCompat
 import android.util.Log
 import android.util.SparseArray
 import at.huber.youtubeExtractor.VideoMeta

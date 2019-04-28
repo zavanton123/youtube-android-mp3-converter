@@ -4,10 +4,11 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import androidx.appcompat.widget.Toolbar
 import com.tbruyelle.rxpermissions2.RxPermissions
 import com.zavanton.youtube_downloader.R
 import com.zavanton.youtube_downloader.ui.service.DownloadService
@@ -19,7 +20,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        setSupportActionBar(toolbar)
+        setSupportActionBar(toolbar as Toolbar)
 
 
         fab.setOnClickListener {
