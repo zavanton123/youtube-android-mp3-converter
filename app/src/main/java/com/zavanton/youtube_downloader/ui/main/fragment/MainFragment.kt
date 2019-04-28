@@ -10,6 +10,7 @@ import com.zavanton.youtube_downloader.R
 import com.zavanton.youtube_downloader.ui.service.DownloadService
 import kotlinx.android.synthetic.main.fmt_main.view.*
 
+
 class MainFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -22,11 +23,16 @@ class MainFragment : Fragment() {
 
     private fun initUI(view: View) {
         initToolbar(view)
+        initImageView(view)
         initFab(view)
     }
 
     private fun initToolbar(view: View) {
         view.vToolbar.title = requireContext().getString(R.string.app_name)
+    }
+
+    private fun initImageView(view: View) {
+        // TODO
     }
 
     private fun initFab(view: View) {
