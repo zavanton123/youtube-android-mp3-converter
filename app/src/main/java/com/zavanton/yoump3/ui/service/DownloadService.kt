@@ -194,6 +194,7 @@ class DownloadService : Service() {
                 override fun onFinish() {
                     Log.d("zavantondebug", "onFinish")
                     File("$DOWNLOADS_FOLDER/$TARGET_FILENAME.$VIDEO_EXTENSION").delete()
+                    stopForeground(true)
                 }
             })
         } catch (e: FFmpegCommandAlreadyRunningException) {
