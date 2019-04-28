@@ -7,6 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import com.zavanton.yoump3.R
 import com.zavanton.yoump3.databinding.FmtMainBinding
 import com.zavanton.yoump3.ui.service.DownloadService
@@ -14,18 +16,28 @@ import com.zavanton.yoump3.ui.service.DownloadService
 class MainFragment : Fragment() {
 
     private lateinit var bind: FmtMainBinding
+    private lateinit var model: MainFragmentViewModel
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        bind = DataBindingUtil.inflate<FmtMainBinding>(inflater, R.layout.fmt_main, container, false)
+        bind = DataBindingUtil.inflate(inflater, R.layout.fmt_main, container, false)
 
-        initUI()
+        model = ViewModelProviders.of(this)
+            .get(MainFragmentViewModel::class.java)
 
         return bind.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        initUI()
+        subscribeUI(model)
+
+        model.init()
+    }
+
     private fun initUI() {
         initToolbar()
-        showClipboardStatus()
         initFab()
     }
 
@@ -33,13 +45,20 @@ class MainFragment : Fragment() {
         bind.vToolbar.title = requireContext().getString(R.string.app_name)
     }
 
-    private fun showClipboardStatus() {
-        val isEmpty = false
-        if (isEmpty) {
-            showEmptyClipboard()
-        } else {
-            showFullClipboard()
+    private fun initFab() {
+        bind.vFab.setOnClickListener {
+            startDownloadService()
         }
+    }
+
+    private fun subscribeUI(model: MainFragmentViewModel) {
+        model.getClipboardStatus().observe(this, Observer { isClipboardFull ->
+            if (isClipboardFull) {
+                showFullClipboard()
+            } else {
+                showEmptyClipboard()
+            }
+        })
     }
 
     private fun showFullClipboard() {
@@ -50,12 +69,6 @@ class MainFragment : Fragment() {
     private fun showEmptyClipboard() {
         bind.vBox.setImageResource(R.drawable.ic_empty_box)
         bind.vClipboardState.text = getString(R.string.clipboard_empty)
-    }
-
-    private fun initFab() {
-        bind.vFab.setOnClickListener {
-            startDownloadService()
-        }
     }
 
     private fun startDownloadService() {

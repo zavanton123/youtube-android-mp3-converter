@@ -9,9 +9,9 @@ import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
 import android.os.*
-import androidx.core.app.NotificationCompat
 import android.util.Log
 import android.util.SparseArray
+import androidx.core.app.NotificationCompat
 import at.huber.youtubeExtractor.VideoMeta
 import at.huber.youtubeExtractor.YouTubeExtractor
 import at.huber.youtubeExtractor.YtFile
@@ -31,12 +31,11 @@ class DownloadService : Service() {
     companion object {
 
         val YOUTUBE_TAGS = arrayOf(37, 22, 18, 85, 84, 83, 82)
-        private val TARGET_FILENAME = "Youtube-" + SimpleDateFormat("yyyy.MM.dd HH:mm:ss").format(Date())
-        private val VIDEO_EXTENSION = "mp4"
-        private val AUDIO_EXTENSION = "mp3"
+        private val TARGET_FILENAME = "Youtube-" + SimpleDateFormat("yyyy.MM.dd HH:mm:ss", Locale.US).format(Date())
+        private const val VIDEO_EXTENSION = "mp4"
+        private const val AUDIO_EXTENSION = "mp3"
         private val DOWNLOADS_FOLDER =
             Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).absolutePath
-        private const val FORMAT_TAG = 22
         private const val FOREGROUND_NOTIFICATION_ID = 123
         private const val NOTIFICATION_CHANNEL_NORMAL = "NOTIFICATION_CHANNEL_NORMAL"
         private const val ACTIVITY_CODE = 234
@@ -67,7 +66,7 @@ class DownloadService : Service() {
         makeServiceForeground()
         runTask()
 
-        return Service.START_NOT_STICKY
+        return START_NOT_STICKY
     }
 
     private fun makeServiceForeground() {
