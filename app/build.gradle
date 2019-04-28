@@ -48,11 +48,6 @@ dependencies {
     def anko_version = "0.10.8"
     implementation "org.jetbrains.anko:anko:0.10.8"
 
-    // AppbarLayout
-    implementation 'androidx.appcompat:appcompat:1.0.2'
-
-    // Coordinator layout
-    implementation 'androidx.coordinatorlayout:coordinatorlayout:1.0.0'
 
     //////////////////////// AndroidX ////////////////////////
 
@@ -144,6 +139,12 @@ dependencies {
     androidTestImplementation 'androidx.test:rules:1.1.1'
 
     /////////////////////// UI ///////////////////////
+
+    // AppbarLayout
+    implementation 'androidx.appcompat:appcompat:1.0.2'
+
+    // Coordinator layout
+    implementation 'androidx.coordinatorlayout:coordinatorlayout:1.0.0'
 
     // Material dialogs
     implementation 'com.afollestad.material-dialogs:core:0.9.6.0'

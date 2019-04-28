@@ -4,7 +4,9 @@ import android.Manifest
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import com.afollestad.materialdialogs.MaterialDialog
 import com.tbruyelle.rxpermissions2.RxPermissions
+import com.zavanton.youtube_downloader.R
 import com.zavanton.youtube_downloader.ui.activity.MainActivity
 import com.zavanton.youtube_downloader.utils.Logger
 import io.reactivex.disposables.CompositeDisposable
@@ -24,28 +26,54 @@ class SplashActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        checkPermissionsAndStartApplication()
-    }
-
-    private fun checkPermissionsAndStartApplication() {
-        compositeDisposable.add(
-            RxPermissions(this).request(*PERMISSIONS).subscribe(
-                { goToMainActivity() },
-                { Logger.d("permissions are NOT granted") }
-            )
-        )
-    }
-
-    private fun goToMainActivity() {
-        Logger.d("goToMainActivity")
-        val intent = Intent(this, MainActivity::class.java)
-        startActivity(intent)
-        finish()
+        checkPermissionsAndStartApp()
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        Logger.d("onDestroy")
         compositeDisposable.dispose()
+    }
+
+    private fun checkPermissionsAndStartApp() {
+        compositeDisposable.add(
+            RxPermissions(this).request(*PERMISSIONS)
+                .subscribe(
+                    { arePermissionsGranted ->
+                        if (arePermissionsGranted) {
+                            goToMainActivity()
+                        } else {
+                            repeatRequestPermissions()
+                        }
+                    },
+                    { Logger.e("Failed to check permissions", it) }
+                )
+        )
+    }
+
+    private fun goToMainActivity() {
+        Intent(this, MainActivity::class.java).apply {
+            startActivity(this)
+            finish()
+        }
+    }
+
+    private fun repeatRequestPermissions() {
+        MaterialDialog.Builder(this)
+            .iconRes(R.drawable.ic_action_warning)
+            .limitIconToDefaultSize()
+            .title(getString(R.string.need_permissions))
+            .positiveText(getString(R.string.grant))
+            .negativeText(getString(R.string.do_not_grant))
+            .onPositive { _, _ -> onPositiveButtonClick() }
+            .onNegative { _, _ -> onNegativeButtonClick() }
+            .show()
+    }
+
+    private fun onPositiveButtonClick() {
+        goToMainActivity()
+    }
+
+    private fun onNegativeButtonClick() {
+        this@SplashActivity.finish()
     }
 }

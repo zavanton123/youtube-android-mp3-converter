@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">YoutubeDownloader</string>
     <string name="action_settings">Settings</string>
+    <string name="grant">Grant</string>
+    <string name="do_not_grant">Don\'t grant</string>
+    <string name="need_permissions">The app needs some permissions to work correctly. Please, grant the permissions!
+    </string>
 </resources>
