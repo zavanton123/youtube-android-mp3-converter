@@ -6,9 +6,9 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        tools:showIn="@layout/activity_main"
+        tools:showIn="@layout/ac_fragment_container"
         android:layout_gravity="center"
-        tools:context=".ui.activity.MainActivity">
+        tools:context=".ui.main.activity.MainActivity">
 
     <TextView
             android:layout_width="wrap_content"

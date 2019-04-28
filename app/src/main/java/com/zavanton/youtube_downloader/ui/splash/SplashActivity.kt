@@ -7,7 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.afollestad.materialdialogs.MaterialDialog
 import com.tbruyelle.rxpermissions2.RxPermissions
 import com.zavanton.youtube_downloader.R
-import com.zavanton.youtube_downloader.ui.activity.MainActivity
+import com.zavanton.youtube_downloader.ui.main.activity.MainActivity
 import com.zavanton.youtube_downloader.utils.Logger
 import io.reactivex.disposables.CompositeDisposable
 
