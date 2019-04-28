@@ -1,4 +1,4 @@
-package com.zavanton.youtube_downloader.ui.main.fragment
+package com.zavanton.yoump3.ui.main.fragment
 
 import android.content.Intent
 import android.os.Bundle
@@ -6,8 +6,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.zavanton.youtube_downloader.R
-import com.zavanton.youtube_downloader.ui.service.DownloadService
+import com.zavanton.yoump3.R
+import com.zavanton.yoump3.ui.service.DownloadService
+import kotlinx.android.synthetic.main.content_main.view.*
 import kotlinx.android.synthetic.main.fmt_main.view.*
 
 
@@ -32,8 +33,17 @@ class MainFragment : Fragment() {
     }
 
     private fun initImageView(view: View) {
-        // TODO
+        setFullBox(view)
     }
+
+    private fun setEmptyBox(view: View) {
+        view.vBox.setImageResource(R.drawable.ic_empty_box)
+    }
+
+    private fun setFullBox(view: View) {
+        view.vBox.setImageResource(R.drawable.ic_full_box)
+    }
+
 
     private fun initFab(view: View) {
         view.vFab.setOnClickListener {

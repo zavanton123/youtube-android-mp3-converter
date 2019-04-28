@@ -1,4 +1,4 @@
-package com.zavanton.youtube_downloader
+package com.zavanton.yoump3
 
 import org.junit.Test
 

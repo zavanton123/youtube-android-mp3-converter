@@ -1,4 +1,4 @@
-package com.zavanton.youtube_downloader.ui.splash
+package com.zavanton.yoump3.ui.splash
 
 import android.Manifest
 import android.content.Intent
@@ -6,9 +6,9 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.afollestad.materialdialogs.MaterialDialog
 import com.tbruyelle.rxpermissions2.RxPermissions
-import com.zavanton.youtube_downloader.R
-import com.zavanton.youtube_downloader.ui.main.activity.MainActivity
-import com.zavanton.youtube_downloader.utils.Logger
+import com.zavanton.yoump3.R
+import com.zavanton.yoump3.ui.main.activity.MainActivity
+import com.zavanton.yoump3.utils.Logger
 import io.reactivex.disposables.CompositeDisposable
 
 class SplashActivity : AppCompatActivity() {

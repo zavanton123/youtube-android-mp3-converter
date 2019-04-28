@@ -1,4 +1,4 @@
-package com.zavanton.youtube_downloader.app
+package com.zavanton.yoump3.app
 
 import android.app.Application
 import android.util.Log

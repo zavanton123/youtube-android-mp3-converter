@@ -1,4 +1,4 @@
-package com.zavanton.youtube_downloader
+package com.zavanton.yoump3
 
 import android.support.test.InstrumentationRegistry
 import android.support.test.runner.AndroidJUnit4

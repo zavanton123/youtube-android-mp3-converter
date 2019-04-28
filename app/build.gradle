@@ -15,6 +15,7 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        vectorDrawables.useSupportLibrary = true
     }
     buildTypes {
         release {
@@ -47,7 +48,6 @@ dependencies {
     // Anko
     def anko_version = "0.10.8"
     implementation "org.jetbrains.anko:anko:0.10.8"
-
 
     //////////////////////// AndroidX ////////////////////////
 

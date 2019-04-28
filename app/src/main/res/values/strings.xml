@@ -5,4 +5,8 @@
     <string name="do_not_grant">Don\'t grant</string>
     <string name="need_permissions">The app needs some permissions to work correctly. Please, grant the permissions!
     </string>
+    <string name="clipboard_state">Clipboard State</string>
+    <string name="clipboard_empty">The clipboard is empty! Please, copy the URL of the video you want to download as
+        MP3!
+    </string>
 </resources>

@@ -1,9 +1,9 @@
-package com.zavanton.youtube_downloader.ui.main.activity
+package com.zavanton.yoump3.ui.main.activity
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.zavanton.youtube_downloader.R
-import com.zavanton.youtube_downloader.ui.main.fragment.MainFragment
+import com.zavanton.yoump3.R
+import com.zavanton.yoump3.ui.main.fragment.MainFragment
 
 class MainActivity : AppCompatActivity() {
 
