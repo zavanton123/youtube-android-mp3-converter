@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.zavanton.yoump3.R
 import com.zavanton.yoump3.app.TheApp
 import com.zavanton.yoump3.di.scope.ActivityScope
+import com.zavanton.yoump3.ui.main.activity.di.MainActivityComponent
 import com.zavanton.yoump3.ui.main.activity.di.MainActivityModule
 import com.zavanton.yoump3.ui.main.activity.presenter.IMainActivityPresenter
 import com.zavanton.yoump3.ui.main.fragment.MainFragment
@@ -15,6 +16,8 @@ class MainActivity : AppCompatActivity() {
     @ActivityScope
     @Inject
     lateinit var presenter: IMainActivityPresenter
+
+    private lateinit var mainActivityComponent: MainActivityComponent
 
     override fun onCreate(savedInstanceState: Bundle?) {
         initDependencies()
@@ -27,10 +30,14 @@ class MainActivity : AppCompatActivity() {
         presenter.onCreated()
     }
 
+    fun getMainActivityComponent(): MainActivityComponent = mainActivityComponent
+
     private fun initDependencies() {
-        TheApp.getAppComponent()
+        mainActivityComponent = TheApp.getAppComponent()
             .plusMainActivityComponent(MainActivityModule(this))
-            .inject(this)
+            .apply {
+                inject(this@MainActivity)
+            }
     }
 
     private fun addFragment() {

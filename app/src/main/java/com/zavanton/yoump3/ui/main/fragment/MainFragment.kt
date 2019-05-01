@@ -11,20 +11,37 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.zavanton.yoump3.R
 import com.zavanton.yoump3.databinding.FmtMainBinding
+import com.zavanton.yoump3.di.scope.FragmentScope
+import com.zavanton.yoump3.ui.main.activity.MainActivity
+import com.zavanton.yoump3.ui.main.fragment.di.MainFragmentModule
+import com.zavanton.yoump3.ui.main.fragment.presenter.IMainFragmentPresenter
 import com.zavanton.yoump3.ui.service.DownloadService
+import javax.inject.Inject
 
 class MainFragment : Fragment() {
 
     private lateinit var bind: FmtMainBinding
     private lateinit var model: MainFragmentViewModel
 
+    @FragmentScope
+    @Inject
+    lateinit var presenter: IMainFragmentPresenter
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        initDependencies()
+
         bind = DataBindingUtil.inflate(inflater, R.layout.fmt_main, container, false)
 
         model = ViewModelProviders.of(this)
             .get(MainFragmentViewModel::class.java)
 
         return bind.root
+    }
+
+    private fun initDependencies() {
+        (requireActivity() as MainActivity).getMainActivityComponent()
+            .plusMainFragmentComponent(MainFragmentModule())
+            .inject(this)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -34,6 +51,7 @@ class MainFragment : Fragment() {
         subscribeUI(model)
 
         model.init()
+        presenter.onViewCreated()
     }
 
     private fun initUI() {
