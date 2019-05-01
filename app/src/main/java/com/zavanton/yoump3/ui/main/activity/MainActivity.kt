@@ -6,15 +6,10 @@ import com.zavanton.yoump3.R
 import com.zavanton.yoump3.app.TheApp
 import com.zavanton.yoump3.ui.main.activity.di.component.MainActivityComponent
 import com.zavanton.yoump3.ui.main.activity.di.module.MainActivityProvideModule
-import com.zavanton.yoump3.ui.main.activity.presenter.IMainActivityPresenter
 import com.zavanton.yoump3.ui.main.fragment.MainFragment
 import com.zavanton.yoump3.utils.Logger
-import javax.inject.Inject
 
 class MainActivity : AppCompatActivity() {
-
-    @Inject
-    lateinit var presenter: IMainActivityPresenter
 
     private var mainActivityComponent: MainActivityComponent? = null
 
@@ -25,8 +20,6 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.ac_fragment_container)
 
         addFragment()
-
-        presenter.onCreated()
     }
 
     override fun onDestroy() {

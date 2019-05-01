@@ -1,6 +1,5 @@
 package com.zavanton.yoump3.ui.main.fragment
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -12,15 +11,11 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.zavanton.yoump3.R
 import com.zavanton.yoump3.databinding.FmtMainBinding
-import com.zavanton.yoump3.ui.main.fragment.di.module.MainFragmentProvideModule
-import com.zavanton.yoump3.di.qualifier.ActivityContext
-import com.zavanton.yoump3.di.qualifier.ApplicationContext
 import com.zavanton.yoump3.ui.main.activity.MainActivity
 import com.zavanton.yoump3.ui.main.fragment.di.component.MainFragmentComponent
-import com.zavanton.yoump3.ui.main.fragment.presenter.IMainFragmentPresenter
+import com.zavanton.yoump3.ui.main.fragment.di.module.MainFragmentProvideModule
 import com.zavanton.yoump3.ui.service.DownloadService
 import com.zavanton.yoump3.utils.Logger
-import javax.inject.Inject
 
 class MainFragment : Fragment() {
 
@@ -28,20 +23,6 @@ class MainFragment : Fragment() {
     private lateinit var model: MainFragmentViewModel
 
     private var mainFragmentComponent: MainFragmentComponent? = null
-
-    @Inject
-    lateinit var presenter: IMainFragmentPresenter
-
-    @Inject
-    @field:ApplicationContext
-    lateinit var applicationContext: Context
-
-    @Inject
-    @field:ActivityContext
-    lateinit var activityContext: Context
-
-    @Inject
-    lateinit var mainActivity: MainActivity
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         initDependencies()
@@ -69,11 +50,6 @@ class MainFragment : Fragment() {
         subscribeUI(model)
 
         model.init()
-        presenter.onViewCreated()
-
-        Logger.d("applicationContext: $applicationContext")
-        Logger.d("activityContext: $activityContext")
-        Logger.d("mainActivity: $mainActivity")
     }
 
     override fun onDestroy() {

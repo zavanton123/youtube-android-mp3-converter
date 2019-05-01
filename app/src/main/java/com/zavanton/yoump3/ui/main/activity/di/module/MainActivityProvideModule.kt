@@ -5,8 +5,6 @@ import android.content.Context
 import com.zavanton.yoump3.di.qualifier.ActivityContext
 import com.zavanton.yoump3.di.scope.ActivityScope
 import com.zavanton.yoump3.ui.main.activity.MainActivity
-import com.zavanton.yoump3.ui.main.activity.presenter.IMainActivityPresenter
-import com.zavanton.yoump3.ui.main.activity.presenter.MainActivityPresenter
 import dagger.Module
 import dagger.Provides
 
