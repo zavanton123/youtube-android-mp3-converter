@@ -2,7 +2,7 @@ package com.zavanton.yoump3.ui.main.activity.di.module
 
 import android.app.Activity
 import android.content.Context
-import com.zavanton.yoump3.di.qualifier.ActivityContext
+import com.zavanton.yoump3.di.qualifier.context.ActivityContext
 import com.zavanton.yoump3.di.scope.ActivityScope
 import com.zavanton.yoump3.ui.main.activity.MainActivity
 import dagger.Module

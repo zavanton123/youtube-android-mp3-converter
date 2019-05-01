@@ -1,4 +1,4 @@
-package com.zavanton.yoump3.di.qualifier
+package com.zavanton.yoump3.di.qualifier.context
 
 import javax.inject.Qualifier
 

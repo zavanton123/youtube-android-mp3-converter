@@ -1,14 +1,15 @@
 package com.zavanton.yoump3.ui.download.service
 
 import android.annotation.SuppressLint
-import android.app.NotificationChannel
-import android.app.NotificationManager
 import android.app.PendingIntent
 import android.app.Service
 import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
-import android.os.*
+import android.os.Environment
+import android.os.Handler
+import android.os.HandlerThread
+import android.os.IBinder
 import android.util.Log
 import android.util.SparseArray
 import androidx.core.app.NotificationCompat
@@ -19,6 +20,7 @@ import com.github.hiteshsondhi88.libffmpeg.ExecuteBinaryResponseHandler
 import com.github.hiteshsondhi88.libffmpeg.FFmpeg
 import com.github.hiteshsondhi88.libffmpeg.exceptions.FFmpegCommandAlreadyRunningException
 import com.zavanton.yoump3.app.TheApp
+import com.zavanton.yoump3.di.qualifier.channel.NormalNotificationChannel
 import com.zavanton.yoump3.ui.download.di.component.DownloadServiceComponent
 import com.zavanton.yoump3.ui.download.di.module.DownloadServiceProvideModule
 import com.zavanton.yoump3.ui.download.presenter.IDownloadPresenter
@@ -42,22 +44,21 @@ class DownloadService : Service() {
         private val DOWNLOADS_FOLDER =
             Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MUSIC).absolutePath
         private const val FOREGROUND_NOTIFICATION_ID = 123
-        private const val NOTIFICATION_CHANNEL_NORMAL = "NOTIFICATION_CHANNEL_NORMAL"
         private const val ACTIVITY_CODE = 234
     }
 
     @Inject
     lateinit var presenter: IDownloadPresenter
 
+    @Inject
+    @field:NormalNotificationChannel
+    lateinit var notificationBuilder: NotificationCompat.Builder
+
     private lateinit var downloadServiceComponent: DownloadServiceComponent
 
     override fun onCreate() {
         super.onCreate()
         initDependencies()
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            setUpNotificationChannel()
-        }
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
@@ -81,25 +82,8 @@ class DownloadService : Service() {
             }
     }
 
-    private fun setUpNotificationChannel() {
-
-        val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val channel = NotificationChannel(
-                NOTIFICATION_CHANNEL_NORMAL,
-                "Normal notification", NotificationManager.IMPORTANCE_DEFAULT
-            )
-            notificationManager.createNotificationChannel(channel)
-        }
-    }
 
     private fun makeServiceForeground() {
-        val builder = NotificationCompat.Builder(
-            this,
-            NOTIFICATION_CHANNEL_NORMAL
-        )
-
         val activityIntent = Intent(this, MainActivity::class.java)
         activityIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
 
@@ -108,15 +92,17 @@ class DownloadService : Service() {
             PendingIntent.FLAG_UPDATE_CURRENT
         )
 
-        builder.setContentTitle("Foreground service notification content title")
-            .setContentInfo("Service is running in the foreground.")
-            .setContentIntent(pendingIntent)
-            .setContentText("This is content text")
+        val notification = notificationBuilder
             .setSmallIcon(android.R.drawable.stat_sys_download)
+            .setContentTitle("YouMP3 is currently working")
+            .setContentInfo("The YouMP3 service is running...")
+            .setContentText("Downloading a Youtube video and converting it to mp3...")
+            .setContentIntent(pendingIntent)
             .setOngoing(true)
+            .build()
 
         // Starts foreground
-        startForeground(FOREGROUND_NOTIFICATION_ID, builder.build())
+        startForeground(FOREGROUND_NOTIFICATION_ID, notification)
     }
 
     @SuppressLint("StaticFieldLeak")
