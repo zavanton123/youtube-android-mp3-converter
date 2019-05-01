@@ -1,13 +1,13 @@
 package com.zavanton.yoump3.app
 
 import android.app.Application
-import android.util.Log
 import com.github.hiteshsondhi88.libffmpeg.FFmpeg
 import com.github.hiteshsondhi88.libffmpeg.LoadBinaryResponseHandler
 import com.github.hiteshsondhi88.libffmpeg.exceptions.FFmpegNotSupportedException
 import com.zavanton.yoump3.di.component.AppComponent
 import com.zavanton.yoump3.di.component.DaggerAppComponent
 import com.zavanton.yoump3.di.module.AppModule
+import com.zavanton.yoump3.utils.Logger
 
 class TheApp : Application() {
 
@@ -41,13 +41,13 @@ class TheApp : Application() {
                 override fun onFailure() {}
 
                 override fun onSuccess() {
-                    Log.d("zavantondebug", "Succeeded to load FFMPEG")
+                    Logger.d("Succeeded to load FFMPEG")
                 }
 
                 override fun onFinish() {}
             })
         } catch (e: FFmpegNotSupportedException) {
-            Log.d("zavantondebug", "Failed to load FFMPEG")
+            Logger.d("Failed to load FFMPEG")
         }
     }
 }

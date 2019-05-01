@@ -1,6 +1,7 @@
 package com.zavanton.yoump3.ui.main.activity.di
 
 import com.zavanton.yoump3.di.scope.ActivityScope
+import com.zavanton.yoump3.ui.main.activity.MainActivity
 import com.zavanton.yoump3.ui.main.fragment.di.MainFragmentComponent
 import com.zavanton.yoump3.ui.main.fragment.di.MainFragmentModule
 import dagger.Subcomponent
@@ -14,4 +15,6 @@ import dagger.Subcomponent
 interface MainActivityComponent {
 
     fun plusMainFragmentComponent(mainFragmentModule: MainFragmentModule): MainFragmentComponent
+
+    fun inject(mainActivity: MainActivity)
 }
