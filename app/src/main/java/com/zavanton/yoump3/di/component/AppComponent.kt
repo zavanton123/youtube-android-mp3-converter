@@ -1,8 +1,8 @@
 package com.zavanton.yoump3.di.component
 
 import com.zavanton.yoump3.di.module.AppModule
-import com.zavanton.yoump3.ui.main.activity.di.MainActivityComponent
-import com.zavanton.yoump3.ui.main.activity.di.MainActivityModule
+import com.zavanton.yoump3.ui.main.activity.di.component.MainActivityComponent
+import com.zavanton.yoump3.ui.main.activity.di.module.MainActivityProvideModule
 import dagger.Component
 import javax.inject.Singleton
 
@@ -14,5 +14,5 @@ import javax.inject.Singleton
 )
 interface AppComponent {
 
-    fun plusMainActivityComponent(mainActivityModule: MainActivityModule): MainActivityComponent
+    fun plusMainActivityComponent(mainActivityProvideModule: MainActivityProvideModule): MainActivityComponent
 }

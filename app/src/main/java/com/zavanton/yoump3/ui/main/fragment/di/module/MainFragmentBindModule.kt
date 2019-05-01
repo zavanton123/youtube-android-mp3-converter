@@ -1,15 +1,15 @@
-package com.zavanton.yoump3.ui.main.fragment.di
+package com.zavanton.yoump3.ui.main.fragment.di.module
 
 import com.zavanton.yoump3.di.scope.FragmentScope
 import com.zavanton.yoump3.ui.main.fragment.presenter.IMainFragmentPresenter
 import com.zavanton.yoump3.ui.main.fragment.presenter.MainFragmentPresenter
+import dagger.Binds
 import dagger.Module
-import dagger.Provides
 
 @Module
-class MainFragmentModule {
+abstract class MainFragmentBindModule {
 
     @FragmentScope
-    @Provides
-    fun providePresenter(presenter: MainFragmentPresenter): IMainFragmentPresenter = presenter
+    @Binds
+    abstract fun providePresenter(presenter: MainFragmentPresenter): IMainFragmentPresenter
 }

@@ -4,9 +4,8 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.zavanton.yoump3.R
 import com.zavanton.yoump3.app.TheApp
-import com.zavanton.yoump3.di.scope.ActivityScope
-import com.zavanton.yoump3.ui.main.activity.di.MainActivityComponent
-import com.zavanton.yoump3.ui.main.activity.di.MainActivityModule
+import com.zavanton.yoump3.ui.main.activity.di.component.MainActivityComponent
+import com.zavanton.yoump3.ui.main.activity.di.module.MainActivityProvideModule
 import com.zavanton.yoump3.ui.main.activity.presenter.IMainActivityPresenter
 import com.zavanton.yoump3.ui.main.fragment.MainFragment
 import com.zavanton.yoump3.utils.Logger
@@ -14,7 +13,6 @@ import javax.inject.Inject
 
 class MainActivity : AppCompatActivity() {
 
-    @ActivityScope
     @Inject
     lateinit var presenter: IMainActivityPresenter
 
@@ -42,7 +40,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun initDependencies() {
         mainActivityComponent = TheApp.getAppComponent()
-            .plusMainActivityComponent(MainActivityModule(this))
+            .plusMainActivityComponent(MainActivityProvideModule(this))
             .apply {
                 inject(this@MainActivity)
             }
