@@ -9,6 +9,7 @@ import com.zavanton.yoump3.ui.main.activity.di.MainActivityComponent
 import com.zavanton.yoump3.ui.main.activity.di.MainActivityModule
 import com.zavanton.yoump3.ui.main.activity.presenter.IMainActivityPresenter
 import com.zavanton.yoump3.ui.main.fragment.MainFragment
+import com.zavanton.yoump3.utils.Logger
 import javax.inject.Inject
 
 class MainActivity : AppCompatActivity() {
@@ -17,7 +18,7 @@ class MainActivity : AppCompatActivity() {
     @Inject
     lateinit var presenter: IMainActivityPresenter
 
-    private lateinit var mainActivityComponent: MainActivityComponent
+    private var mainActivityComponent: MainActivityComponent? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         initDependencies()
@@ -30,7 +31,14 @@ class MainActivity : AppCompatActivity() {
         presenter.onCreated()
     }
 
-    fun getMainActivityComponent(): MainActivityComponent = mainActivityComponent
+    override fun onDestroy() {
+        super.onDestroy()
+
+        mainActivityComponent = null
+        Logger.d("mainActivityComponent: $mainActivityComponent")
+    }
+
+    fun getMainActivityComponent(): MainActivityComponent? = mainActivityComponent
 
     private fun initDependencies() {
         mainActivityComponent = TheApp.getAppComponent()

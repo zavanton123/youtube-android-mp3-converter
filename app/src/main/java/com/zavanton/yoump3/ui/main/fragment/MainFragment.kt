@@ -16,6 +16,7 @@ import com.zavanton.yoump3.di.qualifier.ActivityContext
 import com.zavanton.yoump3.di.qualifier.ApplicationContext
 import com.zavanton.yoump3.di.scope.FragmentScope
 import com.zavanton.yoump3.ui.main.activity.MainActivity
+import com.zavanton.yoump3.ui.main.fragment.di.MainFragmentComponent
 import com.zavanton.yoump3.ui.main.fragment.di.MainFragmentModule
 import com.zavanton.yoump3.ui.main.fragment.presenter.IMainFragmentPresenter
 import com.zavanton.yoump3.ui.service.DownloadService
@@ -26,6 +27,8 @@ class MainFragment : Fragment() {
 
     private lateinit var bind: FmtMainBinding
     private lateinit var model: MainFragmentViewModel
+
+    private var mainFragmentComponent: MainFragmentComponent? = null
 
     @FragmentScope
     @Inject
@@ -53,9 +56,11 @@ class MainFragment : Fragment() {
     }
 
     private fun initDependencies() {
-        (requireActivity() as MainActivity).getMainActivityComponent()
-            .plusMainFragmentComponent(MainFragmentModule())
-            .inject(this)
+        mainFragmentComponent = (requireActivity() as MainActivity).getMainActivityComponent()
+            ?.plusMainFragmentComponent(MainFragmentModule())
+            ?.apply {
+                inject(this@MainFragment)
+            }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -69,6 +74,13 @@ class MainFragment : Fragment() {
 
         Logger.d("applicationContext: $applicationContext")
         Logger.d("activityContext: $activityContext")
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+        mainFragmentComponent = null
+        Logger.d("mainFragmentComponent: $mainFragmentComponent")
     }
 
     private fun initUI() {
