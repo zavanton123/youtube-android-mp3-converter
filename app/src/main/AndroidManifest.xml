@@ -27,14 +27,12 @@
             </intent-filter>
         </activity>
 
-        <activity
-                android:name=".ui.main.activity.MainActivity"
-                android:label="@string/app_name"
-                android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name=".ui.main.activity.MainActivity"
+                  android:label="@string/app_name"
+                  android:theme="@style/AppTheme.NoActionBar"/>
 
-        <service
-                android:name=".ui.service.DownloadService"
-                android:exported="false">
+        <service android:name=".ui.service.DownloadService"
+                 android:exported="false">
         </service>
 
     </application>
