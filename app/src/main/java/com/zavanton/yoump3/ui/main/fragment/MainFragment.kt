@@ -14,7 +14,7 @@ import com.zavanton.yoump3.databinding.FmtMainBinding
 import com.zavanton.yoump3.ui.main.activity.MainActivity
 import com.zavanton.yoump3.ui.main.fragment.di.component.MainFragmentComponent
 import com.zavanton.yoump3.ui.main.fragment.di.module.MainFragmentProvideModule
-import com.zavanton.yoump3.ui.service.DownloadService
+import com.zavanton.yoump3.ui.download.service.DownloadService
 import com.zavanton.yoump3.utils.Logger
 
 class MainFragment : Fragment() {

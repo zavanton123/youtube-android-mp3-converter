@@ -31,7 +31,7 @@
                   android:label="@string/app_name"
                   android:theme="@style/AppTheme.NoActionBar"/>
 
-        <service android:name=".ui.service.DownloadService"
+        <service android:name=".ui.download.service.DownloadService"
                  android:exported="false">
         </service>
 

@@ -1,4 +1,4 @@
-package com.zavanton.yoump3.ui.service
+package com.zavanton.yoump3.ui.download.service
 
 import android.annotation.SuppressLint
 import android.app.NotificationChannel
@@ -18,6 +18,10 @@ import at.huber.youtubeExtractor.YtFile
 import com.github.hiteshsondhi88.libffmpeg.ExecuteBinaryResponseHandler
 import com.github.hiteshsondhi88.libffmpeg.FFmpeg
 import com.github.hiteshsondhi88.libffmpeg.exceptions.FFmpegCommandAlreadyRunningException
+import com.zavanton.yoump3.app.TheApp
+import com.zavanton.yoump3.ui.download.di.component.DownloadServiceComponent
+import com.zavanton.yoump3.ui.download.di.module.DownloadServiceProvideModule
+import com.zavanton.yoump3.ui.download.presenter.IDownloadPresenter
 import com.zavanton.yoump3.ui.main.activity.MainActivity
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -25,6 +29,7 @@ import java.io.File
 import java.io.InputStream
 import java.text.SimpleDateFormat
 import java.util.*
+import javax.inject.Inject
 
 class DownloadService : Service() {
 
@@ -41,12 +46,39 @@ class DownloadService : Service() {
         private const val ACTIVITY_CODE = 234
     }
 
+    @Inject
+    lateinit var presenter: IDownloadPresenter
+
+    private lateinit var downloadServiceComponent: DownloadServiceComponent
+
     override fun onCreate() {
         super.onCreate()
+        initDependencies()
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             setUpNotificationChannel()
         }
+    }
+
+    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        makeServiceForeground()
+        runTask()
+
+        presenter.onStartCommand()
+
+        return START_NOT_STICKY
+    }
+
+    override fun onBind(intent: Intent): IBinder? {
+        return null
+    }
+
+    private fun initDependencies() {
+        downloadServiceComponent = TheApp.getAppComponent()
+            .plusDownloadServiceComponent(DownloadServiceProvideModule())
+            .apply {
+                inject(this@DownloadService)
+            }
     }
 
     private fun setUpNotificationChannel() {
@@ -60,13 +92,6 @@ class DownloadService : Service() {
             )
             notificationManager.createNotificationChannel(channel)
         }
-    }
-
-    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        makeServiceForeground()
-        runTask()
-
-        return START_NOT_STICKY
     }
 
     private fun makeServiceForeground() {
@@ -92,10 +117,6 @@ class DownloadService : Service() {
 
         // Starts foreground
         startForeground(FOREGROUND_NOTIFICATION_ID, builder.build())
-    }
-
-    override fun onBind(intent: Intent): IBinder? {
-        return null
     }
 
     @SuppressLint("StaticFieldLeak")
