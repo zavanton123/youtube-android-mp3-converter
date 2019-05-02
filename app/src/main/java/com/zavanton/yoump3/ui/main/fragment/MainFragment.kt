@@ -56,7 +56,6 @@ class MainFragment : Fragment() {
         super.onDestroy()
 
         mainFragmentComponent = null
-        Logger.d("mainFragmentComponent: $mainFragmentComponent")
     }
 
     private fun initUI() {

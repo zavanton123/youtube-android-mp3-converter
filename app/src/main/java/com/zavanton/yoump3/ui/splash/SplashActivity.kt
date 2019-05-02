@@ -1,6 +1,5 @@
 package com.zavanton.yoump3.ui.splash
 
-import android.Manifest
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
@@ -9,17 +8,10 @@ import com.tbruyelle.rxpermissions2.RxPermissions
 import com.zavanton.yoump3.R
 import com.zavanton.yoump3.ui.main.activity.MainActivity
 import com.zavanton.yoump3.utils.Logger
+import com.zavanton.yoump3.utils.Permissions.PERMISSIONS
 import io.reactivex.disposables.CompositeDisposable
 
 class SplashActivity : AppCompatActivity() {
-
-    companion object {
-
-        private val PERMISSIONS = arrayOf(
-            Manifest.permission.READ_EXTERNAL_STORAGE,
-            Manifest.permission.WRITE_EXTERNAL_STORAGE
-        )
-    }
 
     private val compositeDisposable = CompositeDisposable()
 
@@ -45,7 +37,7 @@ class SplashActivity : AppCompatActivity() {
                             repeatRequestPermissions()
                         }
                     },
-                    { Logger.e("Failed to check permissions", it) }
+                    { Logger.e("An error occurred while checking permissions", it) }
                 )
         )
     }
