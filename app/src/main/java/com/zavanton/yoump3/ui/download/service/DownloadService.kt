@@ -111,8 +111,7 @@ class DownloadService : Service() {
 
         val clipboardManager: ClipboardManager = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
 
-        val urlLink = clipboardManager.primaryClip
-            .getItemAt(0).text.toString()
+        val urlLink = clipboardManager.primaryClip?.getItemAt(0)?.text.toString()
 
         if (urlLink.isNotEmpty()) {
 

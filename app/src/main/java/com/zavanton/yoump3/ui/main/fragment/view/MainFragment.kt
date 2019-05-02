@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.arellomobile.mvp.MvpAppCompatFragment
 import com.arellomobile.mvp.presenter.InjectPresenter
+import com.arellomobile.mvp.presenter.ProvidePresenter
 import com.zavanton.yoump3.R
 import com.zavanton.yoump3.ui.download.service.DownloadService
 import com.zavanton.yoump3.ui.main.activity.MainActivity
@@ -15,17 +16,25 @@ import com.zavanton.yoump3.ui.main.fragment.di.module.MainFragmentProvideModule
 import com.zavanton.yoump3.ui.main.fragment.presenter.MainFragmentPresenter
 import com.zavanton.yoump3.utils.Logger
 import kotlinx.android.synthetic.main.fmt_main.*
+import javax.inject.Inject
 
 class MainFragment : MvpAppCompatFragment(), MainFragmentMvpView {
 
     private var mainFragmentComponent: MainFragmentComponent? = null
 
+    @Inject
     @InjectPresenter
     lateinit var presenter: MainFragmentPresenter
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        initDependencies()
+    @ProvidePresenter
+    fun providePresenter() = presenter
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        initDependencies()
+        super.onCreate(savedInstanceState)
+    }
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fmt_main, container, false)
     }
 
