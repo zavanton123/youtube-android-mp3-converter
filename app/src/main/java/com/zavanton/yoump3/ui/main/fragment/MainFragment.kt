@@ -15,6 +15,7 @@ import com.zavanton.yoump3.ui.main.fragment.di.component.MainFragmentComponent
 import com.zavanton.yoump3.ui.main.fragment.di.module.MainFragmentProvideModule
 import com.zavanton.yoump3.ui.main.fragment.viewModel.MainFragmentViewModel
 import com.zavanton.yoump3.ui.main.fragment.viewModel.MainFragmentViewModelFactory
+import com.zavanton.yoump3.utils.Logger
 
 class MainFragment : Fragment() {
 
@@ -25,7 +26,7 @@ class MainFragment : Fragment() {
         fun getMainFragmentComponent() = mainFragmentComponent
     }
 
-    private lateinit var model: MainFragmentViewModel
+    private lateinit var viewModel: MainFragmentViewModel
 
     private lateinit var bind: FmtMainBinding
 
@@ -35,10 +36,10 @@ class MainFragment : Fragment() {
 
         bind = DataBindingUtil.inflate(inflater, R.layout.fmt_main, container, false)
 
-        model = ViewModelProviders.of(this,
-            MainFragmentViewModelFactory()
-        )
+        viewModel = ViewModelProviders.of(this, MainFragmentViewModelFactory())
             .get(MainFragmentViewModel::class.java)
+
+        Logger.d("ViewModel: $viewModel")
 
         return bind.root
     }
@@ -47,9 +48,7 @@ class MainFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         initUI()
-        subscribeUI(model)
-
-        model.init()
+        subscribeUI(viewModel)
     }
 
     override fun onDestroy() {
@@ -77,12 +76,12 @@ class MainFragment : Fragment() {
 
     private fun initFab() {
         bind.vFab.setOnClickListener {
-            model.startDownloadService()
+            viewModel.startDownloadService()
         }
     }
 
-    private fun subscribeUI(model: MainFragmentViewModel) {
-        model.isClipboardFull.observe(this, Observer { isClipboardFull ->
+    private fun subscribeUI(viewModel: MainFragmentViewModel) {
+        viewModel.isClipboardFull.observe(this, Observer { isClipboardFull ->
             if (isClipboardFull) {
                 showFullClipboard()
             } else {

@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.zavanton.yoump3.di.qualifier.context.ApplicationContext
 import com.zavanton.yoump3.ui.download.service.DownloadService
+import com.zavanton.yoump3.utils.Logger
 import javax.inject.Inject
 
 class MainFragmentViewModel
@@ -17,8 +18,8 @@ constructor(
 
     val isClipboardFull = MutableLiveData<Boolean>()
 
-    fun init() {
-        isClipboardFull.value = true
+    init {
+        Logger.d("MainFragmentViewModel is init")
     }
 
     fun startDownloadService() {
