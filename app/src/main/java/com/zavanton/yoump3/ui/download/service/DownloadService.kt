@@ -10,7 +10,6 @@ import android.os.Environment
 import android.os.Handler
 import android.os.HandlerThread
 import android.os.IBinder
-import android.util.Log
 import android.util.SparseArray
 import androidx.core.app.NotificationCompat
 import at.huber.youtubeExtractor.VideoMeta
@@ -25,6 +24,8 @@ import com.zavanton.yoump3.ui.download.di.component.DownloadServiceComponent
 import com.zavanton.yoump3.ui.download.di.module.DownloadServiceProvideModule
 import com.zavanton.yoump3.ui.download.presenter.IDownloadPresenter
 import com.zavanton.yoump3.ui.main.activity.MainActivity
+import com.zavanton.yoump3.utils.Logger
+import com.zavanton.yoump3.utils.YoutubeTags.MP4
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import java.io.File
@@ -37,7 +38,6 @@ class DownloadService : Service() {
 
     companion object {
 
-        val YOUTUBE_TAGS = arrayOf(299, 298, 266, 264, 160, 138, 137, 136, 135, 134, 133, 85, 84, 83, 82, 38, 37, 22, 18)
         private val TARGET_FILENAME = "Youtube-" + SimpleDateFormat("yyyy.MM.dd-HH-mm-ss", Locale.US).format(Date())
         private const val VIDEO_EXTENSION = "mp4"
         private const val AUDIO_EXTENSION = "mp3"
@@ -112,7 +112,6 @@ class DownloadService : Service() {
 
         val urlLink = clipboardManager.primaryClip
             .getItemAt(0).text.toString()
-        Log.d("zavanton", "urlLink: $urlLink")
 
         if (urlLink.isNotEmpty()) {
 
@@ -121,21 +120,20 @@ class DownloadService : Service() {
                     if (ytFiles != null) {
 
                         var youtubeFile: YtFile? = null
-                        for (tag in YOUTUBE_TAGS) {
+                        for (tag in MP4) {
                             if (ytFiles[tag] != null) {
                                 youtubeFile = ytFiles[tag]
                             }
                         }
 
                         val url = youtubeFile?.url
-                        Log.d("zavantondebug", url)
 
                         doItInBackground(url ?: "")
                     }
                 }
             }.extract(urlLink, true, true)
         } else {
-            Log.d("zavantondebug", "The clipboard is empty!")
+            Logger.d("The clipboard is empty!")
         }
     }
 
@@ -163,7 +161,7 @@ class DownloadService : Service() {
         convertToMp3()
 
         response.body()?.close()
-        Log.d("zavantondebug", "response closed")
+        Logger.d("response closed")
     }
 
     private fun InputStream.toFile(path: String) {
@@ -174,38 +172,38 @@ class DownloadService : Service() {
         val ffmpeg = FFmpeg.getInstance(this)
         try {
             val videoFile = "$DOWNLOADS_FOLDER/$TARGET_FILENAME.$VIDEO_EXTENSION"
-            Log.d("zavantondebug", "videofile: $videoFile")
+            Logger.d("videofile: $videoFile")
 
             val audioFile = "$DOWNLOADS_FOLDER/$TARGET_FILENAME.$AUDIO_EXTENSION"
-            Log.d("zavantondebug", "audiofile: $audioFile")
+            Logger.d("audiofile: $audioFile")
 
             val commands = arrayOf("-i", videoFile, audioFile, "-b:a 192K -vn", audioFile)
             ffmpeg.execute(commands, object : ExecuteBinaryResponseHandler() {
 
                 override fun onStart() {
-                    Log.d("zavantondebug", "onStart")
+                    Logger.d("onStart")
                 }
 
                 override fun onProgress(message: String?) {
-                    Log.d("zavantondebug", "onProgress: $message")
+                    Logger.d("onProgress: $message")
                 }
 
                 override fun onFailure(message: String?) {
-                    Log.d("zavantondebug", "onFailure: $message")
+                    Logger.d("onFailure: $message")
                 }
 
                 override fun onSuccess(message: String?) {
-                    Log.d("zavantondebug", "onSuccess: $message")
+                    Logger.d("onSuccess: $message")
                 }
 
                 override fun onFinish() {
-                    Log.d("zavantondebug", "onFinish")
+                    Logger.d("onFinish")
                     File("$DOWNLOADS_FOLDER/$TARGET_FILENAME.$VIDEO_EXTENSION").delete()
                     stopForeground(true)
                 }
             })
         } catch (e: FFmpegCommandAlreadyRunningException) {
-            Log.e("zavantondebug", "Failed to convert", e)
+            Logger.e("FFmpegCommandAlreadyRunningException", e)
         }
     }
 }
