@@ -16,6 +16,7 @@ android {
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
+        multiDexEnabled = true
     }
     buildTypes {
         release {
@@ -38,6 +39,9 @@ dependencies {
 
     // Kotlin
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+
+    // Multidex
+    implementation 'com.android.support:multidex:1.0.3'
 
     // RxPermissions
     implementation 'com.github.tbruyelle:RxPermissions:0.10.2'
