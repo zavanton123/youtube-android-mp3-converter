@@ -1,6 +1,5 @@
 package com.zavanton.yoump3.ui.main.fragment
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -14,33 +13,34 @@ import com.zavanton.yoump3.databinding.FmtMainBinding
 import com.zavanton.yoump3.ui.main.activity.MainActivity
 import com.zavanton.yoump3.ui.main.fragment.di.component.MainFragmentComponent
 import com.zavanton.yoump3.ui.main.fragment.di.module.MainFragmentProvideModule
-import com.zavanton.yoump3.ui.download.service.DownloadService
-import com.zavanton.yoump3.utils.Logger
+import com.zavanton.yoump3.ui.main.fragment.viewModel.MainFragmentViewModel
+import com.zavanton.yoump3.ui.main.fragment.viewModel.MainFragmentViewModelFactory
 
 class MainFragment : Fragment() {
 
-    private lateinit var bind: FmtMainBinding
+    companion object {
+
+        private var mainFragmentComponent: MainFragmentComponent? = null
+
+        fun getMainFragmentComponent() = mainFragmentComponent
+    }
+
     private lateinit var model: MainFragmentViewModel
 
-    private var mainFragmentComponent: MainFragmentComponent? = null
+    private lateinit var bind: FmtMainBinding
+
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         initDependencies()
 
         bind = DataBindingUtil.inflate(inflater, R.layout.fmt_main, container, false)
 
-        model = ViewModelProviders.of(this)
+        model = ViewModelProviders.of(this,
+            MainFragmentViewModelFactory()
+        )
             .get(MainFragmentViewModel::class.java)
 
         return bind.root
-    }
-
-    private fun initDependencies() {
-        mainFragmentComponent = (requireActivity() as MainActivity).getMainActivityComponent()
-            ?.plusMainFragmentComponent(MainFragmentProvideModule())
-            ?.apply {
-                inject(this@MainFragment)
-            }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -58,6 +58,14 @@ class MainFragment : Fragment() {
         mainFragmentComponent = null
     }
 
+    private fun initDependencies() {
+        mainFragmentComponent = (requireActivity() as MainActivity).getMainActivityComponent()
+            ?.plusMainFragmentComponent(MainFragmentProvideModule())
+            ?.apply {
+                inject(this@MainFragment)
+            }
+    }
+
     private fun initUI() {
         initToolbar()
         initFab()
@@ -69,12 +77,12 @@ class MainFragment : Fragment() {
 
     private fun initFab() {
         bind.vFab.setOnClickListener {
-            startDownloadService()
+            model.startDownloadService()
         }
     }
 
     private fun subscribeUI(model: MainFragmentViewModel) {
-        model.getClipboardStatus().observe(this, Observer { isClipboardFull ->
+        model.isClipboardFull.observe(this, Observer { isClipboardFull ->
             if (isClipboardFull) {
                 showFullClipboard()
             } else {
@@ -91,11 +99,5 @@ class MainFragment : Fragment() {
     private fun showEmptyClipboard() {
         bind.vBox.setImageResource(R.drawable.ic_warning)
         bind.vClipboardState.text = getString(R.string.clipboard_empty)
-    }
-
-    private fun startDownloadService() {
-        Intent(requireContext(), DownloadService::class.java).apply {
-            requireActivity().startService(this)
-        }
     }
 }
