@@ -65,7 +65,7 @@ constructor(
     }
 
     @SuppressLint("StaticFieldLeak")
-    fun runTask() {
+    private fun runTask() {
 
         val clipboardManager: ClipboardManager =
             appContext.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
@@ -75,11 +75,13 @@ constructor(
         if (urlLink.isNotEmpty()) {
 
             object : YouTubeExtractor(appContext) {
+
                 public override fun onExtractionComplete(ytFiles: SparseArray<YtFile>?, vMeta: VideoMeta) {
                     if (ytFiles != null) {
 
                         var youtubeFile: YtFile? = null
                         for (tag in YoutubeTags.MP4) {
+
                             if (ytFiles[tag] != null) {
                                 youtubeFile = ytFiles[tag]
                             }
@@ -132,12 +134,11 @@ constructor(
         val ffmpeg = FFmpeg.getInstance(appContext)
         try {
             val videoFile = "$DOWNLOADS_FOLDER/$TARGET_FILENAME.$VIDEO_EXTENSION"
-            Logger.d("videofile: $videoFile")
 
             val audioFile = "$DOWNLOADS_FOLDER/$TARGET_FILENAME.$AUDIO_EXTENSION"
-            Logger.d("audiofile: $audioFile")
 
-            val commands = arrayOf("-i", videoFile, audioFile, "-b:a 192K -vn", audioFile)
+            val commands = arrayOf("-i", videoFile, audioFile)
+
             ffmpeg.execute(commands, object : ExecuteBinaryResponseHandler() {
 
                 override fun onStart() {
@@ -166,5 +167,4 @@ constructor(
             Logger.e("FFmpegCommandAlreadyRunningException", e)
         }
     }
-
 }

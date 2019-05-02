@@ -81,6 +81,6 @@ class DownloadService : Service(), IDownloadService {
     }
 
     override fun stopForeground() {
-        this.stopForeground(true)
+        stopForeground(true)
     }
 }
