@@ -37,7 +37,7 @@ class DownloadService : Service() {
 
     companion object {
 
-        val YOUTUBE_TAGS = arrayOf(37, 22, 18, 85, 84, 83, 82)
+        val YOUTUBE_TAGS = arrayOf(299, 298, 266, 264, 160, 138, 137, 136, 135, 134, 133, 85, 84, 83, 82, 38, 37, 22, 18)
         private val TARGET_FILENAME = "Youtube-" + SimpleDateFormat("yyyy.MM.dd-HH-mm-ss", Locale.US).format(Date())
         private const val VIDEO_EXTENSION = "mp4"
         private const val AUDIO_EXTENSION = "mp3"
