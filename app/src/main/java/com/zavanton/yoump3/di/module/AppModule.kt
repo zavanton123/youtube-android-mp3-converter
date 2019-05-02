@@ -3,6 +3,7 @@ package com.zavanton.yoump3.di.module
 import android.app.NotificationManager
 import android.content.Context
 import androidx.core.app.NotificationCompat
+import com.github.hiteshsondhi88.libffmpeg.FFmpeg
 import com.zavanton.yoump3.di.qualifier.channel.HighNotificationChannel
 import com.zavanton.yoump3.di.qualifier.channel.LowNotificationChannel
 import com.zavanton.yoump3.di.qualifier.channel.NormalNotificationChannel
@@ -44,4 +45,8 @@ class AppModule(private val context: Context) {
     @HighNotificationChannel
     fun provideNotificationBuilderWithHighNotificationChannel(): NotificationCompat.Builder =
         NotificationCompat.Builder(context, NOTIFICATION_CHANNEL_HIGH)
+
+    @Singleton
+    @Provides
+    fun provideFFMpeg(): FFmpeg = FFmpeg.getInstance(context)
 }
