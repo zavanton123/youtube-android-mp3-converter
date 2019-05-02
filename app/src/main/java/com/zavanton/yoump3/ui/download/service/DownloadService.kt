@@ -22,7 +22,7 @@ import com.zavanton.yoump3.app.TheApp
 import com.zavanton.yoump3.di.qualifier.channel.NormalNotificationChannel
 import com.zavanton.yoump3.ui.download.di.component.DownloadServiceComponent
 import com.zavanton.yoump3.ui.download.di.module.DownloadServiceProvideModule
-import com.zavanton.yoump3.ui.download.viewModel.IDownloadPresenter
+import com.zavanton.yoump3.ui.download.presenter.IDownloadPresenter
 import com.zavanton.yoump3.ui.main.activity.MainActivity
 import com.zavanton.yoump3.utils.Logger
 import com.zavanton.yoump3.utils.YoutubeTags.MP4
@@ -62,6 +62,7 @@ class DownloadService : Service() {
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        Logger.d("DownloadService - onStartCommand")
         makeServiceForeground()
         runTask()
 

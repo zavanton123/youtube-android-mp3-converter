@@ -1,4 +1,4 @@
-package com.zavanton.yoump3.ui.download.viewModel
+package com.zavanton.yoump3.ui.download.presenter
 
 interface IDownloadPresenter {
 

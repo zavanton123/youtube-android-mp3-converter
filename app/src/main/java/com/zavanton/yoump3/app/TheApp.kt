@@ -1,8 +1,8 @@
 package com.zavanton.yoump3.app
 
+import android.app.Application
 import android.app.NotificationManager
 import android.os.Build
-import androidx.multidex.MultiDexApplication
 import com.github.hiteshsondhi88.libffmpeg.FFmpeg
 import com.github.hiteshsondhi88.libffmpeg.LoadBinaryResponseHandler
 import com.github.hiteshsondhi88.libffmpeg.exceptions.FFmpegNotSupportedException
@@ -13,7 +13,7 @@ import com.zavanton.yoump3.utils.Logger
 import com.zavanton.yoump3.utils.NotificationChannels
 import javax.inject.Inject
 
-class TheApp : MultiDexApplication() {
+class TheApp : Application() {
 
     companion object {
 

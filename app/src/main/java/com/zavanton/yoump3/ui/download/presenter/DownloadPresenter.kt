@@ -1,4 +1,4 @@
-package com.zavanton.yoump3.ui.download.viewModel
+package com.zavanton.yoump3.ui.download.presenter
 
 import com.zavanton.yoump3.di.scope.ServiceScope
 import com.zavanton.yoump3.utils.Logger
