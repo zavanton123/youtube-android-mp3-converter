@@ -32,16 +32,17 @@
 
             <LinearLayout android:layout_width="wrap_content"
                           android:layout_gravity="center"
+                          android:gravity="center"
                           android:orientation="vertical"
                           android:layout_height="wrap_content">
 
                 <ImageView
                         android:id="@+id/vBox"
                         android:contentDescription="@string/clipboard_state"
-                        app:srcCompat="@drawable/ic_empty_box"
+                        app:srcCompat="@drawable/ic_ok"
                         android:layout_marginBottom="32dp"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"/>
+                        android:layout_width="128dp"
+                        android:layout_height="128dp"/>
 
                 <TextView
                         android:id="@+id/vClipboardState"

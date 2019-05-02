@@ -9,7 +9,7 @@ class MainFragmentViewModel : ViewModel() {
 
     fun init() {
 
-        isClipboardFull.value = false
+        isClipboardFull.value = true
     }
 
     fun getClipboardStatus() = isClipboardFull

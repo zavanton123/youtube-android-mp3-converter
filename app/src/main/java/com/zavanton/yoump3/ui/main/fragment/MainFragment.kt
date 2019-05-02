@@ -84,12 +84,12 @@ class MainFragment : Fragment() {
     }
 
     private fun showFullClipboard() {
-        bind.vBox.setImageResource(R.drawable.ic_full_box)
+        bind.vBox.setImageResource(R.drawable.ic_ok)
         bind.vClipboardState.text = getString(R.string.clipboard_full)
     }
 
     private fun showEmptyClipboard() {
-        bind.vBox.setImageResource(R.drawable.ic_empty_box)
+        bind.vBox.setImageResource(R.drawable.ic_warning)
         bind.vClipboardState.text = getString(R.string.clipboard_empty)
     }
 
