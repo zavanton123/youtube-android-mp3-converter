@@ -37,7 +37,9 @@ class TheApp : Application() {
         appComponent = DaggerAppComponent.builder()
             .appModule(AppModule(this))
             .build()
-        appComponent.inject(this)
+            .apply {
+                inject(this@TheApp)
+            }
     }
 
     private fun initNotificationChannels() {
@@ -51,18 +53,24 @@ class TheApp : Application() {
         try {
             ffmpeg.loadBinary(object : LoadBinaryResponseHandler() {
 
-                override fun onStart() {}
-
-                override fun onFailure() {}
-
-                override fun onSuccess() {
-                    Logger.d("Succeeded to load FFMPEG")
+                override fun onStart() {
+                    Logger.d("FFmpeg - onStart")
                 }
 
-                override fun onFinish() {}
+                override fun onFailure() {
+                    Logger.d("FFmpeg - onFailure")
+                }
+
+                override fun onSuccess() {
+                    Logger.d("FFmpeg - onSuccess")
+                }
+
+                override fun onFinish() {
+                    Logger.d("FFmpeg - onFinish")
+                }
             })
         } catch (e: FFmpegNotSupportedException) {
-            Logger.d("Failed to load FFMPEG")
+            Logger.e("FFmpeg - Error while initializing FFmpeg", e)
         }
     }
 }
