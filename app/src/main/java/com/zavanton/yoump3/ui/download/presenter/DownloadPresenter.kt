@@ -76,7 +76,7 @@ constructor(
                 .subscribe(
                     {
                         Logger.d("Is download OK? - $it")
-                        service?.stopForeground()
+                        convert()
                     },
                     {
                         Logger.e("Some error while downloading", it)
@@ -85,5 +85,34 @@ constructor(
                 )
             )
         }
+    }
+
+    private fun convert() {
+        compositeDisposable.add(convertInteractor.convertToMp3(
+            "$DOWNLOADS_FOLDER/$TARGET_FILENAME.$VIDEO_EXTENSION",
+            "$DOWNLOADS_FOLDER/$TARGET_FILENAME.$AUDIO_EXTENSION"
+        )
+            .subscribeOn(ioThreadScheduler)
+            .observeOn(mainThreadScheduler)
+            .subscribe(
+                {
+                    onNextMessageReceive(it)
+                },
+                {
+                    Logger.e("Some error while converting", it)
+                },
+                {
+                    onConversionComplete()
+                }
+            ))
+    }
+
+    private fun onNextMessageReceive(message: String) {
+        Logger.d("onNextMessageReceive: $message")
+    }
+
+    private fun onConversionComplete() {
+        Logger.d("Conversion is OK!")
+        service?.stopForeground()
     }
 }
