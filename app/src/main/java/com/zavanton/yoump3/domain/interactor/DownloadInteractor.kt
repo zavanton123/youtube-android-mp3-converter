@@ -11,10 +11,13 @@ import com.zavanton.yoump3.di.qualifier.scheduler.IoThreadScheduler
 import com.zavanton.yoump3.utils.Logger
 import com.zavanton.yoump3.utils.YoutubeTags
 import io.reactivex.Observable
+import io.reactivex.ObservableEmitter
 import io.reactivex.Scheduler
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import java.io.File
+import java.io.FileOutputStream
+import java.io.IOException
 import java.io.InputStream
 import javax.inject.Inject
 
@@ -33,7 +36,7 @@ constructor(
         downloadsFolder: String,
         targetFilename: String,
         videoExtension: String
-    ): Observable<Boolean> {
+    ): Observable<String> {
 
         return Observable.create { emitter ->
 
@@ -45,14 +48,7 @@ constructor(
 
                         val url = getUrl(ytFiles)
 
-                        url?.apply {
-
-                            ioThreadScheduler.scheduleDirect {
-                                val isDownloaded = download(url, "$downloadsFolder/$targetFilename.$videoExtension")
-                                Logger.d("isDownloaded: $isDownloaded")
-                                emitter.onNext(isDownloaded)
-                            }
-                        }
+                        downloadFileFromUrl(url, downloadsFolder, targetFilename, videoExtension, emitter)
                     }
                 }
             }.extract(urlLink, true, true)
@@ -71,27 +67,58 @@ constructor(
         return youtubeFile?.url
     }
 
-    private fun download(url: String, filename: String): Boolean {
-        try {
-            val client = OkHttpClient()
-            val request = Request.Builder().url(url).build()
-            val response = client.newCall(request).execute()
-            val inputStream = response.body()?.byteStream()
-            inputStream?.toFile(filename)
-            response.body()?.close()
-            Logger.d("file downloaded!")
+    private fun downloadFileFromUrl(
+        url: String?,
+        downloadsFolder: String,
+        targetFilename: String,
+        videoExtension: String,
+        emitter: ObservableEmitter<String>
+    ) {
+        url?.apply {
 
-            return true
+            ioThreadScheduler.scheduleDirect {
 
-        } catch (e: Exception) {
-            Logger.e("Some error while downloading file", e)
+                val client = OkHttpClient()
 
-            return false
+                val request = Request.Builder().url(url).build()
+
+                val response = client.newCall(request).execute()
+
+                val inputStream = response.body()?.byteStream()
+
+                val outputFile = File("$downloadsFolder/$targetFilename.$videoExtension")
+
+                inputStream?.apply {
+                    writeInputStreamToFile(this, outputFile, emitter)
+                }
+
+                response.body()?.close()
+            }
         }
     }
 
-    private fun InputStream.toFile(path: String) {
-        File(path).outputStream()
-            .use { this.copyTo(it) }
+    private fun writeInputStreamToFile(
+        inputStream: InputStream,
+        file: File,
+        emitter: ObservableEmitter<String>
+    ) {
+        try {
+            val out = FileOutputStream(file)
+            val buf = ByteArray(1024)
+            var len = inputStream.read(buf)
+            while (len > 0) {
+                out.write(buf, 0, len)
+                len = inputStream.read(buf)
+            }
+            out.close()
+            inputStream.close()
+
+            Logger.d("File is downloaded!")
+            emitter.onNext("File is downloaded")
+
+        } catch (exception: IOException) {
+            Logger.e("Error while writing to output file", exception)
+            emitter.onError(exception)
+        }
     }
 }

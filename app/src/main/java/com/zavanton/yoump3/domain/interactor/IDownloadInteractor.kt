@@ -9,5 +9,5 @@ interface IDownloadInteractor {
         downloadsFolder: String,
         targetFilename: String,
         videoExtension: String
-    ): Observable<Boolean>
+    ): Observable<String>
 }
