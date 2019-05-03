@@ -10,19 +10,18 @@ import com.zavanton.yoump3.di.qualifier.context.ApplicationContext
 import com.zavanton.yoump3.utils.Logger
 import com.zavanton.yoump3.utils.YoutubeTags
 import io.reactivex.Observable
+import io.reactivex.schedulers.Schedulers
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import java.io.File
 import java.io.InputStream
-import java.util.concurrent.Executors
-import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 class DownloadInteractor
 @Inject
 constructor(
     @ApplicationContext
-    private val appContext: Context
+    private val context: Context
 ) : IDownloadInteractor {
 
     @SuppressLint("StaticFieldLeak")
@@ -33,11 +32,11 @@ constructor(
         videoExtension: String
     ): Observable<Boolean> {
 
-        val executor = Executors.newSingleThreadScheduledExecutor()
+        val scheduler = Schedulers.io()
 
         return Observable.create { emitter ->
 
-            object : YouTubeExtractor(appContext) {
+            object : YouTubeExtractor(context) {
 
                 override fun onExtractionComplete(ytFiles: SparseArray<YtFile>?, vMeta: VideoMeta) {
                     Logger.d("onExtractionComplete")
@@ -47,14 +46,10 @@ constructor(
 
                         url?.apply {
 
-                            val future = executor.schedule({
+                            scheduler.scheduleDirect {
                                 val isDownloaded = download(url, "$downloadsFolder/$targetFilename.$videoExtension")
                                 Logger.d("isDownloaded: $isDownloaded")
                                 emitter.onNext(isDownloaded)
-                            }, 10, TimeUnit.SECONDS)
-
-                            emitter.setCancellable {
-                                future.cancel(false)
                             }
                         }
                     }
