@@ -5,14 +5,15 @@ import android.content.ClipboardManager
 import android.content.Context
 import android.os.Environment
 import com.zavanton.yoump3.di.qualifier.context.ApplicationContext
+import com.zavanton.yoump3.di.qualifier.scheduler.IoThreadScheduler
+import com.zavanton.yoump3.di.qualifier.scheduler.MainThreadScheduler
 import com.zavanton.yoump3.di.scope.ServiceScope
 import com.zavanton.yoump3.domain.interactor.IConvertInteractor
 import com.zavanton.yoump3.domain.interactor.IDownloadInteractor
 import com.zavanton.yoump3.ui.download.service.IDownloadService
 import com.zavanton.yoump3.utils.Logger
-import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.Scheduler
 import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.schedulers.Schedulers
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
@@ -24,7 +25,11 @@ constructor(
     @ApplicationContext
     private val appContext: Context,
     private val downloadInteractor: IDownloadInteractor,
-    private val convertInteractor: IConvertInteractor
+    private val convertInteractor: IConvertInteractor,
+    @MainThreadScheduler
+    private val mainThreadScheduler: Scheduler,
+    @IoThreadScheduler
+    private val ioThreadScheduler: Scheduler
 ) : IDownloadPresenter {
 
     companion object {
@@ -72,8 +77,8 @@ constructor(
                 TARGET_FILENAME,
                 VIDEO_EXTENSION
             )
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(ioThreadScheduler)
+                .observeOn(mainThreadScheduler)
                 .subscribe(
                     {
                         Logger.d("Is download OK? - $it")

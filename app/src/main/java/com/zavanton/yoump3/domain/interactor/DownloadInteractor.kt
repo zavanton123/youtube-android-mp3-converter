@@ -7,10 +7,11 @@ import at.huber.youtubeExtractor.VideoMeta
 import at.huber.youtubeExtractor.YouTubeExtractor
 import at.huber.youtubeExtractor.YtFile
 import com.zavanton.yoump3.di.qualifier.context.ApplicationContext
+import com.zavanton.yoump3.di.qualifier.scheduler.IoThreadScheduler
 import com.zavanton.yoump3.utils.Logger
 import com.zavanton.yoump3.utils.YoutubeTags
 import io.reactivex.Observable
-import io.reactivex.schedulers.Schedulers
+import io.reactivex.Scheduler
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import java.io.File
@@ -21,7 +22,9 @@ class DownloadInteractor
 @Inject
 constructor(
     @ApplicationContext
-    private val context: Context
+    private val context: Context,
+    @IoThreadScheduler
+    private val ioThreadScheduler: Scheduler
 ) : IDownloadInteractor {
 
     @SuppressLint("StaticFieldLeak")
@@ -31,8 +34,6 @@ constructor(
         targetFilename: String,
         videoExtension: String
     ): Observable<Boolean> {
-
-        val scheduler = Schedulers.io()
 
         return Observable.create { emitter ->
 
@@ -46,7 +47,7 @@ constructor(
 
                         url?.apply {
 
-                            scheduler.scheduleDirect {
+                            ioThreadScheduler.scheduleDirect {
                                 val isDownloaded = download(url, "$downloadsFolder/$targetFilename.$videoExtension")
                                 Logger.d("isDownloaded: $isDownloaded")
                                 emitter.onNext(isDownloaded)
