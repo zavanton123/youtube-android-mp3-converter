@@ -4,17 +4,12 @@ import android.annotation.SuppressLint
 import android.content.ClipboardManager
 import android.content.Context
 import android.os.Environment
-import android.util.SparseArray
-import at.huber.youtubeExtractor.VideoMeta
-import at.huber.youtubeExtractor.YouTubeExtractor
-import at.huber.youtubeExtractor.YtFile
 import com.zavanton.yoump3.di.qualifier.context.ApplicationContext
 import com.zavanton.yoump3.di.scope.ServiceScope
 import com.zavanton.yoump3.domain.interactor.IConvertInteractor
 import com.zavanton.yoump3.domain.interactor.IDownloadInteractor
 import com.zavanton.yoump3.ui.download.service.IDownloadService
 import com.zavanton.yoump3.utils.Logger
-import com.zavanton.yoump3.utils.YoutubeTags
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
@@ -58,6 +53,7 @@ constructor(
 
     override fun unbind(downloadService: IDownloadService) {
         service = null
+        compositeDisposable.clear()
     }
 
     @SuppressLint("StaticFieldLeak")
@@ -70,52 +66,25 @@ constructor(
 
         if (urlLink.isNotEmpty()) {
 
-            object : YouTubeExtractor(appContext) {
-
-                override fun onExtractionComplete(ytFiles: SparseArray<YtFile>?, vMeta: VideoMeta) {
-                    if (ytFiles != null) {
-
-                        val url = getUrl(ytFiles)
-
-                        url?.apply {
-
-
-                            val downloadSingle = downloadInteractor.downloadFile(
-                                url,
-                                DOWNLOADS_FOLDER,
-                                TARGET_FILENAME,
-                                VIDEO_EXTENSION
-                            )
-
-                            val convertSingle = convertInteractor.convertToMp3()
-
-//                            single.subscribeOn(Schedulers.io())
-//                                .observeOn(AndroidSchedulers.mainThread())
-//                                .subscribe(
-//                                    {
-//                                    },
-//                                    {
-//                                        Logger.e("Error while loading file from Youtube.", it)
-//                                    }
-//                                )
-
-
-                        }
+            compositeDisposable.add(downloadInteractor.downloadFile(
+                urlLink,
+                DOWNLOADS_FOLDER,
+                TARGET_FILENAME,
+                VIDEO_EXTENSION
+            )
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                    {
+                        Logger.d("Is download OK? - $it")
+                        service?.stopForeground()
+                    },
+                    {
+                        Logger.e("Some error while downloading", it)
+                        service?.stopForeground()
                     }
-                }
-            }.extract(urlLink, true, true)
+                )
+            )
         }
-    }
-
-    private fun getUrl(ytFiles: SparseArray<YtFile>): String? {
-        var youtubeFile: YtFile? = null
-        for (tag in YoutubeTags.ALL) {
-
-            if (ytFiles[tag] != null) {
-                youtubeFile = ytFiles[tag]
-            }
-        }
-
-        return youtubeFile?.url
     }
 }

@@ -12,6 +12,7 @@ import com.zavanton.yoump3.ui.download.di.component.DownloadServiceComponent
 import com.zavanton.yoump3.ui.download.di.module.DownloadServiceProvideModule
 import com.zavanton.yoump3.ui.download.presenter.IDownloadPresenter
 import com.zavanton.yoump3.ui.main.activity.MainActivity
+import com.zavanton.yoump3.utils.Logger
 import javax.inject.Inject
 
 class DownloadService : Service(), IDownloadService {
@@ -46,6 +47,7 @@ class DownloadService : Service(), IDownloadService {
     override fun onBind(intent: Intent): IBinder? = null
 
     override fun onDestroy() {
+        Logger.d("DownloadService - onDestroy")
         super.onDestroy()
         presenter.unbind(this)
     }

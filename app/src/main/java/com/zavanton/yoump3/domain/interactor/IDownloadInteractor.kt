@@ -1,13 +1,13 @@
 package com.zavanton.yoump3.domain.interactor
 
-import io.reactivex.Single
+import io.reactivex.Observable
 
 interface IDownloadInteractor {
 
     fun downloadFile(
-        url: String,
+        urlLink: String,
         downloadsFolder: String,
-        filename: String,
+        targetFilename: String,
         videoExtension: String
-    ): Single<Boolean>
+    ): Observable<Boolean>
 }

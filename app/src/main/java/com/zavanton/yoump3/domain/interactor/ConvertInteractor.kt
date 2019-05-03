@@ -1,17 +1,28 @@
 package com.zavanton.yoump3.domain.interactor
 
+import android.os.Environment
 import com.github.hiteshsondhi88.libffmpeg.ExecuteBinaryResponseHandler
 import com.github.hiteshsondhi88.libffmpeg.FFmpeg
 import com.github.hiteshsondhi88.libffmpeg.exceptions.FFmpegCommandAlreadyRunningException
-import com.zavanton.yoump3.ui.download.presenter.DownloadPresenter
 import com.zavanton.yoump3.utils.Logger
 import io.reactivex.Single
 import java.io.File
+import java.text.SimpleDateFormat
+import java.util.*
 import javax.inject.Inject
 
 class ConvertInteractor
 @Inject
 constructor(private val ffmpeg: FFmpeg) : IConvertInteractor {
+
+    companion object {
+
+        private val TARGET_FILENAME = "Youtube-" + SimpleDateFormat("yyyy.MM.dd-HH-mm-ss", Locale.US).format(Date())
+        private const val VIDEO_EXTENSION = "mp4"
+        private const val AUDIO_EXTENSION = "mp3"
+        private val DOWNLOADS_FOLDER =
+            Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).absolutePath
+    }
 
     override fun convertToMp3(): Single<Boolean> {
         return Single.fromCallable { convert() }
@@ -21,10 +32,10 @@ constructor(private val ffmpeg: FFmpeg) : IConvertInteractor {
 
         try {
             val videoFile =
-                "${DownloadPresenter.DOWNLOADS_FOLDER}/${DownloadPresenter.TARGET_FILENAME}.${DownloadPresenter.VIDEO_EXTENSION}"
+                "$DOWNLOADS_FOLDER/$TARGET_FILENAME.$VIDEO_EXTENSION"
 
             val audioFile =
-                "${DownloadPresenter.DOWNLOADS_FOLDER}/${DownloadPresenter.TARGET_FILENAME}.${DownloadPresenter.AUDIO_EXTENSION}"
+                "$DOWNLOADS_FOLDER/$TARGET_FILENAME.$AUDIO_EXTENSION"
 
             val commands = arrayOf("-i", videoFile, audioFile)
 
@@ -48,8 +59,7 @@ constructor(private val ffmpeg: FFmpeg) : IConvertInteractor {
 
                 override fun onFinish() {
                     Logger.d("onFinish")
-                    File("${DownloadPresenter.DOWNLOADS_FOLDER}/${DownloadPresenter.TARGET_FILENAME}.${DownloadPresenter.VIDEO_EXTENSION}").delete()
-                    service?.stopForeground()
+                    File("$DOWNLOADS_FOLDER/$TARGET_FILENAME.$VIDEO_EXTENSION").delete()
                 }
             })
         } catch (e: FFmpegCommandAlreadyRunningException) {
