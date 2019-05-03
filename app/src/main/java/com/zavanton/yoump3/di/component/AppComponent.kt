@@ -2,6 +2,7 @@ package com.zavanton.yoump3.di.component
 
 import com.zavanton.yoump3.app.TheApp
 import com.zavanton.yoump3.di.module.AppModule
+import com.zavanton.yoump3.di.module.ClipboardModule
 import com.zavanton.yoump3.di.module.SchedulerModule
 import com.zavanton.yoump3.ui.download.di.component.DownloadServiceComponent
 import com.zavanton.yoump3.ui.download.di.module.DownloadServiceProvideModule
@@ -14,7 +15,8 @@ import javax.inject.Singleton
 @Component(
     modules = [
         AppModule::class,
-        SchedulerModule::class
+        SchedulerModule::class,
+        ClipboardModule::class
     ]
 )
 interface AppComponent {

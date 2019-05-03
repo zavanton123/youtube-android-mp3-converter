@@ -2,9 +2,7 @@ package com.zavanton.yoump3.ui.download.presenter
 
 import android.annotation.SuppressLint
 import android.content.ClipboardManager
-import android.content.Context
 import android.os.Environment
-import com.zavanton.yoump3.di.qualifier.context.ApplicationContext
 import com.zavanton.yoump3.di.qualifier.scheduler.IoThreadScheduler
 import com.zavanton.yoump3.di.qualifier.scheduler.MainThreadScheduler
 import com.zavanton.yoump3.di.scope.ServiceScope
@@ -22,8 +20,7 @@ import javax.inject.Inject
 class DownloadPresenter
 @Inject
 constructor(
-    @ApplicationContext
-    private val appContext: Context,
+    private val clipboardManager: ClipboardManager,
     private val downloadInteractor: IDownloadInteractor,
     private val convertInteractor: IConvertInteractor,
     @MainThreadScheduler
@@ -63,9 +60,6 @@ constructor(
 
     @SuppressLint("StaticFieldLeak")
     private fun runTask() {
-
-        val clipboardManager: ClipboardManager =
-            appContext.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
 
         val urlLink = clipboardManager.primaryClip?.getItemAt(0)?.text.toString()
 
