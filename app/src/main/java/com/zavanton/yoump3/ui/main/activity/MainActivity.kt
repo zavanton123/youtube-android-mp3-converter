@@ -6,11 +6,14 @@ import com.zavanton.yoump3.R
 import com.zavanton.yoump3.app.TheApp
 import com.zavanton.yoump3.ui.main.activity.di.component.MainActivityComponent
 import com.zavanton.yoump3.ui.main.activity.di.module.MainActivityProvideModule
-import com.zavanton.yoump3.ui.main.fragment.view.MainFragment
+import com.zavanton.yoump3.ui.main.fragment.MainFragment
 
 class MainActivity : AppCompatActivity() {
 
-    private var mainActivityComponent: MainActivityComponent? = null
+    companion object {
+
+        var mainActivityComponent: MainActivityComponent? = null
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -20,17 +23,11 @@ class MainActivity : AppCompatActivity() {
         addFragment()
     }
 
-    override fun onRetainCustomNonConfigurationInstance(): Any? {
-        return super.onRetainCustomNonConfigurationInstance()
-    }
-
     override fun onDestroy() {
         super.onDestroy()
 
         mainActivityComponent = null
     }
-
-    fun getMainActivityComponent(): MainActivityComponent? = mainActivityComponent
 
     private fun initDependencies() {
         mainActivityComponent = TheApp.getAppComponent()

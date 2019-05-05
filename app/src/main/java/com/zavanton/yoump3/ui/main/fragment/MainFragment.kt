@@ -1,37 +1,26 @@
-package com.zavanton.yoump3.ui.main.fragment.view
+package com.zavanton.yoump3.ui.main.fragment
 
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.arellomobile.mvp.MvpAppCompatFragment
-import com.arellomobile.mvp.presenter.InjectPresenter
-import com.arellomobile.mvp.presenter.ProvidePresenter
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProviders
 import com.zavanton.yoump3.R
 import com.zavanton.yoump3.ui.download.service.DownloadService
-import com.zavanton.yoump3.ui.main.activity.MainActivity
-import com.zavanton.yoump3.ui.main.fragment.di.component.MainFragmentComponent
-import com.zavanton.yoump3.ui.main.fragment.di.module.MainFragmentProvideModule
-import com.zavanton.yoump3.ui.main.fragment.presenter.MainFragmentPresenter
 import com.zavanton.yoump3.utils.Logger
 import kotlinx.android.synthetic.main.fmt_main.*
-import javax.inject.Inject
 
-class MainFragment : MvpAppCompatFragment(), MainFragmentMvpView {
+class MainFragment : Fragment(), MainFragmentContract.MvpView {
 
-    private var mainFragmentComponent: MainFragmentComponent? = null
-
-    @Inject
-    @InjectPresenter
-    lateinit var presenter: MainFragmentPresenter
-
-    @ProvidePresenter
-    fun providePresenter() = presenter
+    lateinit var presenter: MainFragmentContract.MvpPresenter
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        initDependencies()
+        Logger.d("MainFragment - onCreate")
         super.onCreate(savedInstanceState)
+
+        setupPresenter()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -45,17 +34,18 @@ class MainFragment : MvpAppCompatFragment(), MainFragmentMvpView {
     }
 
     override fun onDestroy() {
+        Logger.d("MainFragment - onDestroy")
         super.onDestroy()
 
-        mainFragmentComponent = null
+        // mainFragmentComponent = null
+        presenter.detach()
     }
 
-    private fun initDependencies() {
-        mainFragmentComponent = (requireActivity() as MainActivity).getMainActivityComponent()
-            ?.plusMainFragmentComponent(MainFragmentProvideModule())
-            ?.apply {
-                inject(this@MainFragment)
-            }
+    private fun setupPresenter() {
+        val viewModel = ViewModelProviders.of(this)
+            .get(MainFragmentViewModel::class.java)
+        presenter = viewModel.presenter
+        presenter.attach(this)
     }
 
     private fun initUI() {

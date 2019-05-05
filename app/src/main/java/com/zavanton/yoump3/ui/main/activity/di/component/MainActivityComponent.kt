@@ -17,7 +17,7 @@ import dagger.Subcomponent
 )
 interface MainActivityComponent {
 
-    fun plusMainFragmentComponent(mainFragmentProvideModule: MainFragmentProvideModule): MainFragmentComponent
+    fun plusMainFragmentComponent(module: MainFragmentProvideModule): MainFragmentComponent
 
     fun inject(mainActivity: MainActivity)
 }

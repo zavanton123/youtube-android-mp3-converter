@@ -54,20 +54,6 @@ dependencies {
     // FFmpeg
     implementation 'com.github.WritingMinds:ffmpeg-android-java:v0.3'
 
-    // Moxy (waiting for official realease compatible with androidX)
-//    implementation 'com.arello-mobile:moxy:1.5.5'
-//    kapt 'com.arello-mobile:moxy-compiler:1.5.5'
-//    annotationProcessor 'com.arello-mobile:moxy-compiler:1.5.5'
-//    implementation 'com.arello-mobile:moxy-android:1.5.5'
-//    implementation 'com.arello-mobile:moxy-app-compat:1.5.5'
-
-    // This moxy fork is compatible with androidx
-    implementation 'tech.schoolhelper:moxy-x:1.7.0'
-    kapt 'tech.schoolhelper:moxy-x-compiler:1.7.0'
-    implementation 'tech.schoolhelper:moxy-x-android:1.7.0'
-    implementation 'tech.schoolhelper:moxy-x-androidx:1.7.0'
-    implementation 'tech.schoolhelper:moxy-x-material:1.7.0'
-
     /////////////////////// ANKO ///////////////////////
     // Anko
     def anko_version = "0.10.8"
