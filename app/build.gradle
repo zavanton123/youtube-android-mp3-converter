@@ -28,10 +28,6 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
-    // Enable Data Binding
-    dataBinding {
-        enabled = true
-    }
 }
 
 dependencies {
@@ -55,8 +51,6 @@ dependencies {
     implementation 'com.github.WritingMinds:ffmpeg-android-java:v0.3'
 
     /////////////////////// ANKO ///////////////////////
-    // Anko
-    def anko_version = "0.10.8"
     implementation "org.jetbrains.anko:anko:0.10.8"
 
     //////////////////////// AndroidX ////////////////////////
@@ -69,13 +63,6 @@ dependencies {
     implementation 'androidx.cardview:cardview:1.0.0'
     implementation 'androidx.preference:preference:1.0.0'
     implementation 'com.google.android.material:material:1.1.0-alpha05'
-
-    /////////////////////// LOGGING ///////////////////////
-    // Timber
-    implementation 'com.jakewharton.timber:timber:4.6.0'
-
-    // Logger
-    implementation 'com.orhanobut:logger:2.2.0'
 
     /////////////////////// BASIC ///////////////////////
 
