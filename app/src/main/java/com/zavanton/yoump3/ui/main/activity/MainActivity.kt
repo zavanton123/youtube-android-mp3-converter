@@ -6,7 +6,7 @@ import com.zavanton.yoump3.R
 import com.zavanton.yoump3.app.TheApp
 import com.zavanton.yoump3.ui.main.activity.di.component.MainActivityComponent
 import com.zavanton.yoump3.ui.main.activity.di.module.MainActivityProvideModule
-import com.zavanton.yoump3.ui.main.fragment.MainFragment
+import com.zavanton.yoump3.ui.main.fragment.view.MainFragment
 
 class MainActivity : AppCompatActivity() {
 

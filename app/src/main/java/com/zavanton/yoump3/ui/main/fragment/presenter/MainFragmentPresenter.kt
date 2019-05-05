@@ -1,4 +1,4 @@
-package com.zavanton.yoump3.ui.main.fragment
+package com.zavanton.yoump3.ui.main.fragment.presenter
 
 import com.zavanton.yoump3.di.scope.FragmentScope
 import com.zavanton.yoump3.utils.Logger

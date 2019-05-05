@@ -1,4 +1,4 @@
-package com.zavanton.yoump3.ui.main.fragment
+package com.zavanton.yoump3.ui.main.fragment.view
 
 import android.content.Intent
 import android.os.Bundle
@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import com.zavanton.yoump3.R
 import com.zavanton.yoump3.ui.download.service.DownloadService
+import com.zavanton.yoump3.ui.main.fragment.presenter.MainFragmentContract
 import com.zavanton.yoump3.utils.Logger
 import kotlinx.android.synthetic.main.fmt_main.*
 
@@ -37,15 +38,15 @@ class MainFragment : Fragment(), MainFragmentContract.MvpView {
         Logger.d("MainFragment - onDestroy")
         super.onDestroy()
 
-        // mainFragmentComponent = null
         presenter.detach()
     }
 
     private fun setupPresenter() {
-        val viewModel = ViewModelProviders.of(this)
+        presenter = ViewModelProviders.of(this)
             .get(MainFragmentViewModel::class.java)
-        presenter = viewModel.presenter
-        presenter.attach(this)
+            .presenter.apply {
+            attach(this@MainFragment)
+        }
     }
 
     private fun initUI() {

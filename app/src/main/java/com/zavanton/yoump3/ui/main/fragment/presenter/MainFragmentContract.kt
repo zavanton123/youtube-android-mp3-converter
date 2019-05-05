@@ -1,4 +1,4 @@
-package com.zavanton.yoump3.ui.main.fragment
+package com.zavanton.yoump3.ui.main.fragment.presenter
 
 interface MainFragmentContract {
 

@@ -1,7 +1,8 @@
-package com.zavanton.yoump3.ui.main.fragment
+package com.zavanton.yoump3.ui.main.fragment.view
 
 import androidx.lifecycle.ViewModel
 import com.zavanton.yoump3.ui.main.activity.MainActivity
+import com.zavanton.yoump3.ui.main.fragment.presenter.MainFragmentContract
 import com.zavanton.yoump3.ui.main.fragment.di.component.MainFragmentComponent
 import com.zavanton.yoump3.ui.main.fragment.di.module.MainFragmentProvideModule
 import com.zavanton.yoump3.utils.Logger
