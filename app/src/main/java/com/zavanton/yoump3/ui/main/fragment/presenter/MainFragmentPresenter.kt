@@ -1,19 +1,34 @@
 package com.zavanton.yoump3.ui.main.fragment.presenter
 
 import com.zavanton.yoump3.di.scope.FragmentScope
+import com.zavanton.yoump3.eventbus.DownloadEventBus
+import com.zavanton.yoump3.ui.main.fragment.view.IMainFragment
 import com.zavanton.yoump3.utils.Logger
+import io.reactivex.disposables.CompositeDisposable
 import javax.inject.Inject
 
 @FragmentScope
 class MainFragmentPresenter
 @Inject
-constructor() : MainFragmentContract.MvpPresenter {
+constructor(
+    private val downloadEventBus: DownloadEventBus
+) : IMainFragmentPresenter {
 
-    var view: MainFragmentContract.MvpView? = null
+    var view: IMainFragment? = null
+
+    private val eventBusDisposable = CompositeDisposable()
 
     init {
         Logger.d("MainFragmentPresenter is init")
-        view?.showEmptyClipboard()
+        listenForEvents()
+    }
+
+    private fun listenForEvents() {
+        eventBusDisposable.add(downloadEventBus.listenForMessages()
+            .subscribe {
+                Logger.d("onNext message: $it")
+            }
+        )
     }
 
     override fun startDownloadService() {
@@ -21,11 +36,12 @@ constructor() : MainFragmentContract.MvpPresenter {
         view?.startDownloadService()
     }
 
-    override fun attach(mvpView: MainFragmentContract.MvpView) {
-        view = mvpView
+    override fun attach(IMainFragment: IMainFragment) {
+        view = IMainFragment
     }
 
     override fun detach() {
+        eventBusDisposable.clear()
         view = null
     }
 }

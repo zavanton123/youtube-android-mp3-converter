@@ -2,14 +2,14 @@ package com.zavanton.yoump3.ui.main.fragment.view
 
 import androidx.lifecycle.ViewModel
 import com.zavanton.yoump3.ui.main.fragment.di.manager.MainFragmentComponentManager
-import com.zavanton.yoump3.ui.main.fragment.presenter.MainFragmentContract
+import com.zavanton.yoump3.ui.main.fragment.presenter.IMainFragmentPresenter
 import com.zavanton.yoump3.utils.Logger
 import javax.inject.Inject
 
 class MainFragmentViewModel : ViewModel() {
 
     @Inject
-    lateinit var presenter: MainFragmentContract.MvpPresenter
+    lateinit var presenter: IMainFragmentPresenter
 
     init {
         Logger.d("MainFragmentViewModel is init")

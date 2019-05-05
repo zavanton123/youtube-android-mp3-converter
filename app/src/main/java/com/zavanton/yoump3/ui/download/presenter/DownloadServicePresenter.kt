@@ -8,6 +8,7 @@ import com.zavanton.yoump3.di.qualifier.scheduler.MainThreadScheduler
 import com.zavanton.yoump3.di.scope.ServiceScope
 import com.zavanton.yoump3.domain.interactor.convert.IConvertInteractor
 import com.zavanton.yoump3.domain.interactor.download.IDownloadInteractor
+import com.zavanton.yoump3.eventbus.DownloadEventBus
 import com.zavanton.yoump3.ui.download.view.IDownloadService
 import com.zavanton.yoump3.utils.Logger
 import io.reactivex.Scheduler
@@ -20,13 +21,14 @@ import javax.inject.Inject
 class DownloadServicePresenter
 @Inject
 constructor(
-    private val clipboardManager: ClipboardManager,
-    private val downloadInteractor: IDownloadInteractor,
-    private val convertInteractor: IConvertInteractor,
     @MainThreadScheduler
     private val mainThreadScheduler: Scheduler,
     @IoThreadScheduler
-    private val ioThreadScheduler: Scheduler
+    private val ioThreadScheduler: Scheduler,
+    private val clipboardManager: ClipboardManager,
+    private val downloadInteractor: IDownloadInteractor,
+    private val convertInteractor: IConvertInteractor,
+    private val downloadEventBus: DownloadEventBus
 ) : IDownloadServicePresenter {
 
     companion object {
@@ -81,13 +83,15 @@ constructor(
         }
     }
 
-    private fun onDownloadNextMessageReceive(it: String?) {
-        Logger.d("onDownloadNextMessageReceive - Is download OK? - $it")
+    private fun onDownloadNextMessageReceive(message: String?) {
+        Logger.d("onDownloadNextMessageReceive: $message")
+        downloadEventBus.sendMessage("Is the file downloaded: $message")
         convert()
     }
 
     private fun onDownloadError(it: Throwable?) {
         Logger.e("onDownloadError - Some error while downloading", it)
+        downloadEventBus.sendMessage("Some error while downloading")
         service?.stopForeground()
     }
 
@@ -116,6 +120,7 @@ constructor(
 
     private fun onConvertComplete() {
         Logger.d("onConvertComplete")
+        downloadEventBus.sendMessage("The file is successfully converted!")
         service?.stopForeground()
     }
 }

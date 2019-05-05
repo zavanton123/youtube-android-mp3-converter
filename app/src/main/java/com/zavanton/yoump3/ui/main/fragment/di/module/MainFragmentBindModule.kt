@@ -1,6 +1,6 @@
 package com.zavanton.yoump3.ui.main.fragment.di.module
 
-import com.zavanton.yoump3.ui.main.fragment.presenter.MainFragmentContract
+import com.zavanton.yoump3.ui.main.fragment.presenter.IMainFragmentPresenter
 import com.zavanton.yoump3.ui.main.fragment.presenter.MainFragmentPresenter
 import dagger.Binds
 import dagger.Module
@@ -9,5 +9,5 @@ import dagger.Module
 interface MainFragmentBindModule {
 
     @Binds
-    fun bindPresenter(presenter: MainFragmentPresenter): MainFragmentContract.MvpPresenter
+    fun bindPresenter(presenter: MainFragmentPresenter): IMainFragmentPresenter
 }
