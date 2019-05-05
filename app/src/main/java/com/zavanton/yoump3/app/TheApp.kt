@@ -6,40 +6,25 @@ import android.os.Build
 import com.github.hiteshsondhi88.libffmpeg.FFmpeg
 import com.github.hiteshsondhi88.libffmpeg.LoadBinaryResponseHandler
 import com.github.hiteshsondhi88.libffmpeg.exceptions.FFmpegNotSupportedException
-import com.zavanton.yoump3.di.component.AppComponent
-import com.zavanton.yoump3.di.component.DaggerAppComponent
-import com.zavanton.yoump3.di.module.AppModule
+import com.zavanton.yoump3.di.manager.ApplicationComponentManager
 import com.zavanton.yoump3.utils.Logger
 import com.zavanton.yoump3.utils.NotificationChannels
 import javax.inject.Inject
 
 class TheApp : Application() {
 
-    companion object {
-
-        private lateinit var appComponent: AppComponent
-
-        fun getAppComponent(): AppComponent = appComponent
-    }
-
     @Inject
     lateinit var notificationManager: NotificationManager
+
+    @Inject
+    lateinit var ffmpeg: FFmpeg
 
     override fun onCreate() {
         super.onCreate()
 
-        initAppComponent()
+        ApplicationComponentManager.inject(this)
         initNotificationChannels()
         initFfmpeg()
-    }
-
-    private fun initAppComponent() {
-        appComponent = DaggerAppComponent.builder()
-            .appModule(AppModule(this))
-            .build()
-            .apply {
-                inject(this@TheApp)
-            }
     }
 
     private fun initNotificationChannels() {
@@ -49,7 +34,6 @@ class TheApp : Application() {
     }
 
     private fun initFfmpeg() {
-        val ffmpeg = FFmpeg.getInstance(this)
         try {
             ffmpeg.loadBinary(object : LoadBinaryResponseHandler() {
 
@@ -69,8 +53,8 @@ class TheApp : Application() {
                     Logger.d("FFmpeg - onFinish")
                 }
             })
-        } catch (e: FFmpegNotSupportedException) {
-            Logger.e("FFmpeg - Error while initializing FFmpeg", e)
+        } catch (exception: FFmpegNotSupportedException) {
+            Logger.e("FFmpeg - Error while initializing FFmpeg", exception)
         }
     }
 }

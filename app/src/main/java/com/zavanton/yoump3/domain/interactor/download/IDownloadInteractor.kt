@@ -1,4 +1,4 @@
-package com.zavanton.yoump3.domain.interactor
+package com.zavanton.yoump3.domain.interactor.download
 
 import io.reactivex.Observable
 

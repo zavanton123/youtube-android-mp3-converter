@@ -28,10 +28,6 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
-    // Enable Data Binding
-    dataBinding {
-        enabled = true
-    }
 }
 
 dependencies {
@@ -40,8 +36,10 @@ dependencies {
     // Kotlin
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
-    // Multidex
-    implementation 'com.android.support:multidex:1.0.3'
+    // ViewModel
+    def view_model_version = "2.0.0"
+    implementation "androidx.lifecycle:lifecycle-extensions:$view_model_version"
+    kapt "androidx.lifecycle:lifecycle-compiler:$view_model_version"
 
     // RxPermissions
     implementation 'com.github.tbruyelle:RxPermissions:0.10.2'
@@ -52,23 +50,7 @@ dependencies {
     // FFmpeg
     implementation 'com.github.WritingMinds:ffmpeg-android-java:v0.3'
 
-    // Moxy (waiting for official realease compatible with androidX)
-//    implementation 'com.arello-mobile:moxy:1.5.5'
-//    kapt 'com.arello-mobile:moxy-compiler:1.5.5'
-//    annotationProcessor 'com.arello-mobile:moxy-compiler:1.5.5'
-//    implementation 'com.arello-mobile:moxy-android:1.5.5'
-//    implementation 'com.arello-mobile:moxy-app-compat:1.5.5'
-
-    // This moxy fork is compatible with androidx
-    implementation 'tech.schoolhelper:moxy-x:1.7.0'
-    kapt 'tech.schoolhelper:moxy-x-compiler:1.7.0'
-    implementation 'tech.schoolhelper:moxy-x-android:1.7.0'
-    implementation 'tech.schoolhelper:moxy-x-androidx:1.7.0'
-    implementation 'tech.schoolhelper:moxy-x-material:1.7.0'
-
     /////////////////////// ANKO ///////////////////////
-    // Anko
-    def anko_version = "0.10.8"
     implementation "org.jetbrains.anko:anko:0.10.8"
 
     //////////////////////// AndroidX ////////////////////////
@@ -81,13 +63,6 @@ dependencies {
     implementation 'androidx.cardview:cardview:1.0.0'
     implementation 'androidx.preference:preference:1.0.0'
     implementation 'com.google.android.material:material:1.1.0-alpha05'
-
-    /////////////////////// LOGGING ///////////////////////
-    // Timber
-    implementation 'com.jakewharton.timber:timber:4.6.0'
-
-    // Logger
-    implementation 'com.orhanobut:logger:2.2.0'
 
     /////////////////////// BASIC ///////////////////////
 

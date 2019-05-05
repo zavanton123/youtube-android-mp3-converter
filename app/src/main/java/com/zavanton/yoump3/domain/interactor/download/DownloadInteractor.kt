@@ -1,4 +1,4 @@
-package com.zavanton.yoump3.domain.interactor
+package com.zavanton.yoump3.domain.interactor.download
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -27,7 +27,8 @@ constructor(
     @ApplicationContext
     private val context: Context,
     @IoThreadScheduler
-    private val ioThreadScheduler: Scheduler
+    private val ioThreadScheduler: Scheduler,
+    private val client: OkHttpClient
 ) : IDownloadInteractor {
 
     @SuppressLint("StaticFieldLeak")
@@ -77,19 +78,13 @@ constructor(
         url?.apply {
 
             ioThreadScheduler.scheduleDirect {
-
-                val client = OkHttpClient()
-
                 val request = Request.Builder().url(url).build()
-
                 val response = client.newCall(request).execute()
-
                 val inputStream = response.body()?.byteStream()
-
                 val outputFile = File("$downloadsFolder/$targetFilename.$videoExtension")
 
                 inputStream?.apply {
-                    writeInputStreamToFile(this, outputFile, emitter)
+                    writeToFile(this, outputFile, emitter)
                 }
 
                 response.body()?.close()
@@ -97,7 +92,7 @@ constructor(
         }
     }
 
-    private fun writeInputStreamToFile(
+    private fun writeToFile(
         inputStream: InputStream,
         file: File,
         emitter: ObservableEmitter<String>
@@ -113,7 +108,6 @@ constructor(
             out.close()
             inputStream.close()
 
-            Logger.d("File is downloaded!")
             emitter.onNext("File is downloaded")
 
         } catch (exception: IOException) {

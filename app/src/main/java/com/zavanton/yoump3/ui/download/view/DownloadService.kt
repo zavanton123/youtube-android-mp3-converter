@@ -1,4 +1,4 @@
-package com.zavanton.yoump3.ui.download.service
+package com.zavanton.yoump3.ui.download.view
 
 import android.app.PendingIntent
 import android.app.Service
@@ -6,12 +6,10 @@ import android.content.Intent
 import android.os.IBinder
 import androidx.core.app.NotificationCompat
 import com.zavanton.yoump3.R
-import com.zavanton.yoump3.app.TheApp
 import com.zavanton.yoump3.di.qualifier.channel.NormalNotificationChannel
-import com.zavanton.yoump3.ui.download.di.component.DownloadServiceComponent
-import com.zavanton.yoump3.ui.download.di.module.DownloadServiceProvideModule
-import com.zavanton.yoump3.ui.download.presenter.IDownloadPresenter
-import com.zavanton.yoump3.ui.main.activity.MainActivity
+import com.zavanton.yoump3.ui.download.di.manager.DownloadServiceComponentManager
+import com.zavanton.yoump3.ui.download.presenter.IDownloadServicePresenter
+import com.zavanton.yoump3.ui.main.activity.view.MainActivity
 import com.zavanton.yoump3.utils.Logger
 import javax.inject.Inject
 
@@ -24,22 +22,24 @@ class DownloadService : Service(), IDownloadService {
     }
 
     @Inject
-    lateinit var presenter: IDownloadPresenter
+    lateinit var presenterDownloadService: IDownloadServicePresenter
 
     @Inject
     @field:NormalNotificationChannel
     lateinit var notificationBuilder: NotificationCompat.Builder
 
-    private lateinit var downloadServiceComponent: DownloadServiceComponent
-
     override fun onCreate() {
         super.onCreate()
-        initDependencies()
+        Logger.d("DownloadService - onCreate")
+
+        DownloadServiceComponentManager.inject(this)
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        presenter.bind(this)
-        presenter.onStartCommand()
+        Logger.d("DownloadService - onStartCommand")
+
+        presenterDownloadService.bind(this)
+        presenterDownloadService.onStartCommand()
 
         return START_NOT_STICKY
     }
@@ -49,18 +49,14 @@ class DownloadService : Service(), IDownloadService {
     override fun onDestroy() {
         Logger.d("DownloadService - onDestroy")
         super.onDestroy()
-        presenter.unbind(this)
-    }
 
-    private fun initDependencies() {
-        downloadServiceComponent = TheApp.getAppComponent()
-            .plusDownloadServiceComponent(DownloadServiceProvideModule())
-            .apply {
-                inject(this@DownloadService)
-            }
+        presenterDownloadService.unbind(this)
+        DownloadServiceComponentManager.clear()
     }
 
     override fun startForeground() {
+        Logger.d("DownloadService - startForeground")
+
         val activityIntent = Intent(this, MainActivity::class.java)
             .apply { addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP) }
 

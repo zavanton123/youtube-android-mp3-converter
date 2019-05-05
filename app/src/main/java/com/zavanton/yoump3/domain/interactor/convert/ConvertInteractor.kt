@@ -1,4 +1,4 @@
-package com.zavanton.yoump3.domain.interactor
+package com.zavanton.yoump3.domain.interactor.convert
 
 import com.github.hiteshsondhi88.libffmpeg.ExecuteBinaryResponseHandler
 import com.github.hiteshsondhi88.libffmpeg.FFmpeg

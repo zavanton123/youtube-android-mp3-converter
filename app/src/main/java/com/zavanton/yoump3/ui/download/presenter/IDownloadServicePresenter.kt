@@ -1,8 +1,8 @@
 package com.zavanton.yoump3.ui.download.presenter
 
-import com.zavanton.yoump3.ui.download.service.IDownloadService
+import com.zavanton.yoump3.ui.download.view.IDownloadService
 
-interface IDownloadPresenter {
+interface IDownloadServicePresenter {
 
     fun bind(downloadService: IDownloadService)
     fun unbind(downloadService: IDownloadService)

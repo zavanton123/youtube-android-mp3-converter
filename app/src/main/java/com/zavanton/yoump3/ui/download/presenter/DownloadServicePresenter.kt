@@ -6,9 +6,9 @@ import android.os.Environment
 import com.zavanton.yoump3.di.qualifier.scheduler.IoThreadScheduler
 import com.zavanton.yoump3.di.qualifier.scheduler.MainThreadScheduler
 import com.zavanton.yoump3.di.scope.ServiceScope
-import com.zavanton.yoump3.domain.interactor.IConvertInteractor
-import com.zavanton.yoump3.domain.interactor.IDownloadInteractor
-import com.zavanton.yoump3.ui.download.service.IDownloadService
+import com.zavanton.yoump3.domain.interactor.convert.IConvertInteractor
+import com.zavanton.yoump3.domain.interactor.download.IDownloadInteractor
+import com.zavanton.yoump3.ui.download.view.IDownloadService
 import com.zavanton.yoump3.utils.Logger
 import io.reactivex.Scheduler
 import io.reactivex.disposables.CompositeDisposable
@@ -17,7 +17,7 @@ import java.util.*
 import javax.inject.Inject
 
 @ServiceScope
-class DownloadPresenter
+class DownloadServicePresenter
 @Inject
 constructor(
     private val clipboardManager: ClipboardManager,
@@ -27,7 +27,7 @@ constructor(
     private val mainThreadScheduler: Scheduler,
     @IoThreadScheduler
     private val ioThreadScheduler: Scheduler
-) : IDownloadPresenter {
+) : IDownloadServicePresenter {
 
     companion object {
 
@@ -43,7 +43,7 @@ constructor(
     private val compositeDisposable = CompositeDisposable()
 
     override fun onStartCommand() {
-        Logger.d("DownloadPresenter - onStartCommand")
+        Logger.d("DownloadServicePresenter - onStartCommand")
 
         service?.startForeground()
         runTask()
@@ -74,17 +74,21 @@ constructor(
                 .subscribeOn(ioThreadScheduler)
                 .observeOn(mainThreadScheduler)
                 .subscribe(
-                    {
-                        Logger.d("Is download OK? - $it")
-                        convert()
-                    },
-                    {
-                        Logger.e("Some error while downloading", it)
-                        service?.stopForeground()
-                    }
+                    { onDownloadNextMessageReceive(it) },
+                    { onDownloadError(it) }
                 )
             )
         }
+    }
+
+    private fun onDownloadNextMessageReceive(it: String?) {
+        Logger.d("onDownloadNextMessageReceive - Is download OK? - $it")
+        convert()
+    }
+
+    private fun onDownloadError(it: Throwable?) {
+        Logger.e("onDownloadError - Some error while downloading", it)
+        service?.stopForeground()
     }
 
     private fun convert() {
@@ -95,24 +99,23 @@ constructor(
             .subscribeOn(ioThreadScheduler)
             .observeOn(mainThreadScheduler)
             .subscribe(
-                {
-                    onNextMessageReceive(it)
-                },
-                {
-                    Logger.e("Some error while converting", it)
-                },
-                {
-                    onConversionComplete()
-                }
+                { onConvertNextMessageReceive(it) },
+                { onConvertError(it) },
+                { onConvertComplete() }
             ))
     }
 
-    private fun onNextMessageReceive(message: String) {
-        Logger.d("onNextMessageReceive: $message")
+    private fun onConvertNextMessageReceive(message: String) {
+        Logger.d("onConvertNextMessageReceive: $message")
     }
 
-    private fun onConversionComplete() {
-        Logger.d("Conversion is OK!")
+    private fun onConvertError(it: Throwable?) {
+        Logger.e("onConvertError - Some error while converting", it)
+        service?.stopForeground()
+    }
+
+    private fun onConvertComplete() {
+        Logger.d("onConvertComplete")
         service?.stopForeground()
     }
 }
