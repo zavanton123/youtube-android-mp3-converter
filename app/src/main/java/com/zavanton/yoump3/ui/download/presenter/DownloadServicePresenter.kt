@@ -74,17 +74,21 @@ constructor(
                 .subscribeOn(ioThreadScheduler)
                 .observeOn(mainThreadScheduler)
                 .subscribe(
-                    {
-                        Logger.d("Is download OK? - $it")
-                        convert()
-                    },
-                    {
-                        Logger.e("Some error while downloading", it)
-                        service?.stopForeground()
-                    }
+                    { onDownloadNextMessageReceive(it) },
+                    { onDownloadError(it) }
                 )
             )
         }
+    }
+
+    private fun onDownloadNextMessageReceive(it: String?) {
+        Logger.d("onDownloadNextMessageReceive - Is download OK? - $it")
+        convert()
+    }
+
+    private fun onDownloadError(it: Throwable?) {
+        Logger.e("onDownloadError - Some error while downloading", it)
+        service?.stopForeground()
     }
 
     private fun convert() {
@@ -95,24 +99,23 @@ constructor(
             .subscribeOn(ioThreadScheduler)
             .observeOn(mainThreadScheduler)
             .subscribe(
-                {
-                    onNextMessageReceive(it)
-                },
-                {
-                    Logger.e("Some error while converting", it)
-                },
-                {
-                    onConversionComplete()
-                }
+                { onConvertNextMessageReceive(it) },
+                { onConvertError(it) },
+                { onConvertComplete() }
             ))
     }
 
-    private fun onNextMessageReceive(message: String) {
-        Logger.d("onNextMessageReceive: $message")
+    private fun onConvertNextMessageReceive(message: String) {
+        Logger.d("onConvertNextMessageReceive: $message")
     }
 
-    private fun onConversionComplete() {
-        Logger.d("Conversion is OK!")
+    private fun onConvertError(it: Throwable?) {
+        Logger.e("onConvertError - Some error while converting", it)
+        service?.stopForeground()
+    }
+
+    private fun onConvertComplete() {
+        Logger.d("onConvertComplete")
         service?.stopForeground()
     }
 }
