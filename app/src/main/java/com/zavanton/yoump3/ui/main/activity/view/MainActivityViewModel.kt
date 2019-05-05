@@ -12,7 +12,7 @@ class MainActivityViewModel : ViewModel() {
 
     companion object {
 
-        var mainActivityComponent: MainActivityComponent? by CustomDelegate()
+        var mainActivityComponent: MainActivityComponent? by MainActivityViewModelDelegate()
     }
 
     init {
@@ -27,7 +27,7 @@ class MainActivityViewModel : ViewModel() {
         mainActivityComponent = null
     }
 
-    private class CustomDelegate : ReadWriteProperty<Companion, MainActivityComponent?> {
+    private class MainActivityViewModelDelegate : ReadWriteProperty<Companion, MainActivityComponent?> {
 
         var component: MainActivityComponent? = null
 
@@ -36,7 +36,7 @@ class MainActivityViewModel : ViewModel() {
             property: KProperty<*>
         ): MainActivityComponent? {
 
-            Logger.d("CustomDelegate - getValue")
+            Logger.d("MainActivityViewModelDelegate - getValue")
             component = TheApp.getAppComponent()
                 .plusMainActivityComponent(MainActivityProvideModule())
 
@@ -48,7 +48,7 @@ class MainActivityViewModel : ViewModel() {
             property: KProperty<*>,
             value: MainActivityComponent?
         ) {
-            Logger.d("CustomDelegate - setValue")
+            Logger.d("MainActivityViewModelDelegate - setValue")
             component = value
         }
     }
