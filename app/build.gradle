@@ -40,8 +40,10 @@ dependencies {
     // Kotlin
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
-    // Multidex
-    implementation 'com.android.support:multidex:1.0.3'
+    // ViewModel
+    def view_model_version = "2.0.0"
+    implementation "androidx.lifecycle:lifecycle-extensions:$view_model_version"
+    kapt "androidx.lifecycle:lifecycle-compiler:$view_model_version"
 
     // RxPermissions
     implementation 'com.github.tbruyelle:RxPermissions:0.10.2'

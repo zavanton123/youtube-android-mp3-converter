@@ -20,6 +20,10 @@ class MainActivity : AppCompatActivity() {
         addFragment()
     }
 
+    override fun onRetainCustomNonConfigurationInstance(): Any? {
+        return super.onRetainCustomNonConfigurationInstance()
+    }
+
     override fun onDestroy() {
         super.onDestroy()
 
