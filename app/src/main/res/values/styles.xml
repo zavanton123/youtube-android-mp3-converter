@@ -18,4 +18,10 @@
         <item name="android:windowBackground">@drawable/background</item>
     </style>
 
+    <style name="TextViewStyle">
+        <item name="android:textColor">@color/primaryText</item>
+        <item name="android:textSize">24sp</item>
+        <item name="android:gravity">center</item>
+    </style>
+
 </resources>

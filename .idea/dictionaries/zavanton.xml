@@ -2,6 +2,8 @@
   <dictionary name="zavanton">
     <words>
       <w>ffmpeg</w>
+      <w>interactor</w>
+      <w>yoump</w>
       <w>zavantondebug</w>
     </words>
   </dictionary>
