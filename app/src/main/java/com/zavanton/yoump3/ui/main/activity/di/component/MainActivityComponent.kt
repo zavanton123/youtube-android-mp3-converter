@@ -1,11 +1,11 @@
 package com.zavanton.yoump3.ui.main.activity.di.component
 
-import com.zavanton.yoump3.ui.main.fragment.di.module.MainFragmentProvideModule
 import com.zavanton.yoump3.di.scope.ActivityScope
-import com.zavanton.yoump3.ui.main.activity.MainActivity
 import com.zavanton.yoump3.ui.main.activity.di.module.MainActivityBindModule
 import com.zavanton.yoump3.ui.main.activity.di.module.MainActivityProvideModule
+import com.zavanton.yoump3.ui.main.activity.view.MainActivityViewModel
 import com.zavanton.yoump3.ui.main.fragment.di.component.MainFragmentComponent
+import com.zavanton.yoump3.ui.main.fragment.di.module.MainFragmentProvideModule
 import dagger.Subcomponent
 
 @ActivityScope
@@ -17,7 +17,7 @@ import dagger.Subcomponent
 )
 interface MainActivityComponent {
 
-    fun plusMainFragmentComponent(module: MainFragmentProvideModule): MainFragmentComponent
+    fun inject(mainActivityViewModel: MainActivityViewModel)
 
-    fun inject(mainActivity: MainActivity)
+    fun plusMainFragmentComponent(module: MainFragmentProvideModule): MainFragmentComponent
 }

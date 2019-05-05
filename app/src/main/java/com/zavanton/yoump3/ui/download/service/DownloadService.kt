@@ -11,7 +11,7 @@ import com.zavanton.yoump3.di.qualifier.channel.NormalNotificationChannel
 import com.zavanton.yoump3.ui.download.di.component.DownloadServiceComponent
 import com.zavanton.yoump3.ui.download.di.module.DownloadServiceProvideModule
 import com.zavanton.yoump3.ui.download.presenter.IDownloadPresenter
-import com.zavanton.yoump3.ui.main.activity.MainActivity
+import com.zavanton.yoump3.ui.main.activity.view.MainActivity
 import com.zavanton.yoump3.utils.Logger
 import javax.inject.Inject
 

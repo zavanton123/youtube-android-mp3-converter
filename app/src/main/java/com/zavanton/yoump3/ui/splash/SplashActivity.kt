@@ -6,7 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.afollestad.materialdialogs.MaterialDialog
 import com.tbruyelle.rxpermissions2.RxPermissions
 import com.zavanton.yoump3.R
-import com.zavanton.yoump3.ui.main.activity.MainActivity
+import com.zavanton.yoump3.ui.main.activity.view.MainActivity
 import com.zavanton.yoump3.utils.Logger
 import com.zavanton.yoump3.utils.Permissions.PERMISSIONS
 import io.reactivex.disposables.CompositeDisposable

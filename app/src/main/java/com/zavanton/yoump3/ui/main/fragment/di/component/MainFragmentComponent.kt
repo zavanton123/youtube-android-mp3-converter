@@ -1,10 +1,9 @@
 package com.zavanton.yoump3.ui.main.fragment.di.component
 
 import com.zavanton.yoump3.di.scope.FragmentScope
-import com.zavanton.yoump3.ui.main.fragment.view.MainFragment
-import com.zavanton.yoump3.ui.main.fragment.view.MainFragmentViewModel
 import com.zavanton.yoump3.ui.main.fragment.di.module.MainFragmentBindModule
 import com.zavanton.yoump3.ui.main.fragment.di.module.MainFragmentProvideModule
+import com.zavanton.yoump3.ui.main.fragment.view.MainFragmentViewModel
 import dagger.Subcomponent
 
 @FragmentScope
@@ -15,8 +14,6 @@ import dagger.Subcomponent
     ]
 )
 interface MainFragmentComponent {
-
-    fun inject(mainFragment: MainFragment)
 
     fun inject(mainFragment: MainFragmentViewModel)
 }
