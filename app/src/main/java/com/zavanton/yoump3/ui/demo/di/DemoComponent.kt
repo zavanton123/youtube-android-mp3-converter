@@ -7,7 +7,8 @@ import dagger.Subcomponent
 @ActivityScope
 @Subcomponent(
     modules = [
-        DemoModule::class
+        DemoProvidesModule::class,
+        DemoBindsModule::class
     ]
 )
 interface DemoComponent {

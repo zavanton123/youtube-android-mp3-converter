@@ -19,7 +19,7 @@ constructor() : Demo.MvpPresenter {
         this.view = mvpView
     }
 
-    override fun detach(mvpView: Demo.MvpView) {
+    override fun detach() {
         view = null
     }
 }
