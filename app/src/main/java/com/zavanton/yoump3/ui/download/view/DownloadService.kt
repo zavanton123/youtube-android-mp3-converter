@@ -6,10 +6,8 @@ import android.content.Intent
 import android.os.IBinder
 import androidx.core.app.NotificationCompat
 import com.zavanton.yoump3.R
-import com.zavanton.yoump3.app.TheApp
 import com.zavanton.yoump3.di.qualifier.channel.NormalNotificationChannel
-import com.zavanton.yoump3.ui.download.di.component.DownloadServiceComponent
-import com.zavanton.yoump3.ui.download.di.module.DownloadServiceProvideModule
+import com.zavanton.yoump3.ui.download.di.manager.DownloadServiceComponentManager
 import com.zavanton.yoump3.ui.download.presenter.IDownloadServicePresenter
 import com.zavanton.yoump3.ui.main.activity.view.MainActivity
 import com.zavanton.yoump3.utils.Logger
@@ -30,14 +28,16 @@ class DownloadService : Service(), IDownloadService {
     @field:NormalNotificationChannel
     lateinit var notificationBuilder: NotificationCompat.Builder
 
-    private var downloadServiceComponent: DownloadServiceComponent? = null
-
     override fun onCreate() {
         super.onCreate()
-        initDependencies()
+        Logger.d("DownloadService - onCreate")
+
+        DownloadServiceComponentManager.inject(this)
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        Logger.d("DownloadService - onStartCommand")
+
         presenterDownloadService.bind(this)
         presenterDownloadService.onStartCommand()
 
@@ -51,18 +51,12 @@ class DownloadService : Service(), IDownloadService {
         super.onDestroy()
 
         presenterDownloadService.unbind(this)
-        downloadServiceComponent = null
-    }
-
-    private fun initDependencies() {
-        downloadServiceComponent = TheApp.getAppComponent()
-            .plusDownloadServiceComponent(DownloadServiceProvideModule())
-            .apply {
-                inject(this@DownloadService)
-            }
+        DownloadServiceComponentManager.clear()
     }
 
     override fun startForeground() {
+        Logger.d("DownloadService - startForeground")
+
         val activityIntent = Intent(this, MainActivity::class.java)
             .apply { addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP) }
 
