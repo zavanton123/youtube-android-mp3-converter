@@ -8,6 +8,7 @@ import com.zavanton.yoump3.di.qualifier.scheduler.MainThreadScheduler
 import com.zavanton.yoump3.di.scope.ServiceScope
 import com.zavanton.yoump3.domain.interactor.convert.IConvertInteractor
 import com.zavanton.yoump3.domain.interactor.download.IDownloadInteractor
+import com.zavanton.yoump3.ui.download.view.IDownloadService
 import com.zavanton.yoump3.utils.Logger
 import io.reactivex.Scheduler
 import io.reactivex.disposables.CompositeDisposable
@@ -16,7 +17,7 @@ import java.util.*
 import javax.inject.Inject
 
 @ServiceScope
-class DownloadPresenter
+class DownloadServicePresenter
 @Inject
 constructor(
     private val clipboardManager: ClipboardManager,
@@ -26,7 +27,7 @@ constructor(
     private val mainThreadScheduler: Scheduler,
     @IoThreadScheduler
     private val ioThreadScheduler: Scheduler
-) : DownloadContract.MvpPresenter {
+) : IDownloadServicePresenter {
 
     companion object {
 
@@ -37,22 +38,22 @@ constructor(
             Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).absolutePath
     }
 
-    private var service: DownloadContract.MvpView? = null
+    private var service: IDownloadService? = null
 
     private val compositeDisposable = CompositeDisposable()
 
     override fun onStartCommand() {
-        Logger.d("DownloadPresenter - onStartCommand")
+        Logger.d("DownloadServicePresenter - onStartCommand")
 
         service?.startForeground()
         runTask()
     }
 
-    override fun bind(mvpView: DownloadContract.MvpView) {
-        service = mvpView
+    override fun bind(downloadService: IDownloadService) {
+        service = downloadService
     }
 
-    override fun unbind(mvpView: DownloadContract.MvpView) {
+    override fun unbind(downloadService: IDownloadService) {
         service = null
         compositeDisposable.clear()
     }

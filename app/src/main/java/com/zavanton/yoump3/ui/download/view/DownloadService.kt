@@ -10,12 +10,12 @@ import com.zavanton.yoump3.app.TheApp
 import com.zavanton.yoump3.di.qualifier.channel.NormalNotificationChannel
 import com.zavanton.yoump3.ui.download.di.component.DownloadServiceComponent
 import com.zavanton.yoump3.ui.download.di.module.DownloadServiceProvideModule
-import com.zavanton.yoump3.ui.download.presenter.DownloadContract
+import com.zavanton.yoump3.ui.download.presenter.IDownloadServicePresenter
 import com.zavanton.yoump3.ui.main.activity.view.MainActivity
 import com.zavanton.yoump3.utils.Logger
 import javax.inject.Inject
 
-class DownloadService : Service(), DownloadContract.MvpView {
+class DownloadService : Service(), IDownloadService {
 
     companion object {
 
@@ -24,7 +24,7 @@ class DownloadService : Service(), DownloadContract.MvpView {
     }
 
     @Inject
-    lateinit var presenter: DownloadContract.MvpPresenter
+    lateinit var presenterDownloadService: IDownloadServicePresenter
 
     @Inject
     @field:NormalNotificationChannel
@@ -38,8 +38,8 @@ class DownloadService : Service(), DownloadContract.MvpView {
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        presenter.bind(this)
-        presenter.onStartCommand()
+        presenterDownloadService.bind(this)
+        presenterDownloadService.onStartCommand()
 
         return START_NOT_STICKY
     }
@@ -50,7 +50,7 @@ class DownloadService : Service(), DownloadContract.MvpView {
         Logger.d("DownloadService - onDestroy")
         super.onDestroy()
 
-        presenter.unbind(this)
+        presenterDownloadService.unbind(this)
         downloadServiceComponent = null
     }
 
