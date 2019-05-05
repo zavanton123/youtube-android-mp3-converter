@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import com.zavanton.yoump3.R
-import com.zavanton.yoump3.ui.download.service.DownloadService
+import com.zavanton.yoump3.ui.download.view.DownloadService
 import com.zavanton.yoump3.ui.main.fragment.presenter.MainFragmentContract
 import com.zavanton.yoump3.utils.Logger
 import kotlinx.android.synthetic.main.fmt_main.*

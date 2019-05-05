@@ -6,9 +6,8 @@ import android.os.Environment
 import com.zavanton.yoump3.di.qualifier.scheduler.IoThreadScheduler
 import com.zavanton.yoump3.di.qualifier.scheduler.MainThreadScheduler
 import com.zavanton.yoump3.di.scope.ServiceScope
-import com.zavanton.yoump3.domain.interactor.IConvertInteractor
-import com.zavanton.yoump3.domain.interactor.IDownloadInteractor
-import com.zavanton.yoump3.ui.download.service.IDownloadService
+import com.zavanton.yoump3.domain.interactor.convert.IConvertInteractor
+import com.zavanton.yoump3.domain.interactor.download.IDownloadInteractor
 import com.zavanton.yoump3.utils.Logger
 import io.reactivex.Scheduler
 import io.reactivex.disposables.CompositeDisposable
@@ -27,7 +26,7 @@ constructor(
     private val mainThreadScheduler: Scheduler,
     @IoThreadScheduler
     private val ioThreadScheduler: Scheduler
-) : IDownloadPresenter {
+) : DownloadContract.MvpPresenter {
 
     companion object {
 
@@ -38,7 +37,7 @@ constructor(
             Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).absolutePath
     }
 
-    private var service: IDownloadService? = null
+    private var service: DownloadContract.MvpView? = null
 
     private val compositeDisposable = CompositeDisposable()
 
@@ -49,11 +48,11 @@ constructor(
         runTask()
     }
 
-    override fun bind(downloadService: IDownloadService) {
-        service = downloadService
+    override fun bind(mvpView: DownloadContract.MvpView) {
+        service = mvpView
     }
 
-    override fun unbind(downloadService: IDownloadService) {
+    override fun unbind(mvpView: DownloadContract.MvpView) {
         service = null
         compositeDisposable.clear()
     }

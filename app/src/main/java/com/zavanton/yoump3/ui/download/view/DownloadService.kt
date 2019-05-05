@@ -1,4 +1,4 @@
-package com.zavanton.yoump3.ui.download.service
+package com.zavanton.yoump3.ui.download.view
 
 import android.app.PendingIntent
 import android.app.Service
@@ -10,12 +10,12 @@ import com.zavanton.yoump3.app.TheApp
 import com.zavanton.yoump3.di.qualifier.channel.NormalNotificationChannel
 import com.zavanton.yoump3.ui.download.di.component.DownloadServiceComponent
 import com.zavanton.yoump3.ui.download.di.module.DownloadServiceProvideModule
-import com.zavanton.yoump3.ui.download.presenter.IDownloadPresenter
+import com.zavanton.yoump3.ui.download.presenter.DownloadContract
 import com.zavanton.yoump3.ui.main.activity.view.MainActivity
 import com.zavanton.yoump3.utils.Logger
 import javax.inject.Inject
 
-class DownloadService : Service(), IDownloadService {
+class DownloadService : Service(), DownloadContract.MvpView {
 
     companion object {
 
@@ -24,13 +24,13 @@ class DownloadService : Service(), IDownloadService {
     }
 
     @Inject
-    lateinit var presenter: IDownloadPresenter
+    lateinit var presenter: DownloadContract.MvpPresenter
 
     @Inject
     @field:NormalNotificationChannel
     lateinit var notificationBuilder: NotificationCompat.Builder
 
-    private lateinit var downloadServiceComponent: DownloadServiceComponent
+    private var downloadServiceComponent: DownloadServiceComponent? = null
 
     override fun onCreate() {
         super.onCreate()
@@ -49,7 +49,9 @@ class DownloadService : Service(), IDownloadService {
     override fun onDestroy() {
         Logger.d("DownloadService - onDestroy")
         super.onDestroy()
+
         presenter.unbind(this)
+        downloadServiceComponent = null
     }
 
     private fun initDependencies() {

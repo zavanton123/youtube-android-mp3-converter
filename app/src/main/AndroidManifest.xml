@@ -34,7 +34,7 @@
                 android:theme="@style/AppTheme.NoActionBar"/>
 
         <service
-                android:name=".ui.download.service.DownloadService"
+                android:name=".ui.download.view.DownloadService"
                 android:exported="false">
         </service>
     </application>
