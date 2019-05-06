@@ -8,4 +8,6 @@ interface IMainFragmentPresenter {
     fun detach()
 
     fun startDownloadService()
+
+    fun onCleared()
 }

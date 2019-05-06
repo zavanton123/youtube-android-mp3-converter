@@ -64,7 +64,10 @@ constructor(
     }
 
     override fun detach() {
-//        eventBusDisposable.clear()
         view = null
+    }
+
+    override fun onCleared() {
+        eventBusDisposable.clear()
     }
 }
