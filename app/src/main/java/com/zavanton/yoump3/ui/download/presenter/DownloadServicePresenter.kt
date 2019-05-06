@@ -64,11 +64,13 @@ constructor(
 
     // TODO check if internet connection is ok
     private fun runTask() {
+        Logger.d("runTask")
         val clipboardItem = clipboardManager.primaryClip?.getItemAt(0)
         checkClipboardAndProceed(clipboardItem)
     }
 
     private fun checkClipboardAndProceed(clipboardItem: ClipData.Item?) {
+        Logger.d("checkClipboardAndProceed: $clipboardItem")
         if (clipboardItem != null) {
             eventBus.send(Message(Event.CLIPBOARD_NOT_EMPTY))
             checkUrlAndProceed(clipboardItem.text.toString())
@@ -79,6 +81,7 @@ constructor(
     }
 
     private fun checkUrlAndProceed(url: String) {
+        Logger.d("checkUrlAndProceed: $url")
         if (isUrlValid(url)) {
             eventBus.send(Message(Event.URL_VALID))
             downloadFile(url)
@@ -90,15 +93,17 @@ constructor(
 
     // TODO add network request to the url to check if response is ok
     private fun isUrlValid(url: String): Boolean {
+        Logger.d("isUrlValid: $url")
         if (url.isEmpty()) return false
 
-        if (url.contains("youtube")) return true
+        // TODO find a better way to check youtube video url
+        if (url.contains("yout")) return true
 
         return false
     }
 
     private fun downloadFile(url: String) {
-        Logger.d("downloadFile")
+        Logger.d("downloadFile: $url")
         eventBus.send(Message(Event.DOWNLOAD_STARTED))
 
         compositeDisposable.add(downloadInteractor.downloadFile(

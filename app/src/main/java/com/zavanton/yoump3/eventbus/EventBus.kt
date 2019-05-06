@@ -22,7 +22,7 @@ constructor() {
     }
 
     fun send(message: Message) {
-        Logger.d("EventBus - send: ${message.text}")
+        Logger.d("EventBus - send: type - ${message.event} text - ${message.text}")
         channel.onNext(message)
     }
 }
