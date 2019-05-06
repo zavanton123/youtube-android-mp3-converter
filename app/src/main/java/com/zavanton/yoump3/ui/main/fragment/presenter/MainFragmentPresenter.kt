@@ -1,7 +1,7 @@
 package com.zavanton.yoump3.ui.main.fragment.presenter
 
 import com.zavanton.yoump3.di.scope.FragmentScope
-import com.zavanton.yoump3.eventbus.DownloadEventBus
+import com.zavanton.yoump3.eventbus.EventBus
 import com.zavanton.yoump3.ui.main.fragment.view.IMainFragment
 import com.zavanton.yoump3.utils.Logger
 import io.reactivex.disposables.CompositeDisposable
@@ -11,7 +11,7 @@ import javax.inject.Inject
 class MainFragmentPresenter
 @Inject
 constructor(
-    private val downloadEventBus: DownloadEventBus
+    private val eventBus: EventBus
 ) : IMainFragmentPresenter {
 
     var view: IMainFragment? = null
@@ -24,9 +24,9 @@ constructor(
     }
 
     private fun listenForEvents() {
-        eventBusDisposable.add(downloadEventBus.listenForMessages()
+        eventBusDisposable.add(eventBus.listenForMessages()
             .subscribe {
-                Logger.d("onNext message: $it")
+                Logger.d("onNext message: ${it.text}")
             }
         )
     }

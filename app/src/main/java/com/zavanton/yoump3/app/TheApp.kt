@@ -7,6 +7,7 @@ import com.github.hiteshsondhi88.libffmpeg.FFmpeg
 import com.github.hiteshsondhi88.libffmpeg.LoadBinaryResponseHandler
 import com.github.hiteshsondhi88.libffmpeg.exceptions.FFmpegNotSupportedException
 import com.zavanton.yoump3.di.manager.ApplicationComponentManager
+import com.zavanton.yoump3.eventbus.Event
 import com.zavanton.yoump3.utils.Logger
 import com.zavanton.yoump3.utils.NotificationChannels
 import javax.inject.Inject

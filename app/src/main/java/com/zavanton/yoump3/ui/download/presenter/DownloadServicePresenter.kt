@@ -1,6 +1,6 @@
 package com.zavanton.yoump3.ui.download.presenter
 
-import android.annotation.SuppressLint
+import android.content.ClipData
 import android.content.ClipboardManager
 import android.os.Environment
 import com.zavanton.yoump3.di.qualifier.scheduler.IoThreadScheduler
@@ -8,7 +8,9 @@ import com.zavanton.yoump3.di.qualifier.scheduler.MainThreadScheduler
 import com.zavanton.yoump3.di.scope.ServiceScope
 import com.zavanton.yoump3.domain.interactor.convert.IConvertInteractor
 import com.zavanton.yoump3.domain.interactor.download.IDownloadInteractor
-import com.zavanton.yoump3.eventbus.DownloadEventBus
+import com.zavanton.yoump3.eventbus.Event
+import com.zavanton.yoump3.eventbus.EventBus
+import com.zavanton.yoump3.eventbus.Message
 import com.zavanton.yoump3.ui.download.view.IDownloadService
 import com.zavanton.yoump3.utils.Logger
 import io.reactivex.Scheduler
@@ -28,7 +30,7 @@ constructor(
     private val clipboardManager: ClipboardManager,
     private val downloadInteractor: IDownloadInteractor,
     private val convertInteractor: IConvertInteractor,
-    private val downloadEventBus: DownloadEventBus
+    private val eventBus: EventBus
 ) : IDownloadServicePresenter {
 
     companion object {
@@ -60,42 +62,77 @@ constructor(
         compositeDisposable.clear()
     }
 
-    @SuppressLint("StaticFieldLeak")
+    // TODO check if internet connection is ok
     private fun runTask() {
+        val clipboardItem = clipboardManager.primaryClip?.getItemAt(0)
+        checkClipboardAndProceed(clipboardItem)
+    }
 
-        val urlLink = clipboardManager.primaryClip?.getItemAt(0)?.text.toString()
-
-        if (urlLink.isNotEmpty()) {
-
-            compositeDisposable.add(downloadInteractor.downloadFile(
-                urlLink,
-                DOWNLOADS_FOLDER,
-                TARGET_FILENAME,
-                VIDEO_EXTENSION
-            )
-                .subscribeOn(ioThreadScheduler)
-                .observeOn(mainThreadScheduler)
-                .subscribe(
-                    { onDownloadNextMessageReceive(it) },
-                    { onDownloadError(it) }
-                )
-            )
+    private fun checkClipboardAndProceed(clipboardItem: ClipData.Item?) {
+        if (clipboardItem != null) {
+            eventBus.send(Message(Event.CLIPBOARD_NOT_EMPTY))
+            checkUrlAndProceed(clipboardItem.text.toString())
+        } else {
+            eventBus.send(Message(Event.CLIPBOARD_EMPTY))
+            service?.stopForeground()
         }
     }
 
-    private fun onDownloadNextMessageReceive(message: String?) {
-        Logger.d("onDownloadNextMessageReceive: $message")
-        downloadEventBus.sendMessage("Is the file downloaded: $message")
-        convert()
+    private fun checkUrlAndProceed(url: String) {
+        if (isUrlValid(url)) {
+            eventBus.send(Message(Event.URL_VALID))
+            downloadFile(url)
+        } else {
+            eventBus.send(Message(Event.URL_INVALID))
+            service?.stopForeground()
+        }
+    }
+
+    // TODO add network request to the url to check if response is ok
+    private fun isUrlValid(url: String): Boolean {
+        if (url.isEmpty()) return false
+
+        if (url.contains("youtube")) return true
+
+        return false
+    }
+
+    private fun downloadFile(url: String) {
+        compositeDisposable.add(downloadInteractor.downloadFile(
+            url,
+            DOWNLOADS_FOLDER,
+            TARGET_FILENAME,
+            VIDEO_EXTENSION
+        )
+            .subscribeOn(ioThreadScheduler)
+            .observeOn(mainThreadScheduler)
+            .subscribe(
+                { onDownloadProgress(it) },
+                { onDownloadError(it) },
+                { onDownloadComplete() }
+            )
+        )
+    }
+
+    private fun onDownloadProgress(progressInPercent: String?) {
+        Logger.d("onDownloadProgress: $progressInPercent")
+        eventBus.send(Message(Event.DOWNLOAD_PROGRESS, progressInPercent))
     }
 
     private fun onDownloadError(it: Throwable?) {
-        Logger.e("onDownloadError - Some error while downloading", it)
-        downloadEventBus.sendMessage("Some error while downloading")
+        Logger.e("onDownloadError", it)
+        eventBus.send(Message(Event.DOWNLOAD_ERROR))
         service?.stopForeground()
     }
 
-    private fun convert() {
+    private fun onDownloadComplete() {
+        Logger.d("onDownloadComplete")
+        eventBus.send(Message(Event.DOWNLOAD_SUCCESS))
+        convertToMp3()
+    }
+
+    private fun convertToMp3() {
+        Logger.d("convertToMp3")
         compositeDisposable.add(convertInteractor.convertToMp3(
             "$DOWNLOADS_FOLDER/$TARGET_FILENAME.$VIDEO_EXTENSION",
             "$DOWNLOADS_FOLDER/$TARGET_FILENAME.$AUDIO_EXTENSION"
@@ -103,24 +140,26 @@ constructor(
             .subscribeOn(ioThreadScheduler)
             .observeOn(mainThreadScheduler)
             .subscribe(
-                { onConvertNextMessageReceive(it) },
+                { onConvertProgress(it) },
                 { onConvertError(it) },
                 { onConvertComplete() }
             ))
     }
 
-    private fun onConvertNextMessageReceive(message: String) {
-        Logger.d("onConvertNextMessageReceive: $message")
+    private fun onConvertProgress(message: String) {
+        eventBus.send(Message(Event.CONVERSION_PROGRESS))
+        Logger.d("onConvertProgress: $message")
     }
 
     private fun onConvertError(it: Throwable?) {
-        Logger.e("onConvertError - Some error while converting", it)
+        Logger.e("onConvertError", it)
+        eventBus.send(Message(Event.CONVERSION_ERROR))
         service?.stopForeground()
     }
 
     private fun onConvertComplete() {
         Logger.d("onConvertComplete")
-        downloadEventBus.sendMessage("The file is successfully converted!")
+        eventBus.send(Message(Event.CONVERSION_SUCCESS))
         service?.stopForeground()
     }
 }

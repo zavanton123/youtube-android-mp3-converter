@@ -1,6 +1,6 @@
 package com.zavanton.yoump3.di.module
 
-import com.zavanton.yoump3.eventbus.DownloadEventBus
+import com.zavanton.yoump3.eventbus.EventBus
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
@@ -10,5 +10,5 @@ class EventBusModule {
 
     @Singleton
     @Provides
-    fun provideDownloadEventBus(): DownloadEventBus = DownloadEventBus()
+    fun provideDownloadEventBus(): EventBus = EventBus()
 }
