@@ -70,15 +70,55 @@ class MainFragment : Fragment(), IMainFragment {
         requireActivity().startService(intent)
     }
 
-    override fun showFullClipboard() {
-        Logger.d("showFullClipboard")
+    override fun showClipboardEmpty() {
+        Logger.d("showClipboardEmpty")
+        vBox.setImageResource(R.drawable.ic_warning)
+        vClipboardState.text = getString(R.string.clipboard_empty)
+    }
+
+    override fun showClipboardNotEmpty() {
+        Logger.d("showClipboardNotEmpty")
         vBox.setImageResource(R.drawable.ic_ok)
         vClipboardState.text = getString(R.string.clipboard_full)
     }
 
-    override fun showEmptyClipboard() {
-        Logger.d("showEmptyClipboard")
-        vBox.setImageResource(R.drawable.ic_warning)
-        vClipboardState.text = getString(R.string.clipboard_empty)
+    override fun showUrlValid() {
+        TODO("not implemented")
+    }
+
+    override fun showUrlInvalid() {
+        TODO("not implemented")
+    }
+
+    override fun showDownloadStarted() {
+        TODO("not implemented")
+    }
+
+    override fun showDownloadProgress(downloadProgress: String?) {
+        TODO("not implemented")
+    }
+
+    override fun showDownloadSuccess() {
+        TODO("not implemented")
+    }
+
+    override fun showDownloadError() {
+        TODO("not implemented")
+    }
+
+    override fun showConversionStarted() {
+        TODO("not implemented")
+    }
+
+    override fun showConversionProgress(conversionProgress: String?) {
+        TODO("not implemented")
+    }
+
+    override fun showConversionSuccess() {
+        TODO("not implemented")
+    }
+
+    override fun showConversionError() {
+        TODO("not implemented")
     }
 }

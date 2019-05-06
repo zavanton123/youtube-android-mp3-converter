@@ -1,6 +1,6 @@
 package com.zavanton.yoump3.eventbus
 
-enum class Event(var message: String = "") {
+enum class Event {
 
     CLIPBOARD_EMPTY,
     CLIPBOARD_NOT_EMPTY,

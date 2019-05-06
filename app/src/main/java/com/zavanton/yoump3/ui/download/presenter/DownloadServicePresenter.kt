@@ -98,6 +98,9 @@ constructor(
     }
 
     private fun downloadFile(url: String) {
+        Logger.d("downloadFile")
+        eventBus.send(Message(Event.DOWNLOAD_STARTED))
+
         compositeDisposable.add(downloadInteractor.downloadFile(
             url,
             DOWNLOADS_FOLDER,
@@ -114,12 +117,12 @@ constructor(
         )
     }
 
-    private fun onDownloadProgress(progressInPercent: String?) {
+    private fun onDownloadProgress(progressInPercent: String) {
         Logger.d("onDownloadProgress: $progressInPercent")
         eventBus.send(Message(Event.DOWNLOAD_PROGRESS, progressInPercent))
     }
 
-    private fun onDownloadError(it: Throwable?) {
+    private fun onDownloadError(it: Throwable) {
         Logger.e("onDownloadError", it)
         eventBus.send(Message(Event.DOWNLOAD_ERROR))
         service?.stopForeground()
@@ -133,6 +136,8 @@ constructor(
 
     private fun convertToMp3() {
         Logger.d("convertToMp3")
+        eventBus.send(Message(Event.CONVERSION_STARTED))
+
         compositeDisposable.add(convertInteractor.convertToMp3(
             "$DOWNLOADS_FOLDER/$TARGET_FILENAME.$VIDEO_EXTENSION",
             "$DOWNLOADS_FOLDER/$TARGET_FILENAME.$AUDIO_EXTENSION"
@@ -146,12 +151,12 @@ constructor(
             ))
     }
 
-    private fun onConvertProgress(message: String) {
-        eventBus.send(Message(Event.CONVERSION_PROGRESS))
-        Logger.d("onConvertProgress: $message")
+    private fun onConvertProgress(conversionProgress: String) {
+        eventBus.send(Message(Event.CONVERSION_PROGRESS, conversionProgress))
+        Logger.d("onConvertProgress: $conversionProgress")
     }
 
-    private fun onConvertError(it: Throwable?) {
+    private fun onConvertError(it: Throwable) {
         Logger.e("onConvertError", it)
         eventBus.send(Message(Event.CONVERSION_ERROR))
         service?.stopForeground()
