@@ -73,52 +73,52 @@ class MainFragment : Fragment(), IMainFragment {
     override fun showClipboardEmpty() {
         Logger.d("showClipboardEmpty")
         vBox.setImageResource(R.drawable.ic_warning)
-        vClipboardState.text = getString(R.string.clipboard_empty)
+        vStatus.text = getString(R.string.clipboard_empty)
     }
 
     override fun showClipboardNotEmpty() {
         Logger.d("showClipboardNotEmpty")
         vBox.setImageResource(R.drawable.ic_ok)
-        vClipboardState.text = getString(R.string.clipboard_full)
+        vStatus.text = getString(R.string.clipboard_full)
     }
 
     override fun showUrlValid() {
-        TODO("not implemented")
+        vStatus.text = getString(R.string.url_valid)
     }
 
     override fun showUrlInvalid() {
-        TODO("not implemented")
+        vStatus.text = getString(R.string.url_invalid)
     }
 
     override fun showDownloadStarted() {
-        TODO("not implemented")
+        vStatus.text = getString(R.string.download_started)
     }
 
     override fun showDownloadProgress(downloadProgress: String?) {
-        TODO("not implemented")
+        vStatus.text = getString(R.string.download_progress, downloadProgress)
     }
 
     override fun showDownloadSuccess() {
-        TODO("not implemented")
+        vStatus.text = getString(R.string.download_success)
     }
 
     override fun showDownloadError() {
-        TODO("not implemented")
+        vStatus.text = getString(R.string.download_error)
     }
 
     override fun showConversionStarted() {
-        TODO("not implemented")
+        vStatus.text = getString(R.string.conversion_started)
     }
 
     override fun showConversionProgress(conversionProgress: String?) {
-        TODO("not implemented")
+        vStatus.text = getString(R.string.conversion_progress, conversionProgress)
     }
 
     override fun showConversionSuccess() {
-        TODO("not implemented")
+        vStatus.text = getString(R.string.conversion_success)
     }
 
     override fun showConversionError() {
-        TODO("not implemented")
+        vStatus.text = getString(R.string.conversion_error)
     }
 }
