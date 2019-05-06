@@ -59,12 +59,12 @@ constructor(
         view?.startDownloadService()
     }
 
-    override fun attach(IMainFragment: IMainFragment) {
-        view = IMainFragment
+    override fun attach(mainFragment: IMainFragment) {
+        view = mainFragment
     }
 
     override fun detach() {
-        eventBusDisposable.clear()
+//        eventBusDisposable.clear()
         view = null
     }
 }
