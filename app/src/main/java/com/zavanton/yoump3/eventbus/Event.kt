@@ -2,6 +2,8 @@ package com.zavanton.yoump3.eventbus
 
 enum class Event {
 
+    NEW_SEND_ACTION,
+
     CLIPBOARD_EMPTY,
     CLIPBOARD_NOT_EMPTY,
 

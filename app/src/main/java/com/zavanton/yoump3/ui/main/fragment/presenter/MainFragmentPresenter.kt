@@ -45,6 +45,10 @@ constructor(
 
     private fun processMessage(message: Message) {
         when (message.event) {
+            Event.NEW_SEND_ACTION -> {
+                Logger.d("NEW_SEND_ACTION - ${message.text}")
+            }
+
             Event.CLIPBOARD_EMPTY -> view?.showClipboardEmpty()
             Event.CLIPBOARD_NOT_EMPTY -> view?.showClipboardNotEmpty()
 

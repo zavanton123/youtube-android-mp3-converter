@@ -1,31 +1,47 @@
-package com.zavanton.yoump3.ui.splash
+package com.zavanton.yoump3.ui.splash.view
 
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProviders
 import com.afollestad.materialdialogs.MaterialDialog
 import com.tbruyelle.rxpermissions2.RxPermissions
 import com.zavanton.yoump3.R
 import com.zavanton.yoump3.ui.main.activity.view.MainActivity
+import com.zavanton.yoump3.ui.splash.presenter.ISplashActivityPresenter
 import com.zavanton.yoump3.utils.Logger
 import com.zavanton.yoump3.utils.Permissions.PERMISSIONS
 import io.reactivex.disposables.CompositeDisposable
 
-class SplashActivity : AppCompatActivity() {
+class SplashActivity : AppCompatActivity(), ISplashActivity {
 
     private val compositeDisposable = CompositeDisposable()
 
+    lateinit var presenter: ISplashActivityPresenter
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        setupPresenter()
 
         processIntentExtras()
 
         checkPermissionsAndStartApp()
     }
 
+    private fun setupPresenter() {
+        presenter = ViewModelProviders.of(this)
+            .get(SplashActivityViewModel::class.java)
+            .presenter.apply {
+            attach(this@SplashActivity)
+        }
+    }
+
     override fun onDestroy() {
         super.onDestroy()
+
         compositeDisposable.dispose()
+        presenter.detach()
     }
 
     private fun processIntentExtras() {
@@ -44,6 +60,7 @@ class SplashActivity : AppCompatActivity() {
         if ("text/plain" == intent.type) {
             intent.getStringExtra(Intent.EXTRA_TEXT)?.let {
                 Logger.d("SplashActivity - the extra contain this text: $it")
+                presenter.processExtra(it)
             }
         }
     }
