@@ -24,6 +24,13 @@ constructor() : ISplashActivityPresenter {
         this.view = null
     }
 
+    override fun onViewCreated() {
+        Logger.d("SplashActivityPresenter - onViewCreated")
+
+        view?.processIntentExtras()
+        view?.checkPermissionsAndStartApp()
+    }
+
     override fun processExtra(extra: String) {
         Logger.d("SplashActivityPresenter - processExtra: $extra")
     }

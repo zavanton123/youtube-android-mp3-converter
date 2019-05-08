@@ -8,4 +8,6 @@ interface ISplashActivityPresenter {
     fun detach()
 
     fun processExtra(extra: String)
+
+    fun onViewCreated()
 }

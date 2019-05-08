@@ -15,6 +15,11 @@ import io.reactivex.disposables.CompositeDisposable
 
 class SplashActivity : AppCompatActivity(), ISplashActivity {
 
+    companion object {
+
+        private const val TEXT_INTENT_TYPE = "text/plain"
+    }
+
     private val compositeDisposable = CompositeDisposable()
 
     lateinit var presenter: ISplashActivityPresenter
@@ -23,10 +28,7 @@ class SplashActivity : AppCompatActivity(), ISplashActivity {
         super.onCreate(savedInstanceState)
 
         setupPresenter()
-
-        processIntentExtras()
-
-        checkPermissionsAndStartApp()
+        presenter.onViewCreated()
     }
 
     private fun setupPresenter() {
@@ -44,7 +46,7 @@ class SplashActivity : AppCompatActivity(), ISplashActivity {
         presenter.detach()
     }
 
-    private fun processIntentExtras() {
+    override fun processIntentExtras() {
         when (intent?.action) {
             Intent.ACTION_SEND -> {
                 processActionSend(intent)
@@ -57,7 +59,7 @@ class SplashActivity : AppCompatActivity(), ISplashActivity {
 
     private fun processActionSend(intent: Intent) {
         Logger.d("SplashActivity - processActionSend")
-        if ("text/plain" == intent.type) {
+        if (TEXT_INTENT_TYPE == intent.type) {
             intent.getStringExtra(Intent.EXTRA_TEXT)?.let {
                 Logger.d("SplashActivity - the extra contain this text: $it")
                 presenter.processExtra(it)
@@ -65,7 +67,7 @@ class SplashActivity : AppCompatActivity(), ISplashActivity {
         }
     }
 
-    private fun checkPermissionsAndStartApp() {
+    override fun checkPermissionsAndStartApp() {
         compositeDisposable.add(
             RxPermissions(this).request(*PERMISSIONS)
                 .subscribe(
