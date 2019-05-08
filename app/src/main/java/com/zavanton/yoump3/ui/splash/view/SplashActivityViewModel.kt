@@ -20,6 +20,7 @@ class SplashActivityViewModel : ViewModel() {
         Logger.d("SplashActivityViewModel - onCleared()")
         super.onCleared()
 
+        presenter.onCleared()
         SplashActivityComponentManager.clear()
     }
 }

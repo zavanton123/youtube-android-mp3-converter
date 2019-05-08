@@ -10,8 +10,6 @@ import com.zavanton.yoump3.R
 import com.zavanton.yoump3.ui.main.activity.view.MainActivity
 import com.zavanton.yoump3.ui.splash.presenter.ISplashActivityPresenter
 import com.zavanton.yoump3.utils.Logger
-import com.zavanton.yoump3.utils.Permissions.PERMISSIONS
-import io.reactivex.disposables.CompositeDisposable
 
 class SplashActivity : AppCompatActivity(), ISplashActivity {
 
@@ -20,8 +18,6 @@ class SplashActivity : AppCompatActivity(), ISplashActivity {
         private const val TEXT_INTENT_TYPE = "text/plain"
     }
 
-    private val compositeDisposable = CompositeDisposable()
-
     lateinit var presenter: ISplashActivityPresenter
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,20 +25,13 @@ class SplashActivity : AppCompatActivity(), ISplashActivity {
 
         setupPresenter()
         presenter.onViewCreated()
-    }
 
-    private fun setupPresenter() {
-        presenter = ViewModelProviders.of(this)
-            .get(SplashActivityViewModel::class.java)
-            .presenter.apply {
-            attach(this@SplashActivity)
-        }
+        checkPermissionsAndStartApp()
     }
 
     override fun onDestroy() {
         super.onDestroy()
 
-        compositeDisposable.dispose()
         presenter.detach()
     }
 
@@ -57,6 +46,41 @@ class SplashActivity : AppCompatActivity(), ISplashActivity {
         }
     }
 
+    override fun goToMainActivity() {
+        Intent(this, MainActivity::class.java).apply {
+            startActivity(this)
+            finish()
+        }
+    }
+
+    override fun repeatRequestPermissions() {
+        MaterialDialog.Builder(this)
+            .iconRes(R.drawable.ic_action_warning)
+            .limitIconToDefaultSize()
+            .title(getString(R.string.need_permissions))
+            .positiveText(getString(R.string.grant))
+            .negativeText(getString(R.string.do_not_grant))
+            .onPositive { _, _ -> presenter.onPositiveButtonClick() }
+            .onNegative { _, _ -> presenter.onNegativeButtonClick() }
+            .show()
+    }
+
+    override fun onPositiveButtonClick() {
+        goToMainActivity()
+    }
+
+    override fun onNegativeButtonClick() {
+        this@SplashActivity.finish()
+    }
+
+    private fun setupPresenter() {
+        presenter = ViewModelProviders.of(this)
+            .get(SplashActivityViewModel::class.java)
+            .presenter.apply {
+            attach(this@SplashActivity)
+        }
+    }
+
     private fun processActionSend(intent: Intent) {
         Logger.d("SplashActivity - processActionSend")
         if (TEXT_INTENT_TYPE == intent.type) {
@@ -67,46 +91,7 @@ class SplashActivity : AppCompatActivity(), ISplashActivity {
         }
     }
 
-    override fun checkPermissionsAndStartApp() {
-        compositeDisposable.add(
-            RxPermissions(this).request(*PERMISSIONS)
-                .subscribe(
-                    { arePermissionsGranted ->
-                        if (arePermissionsGranted) {
-                            goToMainActivity()
-                        } else {
-                            repeatRequestPermissions()
-                        }
-                    },
-                    { Logger.e("An error occurred while checking permissions", it) }
-                )
-        )
-    }
-
-    private fun goToMainActivity() {
-        Intent(this, MainActivity::class.java).apply {
-            startActivity(this)
-            finish()
-        }
-    }
-
-    private fun repeatRequestPermissions() {
-        MaterialDialog.Builder(this)
-            .iconRes(R.drawable.ic_action_warning)
-            .limitIconToDefaultSize()
-            .title(getString(R.string.need_permissions))
-            .positiveText(getString(R.string.grant))
-            .negativeText(getString(R.string.do_not_grant))
-            .onPositive { _, _ -> onPositiveButtonClick() }
-            .onNegative { _, _ -> onNegativeButtonClick() }
-            .show()
-    }
-
-    private fun onPositiveButtonClick() {
-        goToMainActivity()
-    }
-
-    private fun onNegativeButtonClick() {
-        this@SplashActivity.finish()
+    private fun checkPermissionsAndStartApp() {
+        presenter.checkPermissions(RxPermissions(this))
     }
 }

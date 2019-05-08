@@ -3,5 +3,10 @@ package com.zavanton.yoump3.ui.splash.view
 interface ISplashActivity {
 
     fun processIntentExtras()
-    fun checkPermissionsAndStartApp()
+
+    fun goToMainActivity()
+    fun repeatRequestPermissions()
+
+    fun onPositiveButtonClick()
+    fun onNegativeButtonClick()
 }
