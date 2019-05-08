@@ -18,20 +18,24 @@ constructor(
 
     var view: IMainFragment? = null
 
-    private val eventBusDisposable = CompositeDisposable()
+    private var eventBusDisposable = CompositeDisposable()
 
     init {
         Logger.d("MainFragmentPresenter is init")
-        listenForMessages()
     }
 
-    private fun listenForMessages() {
+    override fun startListeningForMessages() {
         eventBusDisposable.add(eventBus.listenForMessages()
             .subscribe {
                 Logger.d("onNext message: ${it.text}")
                 processMessage(it)
             }
         )
+    }
+
+    override fun stopListeningForMessages() {
+        eventBusDisposable.clear()
+        eventBusDisposable = CompositeDisposable()
     }
 
     private fun processMessage(message: Message) {
@@ -65,9 +69,5 @@ constructor(
 
     override fun detach() {
         view = null
-    }
-
-    override fun onCleared() {
-        eventBusDisposable.clear()
     }
 }

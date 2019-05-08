@@ -17,7 +17,7 @@ constructor() {
     private val channel = BehaviorSubject.create<Message>()
 
     fun listenForMessages(): BehaviorSubject<Message> {
-        Logger.d("EventBus - listenForMessages")
+        Logger.d("EventBus - startListeningForMessages")
         return channel
     }
 

@@ -9,5 +9,6 @@ interface IMainFragmentPresenter {
 
     fun startDownloadService()
 
-    fun onCleared()
+    fun startListeningForMessages()
+    fun stopListeningForMessages()
 }
