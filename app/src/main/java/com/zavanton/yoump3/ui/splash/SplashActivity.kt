@@ -18,12 +18,34 @@ class SplashActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        processIntentExtras()
+
         checkPermissionsAndStartApp()
     }
 
     override fun onDestroy() {
         super.onDestroy()
         compositeDisposable.dispose()
+    }
+
+    private fun processIntentExtras() {
+        when (intent?.action) {
+            Intent.ACTION_SEND -> {
+                processActionSend(intent)
+            }
+            else -> {
+                Logger.d("SplashActivity - no extras found")
+            }
+        }
+    }
+
+    private fun processActionSend(intent: Intent) {
+        Logger.d("SplashActivity - processActionSend")
+        if ("text/plain" == intent.type) {
+            intent.getStringExtra(Intent.EXTRA_TEXT)?.let {
+                Logger.d("SplashActivity - the extra contain this text: $it")
+            }
+        }
     }
 
     private fun checkPermissionsAndStartApp() {
