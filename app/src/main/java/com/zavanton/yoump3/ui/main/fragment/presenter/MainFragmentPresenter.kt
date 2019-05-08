@@ -24,6 +24,11 @@ constructor(
         Logger.d("MainFragmentPresenter is init")
     }
 
+    override fun startDownloadService() {
+        Logger.d("MainFragmentPresenter - startDownloadService")
+        view?.startDownloadService()
+    }
+
     override fun startListeningForMessages() {
         eventBusDisposable.add(eventBus.listenForMessages()
             .subscribe {
@@ -56,11 +61,6 @@ constructor(
             Event.CONVERSION_SUCCESS -> view?.showConversionSuccess()
             Event.CONVERSION_ERROR -> view?.showConversionError()
         }
-    }
-
-    override fun startDownloadService() {
-        Logger.d("MainFragmentPresenter - startDownloadService")
-        view?.startDownloadService()
     }
 
     override fun attach(mainFragment: IMainFragment) {
