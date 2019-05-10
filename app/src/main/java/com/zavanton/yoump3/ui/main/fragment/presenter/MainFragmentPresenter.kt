@@ -41,6 +41,17 @@ constructor(
         view = null
     }
 
+    override fun startDownloadService() {
+        Logger.d("MainFragmentPresenter - startDownloadService")
+        eventBus.send(Message(Event.DOWNLOAD_URL, actionUrl ?: clipboardUrl))
+        view?.startDownloadService()
+    }
+
+    override fun onCleared() {
+        eventBusDisposable.clear()
+        clipboardManager.removePrimaryClipChangedListener(clipboardManagerListener)
+    }
+
     private fun startListeningForClipboardChanges() {
         clipboardManagerListener = ClipboardManager.OnPrimaryClipChangedListener {
             val clipboardItem = clipboardManager.primaryClip?.getItemAt(0)
@@ -54,6 +65,54 @@ constructor(
             }
         }
         clipboardManager.addPrimaryClipChangedListener(clipboardManagerListener)
+    }
+
+    private fun startListeningForMessages() {
+        eventBusDisposable.add(eventBus.listenForMessages()
+            .subscribe {
+                Logger.d("onNext message: ${it.text}")
+                processMessage(it)
+            }
+        )
+    }
+
+    private fun processMessage(message: Message) {
+        when (message.event) {
+            Event.INTENT_ACTION_URL -> {
+                Logger.d("INTENT_ACTION_URL - ${message.text}")
+                actionUrl = checkUrl(message.text ?: "")
+            }
+
+            Event.CLIPBOARD_URL -> {
+                Logger.d("CLIPBOARD_URL - ${message.text}")
+                clipboardUrl = checkUrl(message.text ?: "")
+            }
+
+            Event.CLIPBOARD_EMPTY -> view?.showClipboardEmpty()
+            Event.CLIPBOARD_NOT_EMPTY -> view?.showClipboardNotEmpty()
+            Event.URL_INVALID -> {
+                Logger.d("URL_INVALID - ${message.text}")
+
+                view?.showUrlInvalid()
+            }
+            Event.URL_VALID -> {
+                Logger.d("URL_VALID - ${message.text}")
+                view?.showUrlValid()
+            }
+
+            Event.DOWNLOAD_STARTED -> view?.showDownloadStarted()
+            Event.DOWNLOAD_PROGRESS -> view?.showDownloadProgress(message.text)
+            Event.DOWNLOAD_SUCCESS -> view?.showDownloadSuccess()
+            Event.DOWNLOAD_ERROR -> view?.showDownloadError()
+
+            Event.CONVERSION_STARTED -> view?.showConversionStarted()
+            Event.CONVERSION_PROGRESS -> view?.showConversionProgress(message.text)
+            Event.CONVERSION_SUCCESS -> view?.showConversionSuccess()
+            Event.CONVERSION_ERROR -> view?.showConversionError()
+            else -> {
+                Logger.d("Received message - ${message.event} - ${message.text}")
+            }
+        }
     }
 
     private fun checkUrl(url: String): String? {
@@ -76,57 +135,5 @@ constructor(
         if (url.contains("yout")) return true
 
         return false
-    }
-
-    override fun startDownloadService() {
-        Logger.d("MainFragmentPresenter - startDownloadService")
-        eventBus.send(Message(Event.DOWNLOAD_URL, actionUrl ?: clipboardUrl))
-        view?.startDownloadService()
-    }
-
-    private fun startListeningForMessages() {
-        eventBusDisposable.add(eventBus.listenForMessages()
-            .subscribe {
-                Logger.d("onNext message: ${it.text}")
-                processMessage(it)
-            }
-        )
-    }
-
-    override fun onCleared() {
-        eventBusDisposable.clear()
-        clipboardManager.removePrimaryClipChangedListener(clipboardManagerListener)
-    }
-
-    private fun processMessage(message: Message) {
-        when (message.event) {
-            Event.INTENT_ACTION_URL -> {
-                Logger.d("INTENT_ACTION_URL - ${message.text}")
-                actionUrl = checkUrl(message.text ?: "")
-            }
-
-            Event.CLIPBOARD_URL -> {
-                Logger.d("CLIPBOARD_URL - ${message.text}")
-                clipboardUrl = checkUrl(message.text ?: "")
-            }
-
-            Event.CLIPBOARD_EMPTY -> view?.showClipboardEmpty()
-            Event.CLIPBOARD_NOT_EMPTY -> view?.showClipboardNotEmpty()
-            Event.URL_INVALID -> view?.showUrlInvalid()
-            Event.URL_VALID -> view?.showUrlValid()
-
-            Event.DOWNLOAD_STARTED -> view?.showDownloadStarted()
-            Event.DOWNLOAD_PROGRESS -> view?.showDownloadProgress(message.text)
-            Event.DOWNLOAD_SUCCESS -> view?.showDownloadSuccess()
-            Event.DOWNLOAD_ERROR -> view?.showDownloadError()
-
-            Event.CONVERSION_STARTED -> view?.showConversionStarted()
-            Event.CONVERSION_PROGRESS -> view?.showConversionProgress(message.text)
-            Event.CONVERSION_SUCCESS -> view?.showConversionSuccess()
-            Event.CONVERSION_ERROR -> view?.showConversionError()
-            else -> {
-                Logger.d("Received message - ${message.event} - ${message.text}")
-            }
-        }
     }
 }
