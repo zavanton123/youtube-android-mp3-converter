@@ -10,7 +10,7 @@ import com.zavanton.yoump3.eventbus.Event
 import com.zavanton.yoump3.eventbus.EventBus
 import com.zavanton.yoump3.eventbus.Message
 import com.zavanton.yoump3.ui.download.view.IDownloadService
-import com.zavanton.yoump3.utils.Logger
+import com.zavanton.yoump3.utils.Log
 import io.reactivex.Scheduler
 import io.reactivex.disposables.CompositeDisposable
 import java.text.SimpleDateFormat
@@ -45,38 +45,46 @@ constructor(
     private val compositeDisposable = CompositeDisposable()
     private val eventBusDisposable = CompositeDisposable()
 
+    init {
+        Log.d()
+    }
+
     override fun onStartCommand() {
-        Logger.d("onStartCommand")
+        Log.d()
 
         listenForMessages()
     }
 
     private fun listenForMessages() {
+        Log.d()
         eventBusDisposable.add(eventBus.listenForMessages()
             .subscribe {
-                Logger.d("onNext: $it")
+                Log.d("onNext: $it")
                 processMessage(it)
             }
         )
     }
 
     private fun processMessage(message: Message) {
+        Log.d("message: $message")
         when (message.event) {
             Event.DOWNLOAD_URL -> {
-                Logger.d("download url: ${message.text}")
+                Log.d("download url: ${message.text}")
                 downloadAndConvert(message.text)
             }
             else -> {
-                Logger.d("message: ${message.event} - ${message.text}")
+                Log.d("message: ${message.event} - ${message.text}")
             }
         }
     }
 
     override fun bind(downloadService: IDownloadService) {
+        Log.d("downloadService: $downloadService")
         service = downloadService
     }
 
     override fun unbind(downloadService: IDownloadService) {
+        Log.d("downloadService: $downloadService")
         service = null
         compositeDisposable.clear()
         eventBusDisposable.clear()
@@ -84,7 +92,7 @@ constructor(
 
     // TODO check if internet connection is ok
     private fun downloadAndConvert(url: String?) {
-        Logger.d("downloadAndConvert")
+        Log.d("url: $url")
         service?.startForeground()
 
         url?.let {
@@ -93,7 +101,7 @@ constructor(
     }
 
     private fun downloadFile(url: String) {
-        Logger.d("downloadFile: $url")
+        Log.d("url: $url")
         eventBus.send(Message(Event.DOWNLOAD_STARTED))
 
         compositeDisposable.add(downloadInteractor.downloadFile(
@@ -112,25 +120,25 @@ constructor(
         )
     }
 
-    private fun onDownloadProgress(progressInPercent: String) {
-        Logger.d("onDownloadProgress: $progressInPercent")
-        eventBus.send(Message(Event.DOWNLOAD_PROGRESS, progressInPercent))
+    private fun onDownloadProgress(progress: String) {
+        Log.d("progress: $progress")
+        eventBus.send(Message(Event.DOWNLOAD_PROGRESS, progress))
     }
 
-    private fun onDownloadError(it: Throwable) {
-        Logger.e("onDownloadError", it)
+    private fun onDownloadError(error: Throwable) {
+        Log.e(error)
         eventBus.send(Message(Event.DOWNLOAD_ERROR))
         service?.stopForeground()
     }
 
     private fun onDownloadComplete() {
-        Logger.d("onDownloadComplete")
+        Log.d()
         eventBus.send(Message(Event.DOWNLOAD_SUCCESS))
         convertToMp3()
     }
 
     private fun convertToMp3() {
-        Logger.d("convertToMp3")
+        Log.d()
         eventBus.send(Message(Event.CONVERSION_STARTED))
 
         compositeDisposable.add(convertInteractor.convertToMp3(
@@ -146,19 +154,19 @@ constructor(
             ))
     }
 
-    private fun onConvertProgress(conversionProgress: String) {
-        eventBus.send(Message(Event.CONVERSION_PROGRESS, conversionProgress))
-        Logger.d("onConvertProgress: $conversionProgress")
+    private fun onConvertProgress(progress: String) {
+        Log.d("progress: $progress")
+        eventBus.send(Message(Event.CONVERSION_PROGRESS, progress))
     }
 
-    private fun onConvertError(it: Throwable) {
-        Logger.e("onConvertError", it)
+    private fun onConvertError(error: Throwable) {
+        Log.e(error)
         eventBus.send(Message(Event.CONVERSION_ERROR))
         service?.stopForeground()
     }
 
     private fun onConvertComplete() {
-        Logger.d("onConvertComplete")
+        Log.d()
         eventBus.send(Message(Event.CONVERSION_SUCCESS))
         service?.stopForeground()
     }

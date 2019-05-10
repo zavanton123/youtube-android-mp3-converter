@@ -8,7 +8,7 @@ import at.huber.youtubeExtractor.YouTubeExtractor
 import at.huber.youtubeExtractor.YtFile
 import com.zavanton.yoump3.di.qualifier.context.ApplicationContext
 import com.zavanton.yoump3.di.qualifier.scheduler.IoThreadScheduler
-import com.zavanton.yoump3.utils.Logger
+import com.zavanton.yoump3.utils.Log
 import com.zavanton.yoump3.utils.YoutubeTags
 import io.reactivex.Observable
 import io.reactivex.ObservableEmitter
@@ -39,13 +39,13 @@ constructor(
         targetFilename: String,
         videoExtension: String
     ): Observable<String> {
-
+        Log.d()
         return Observable.create { emitter ->
 
             object : YouTubeExtractor(context) {
 
                 override fun onExtractionComplete(ytFiles: SparseArray<YtFile>?, vMeta: VideoMeta) {
-                    Logger.d("onExtractionComplete")
+                    Log.d()
                     if (ytFiles != null) {
 
                         val url = getUrl(ytFiles)
@@ -58,6 +58,7 @@ constructor(
     }
 
     private fun getUrl(ytFiles: SparseArray<YtFile>): String? {
+        Log.d()
         var youtubeFile: YtFile? = null
         for (tag in YoutubeTags.ALL) {
 
@@ -76,6 +77,7 @@ constructor(
         videoExtension: String,
         emitter: ObservableEmitter<String>
     ) {
+        Log.d()
         url?.apply {
 
             ioThreadScheduler.scheduleDirect {
@@ -99,6 +101,7 @@ constructor(
         file: File,
         emitter: ObservableEmitter<String>
     ) {
+        Log.d()
         try {
             val fileOutputStream = FileOutputStream(file)
             val buffer = ByteArray(1024)
@@ -114,7 +117,7 @@ constructor(
             emitter.onComplete()
 
         } catch (exception: IOException) {
-            Logger.e("Error while writing to output file", exception)
+            Log.e(exception, "Error while writing to output file")
             emitter.onError(exception)
         }
     }

@@ -6,7 +6,7 @@ import com.zavanton.yoump3.eventbus.Event
 import com.zavanton.yoump3.eventbus.EventBus
 import com.zavanton.yoump3.eventbus.Message
 import com.zavanton.yoump3.ui.main.fragment.view.IMainFragment
-import com.zavanton.yoump3.utils.Logger
+import com.zavanton.yoump3.utils.Log
 import io.reactivex.disposables.CompositeDisposable
 import javax.inject.Inject
 
@@ -28,34 +28,38 @@ constructor(
     private lateinit var clipboardManagerListener: ClipboardManager.OnPrimaryClipChangedListener
 
     init {
-        Logger.d("MainFragmentPresenter is init")
+        Log.d()
         startListeningForClipboardChanges()
         startListeningForMessages()
     }
 
     override fun attach(mainFragment: IMainFragment) {
+        Log.d()
         view = mainFragment
     }
 
     override fun detach() {
+        Log.d()
         view = null
     }
 
     override fun startDownloadService() {
-        Logger.d("startDownloadService")
+        Log.d()
         eventBus.send(Message(Event.DOWNLOAD_URL, actionUrl ?: clipboardUrl))
         view?.startDownloadService()
     }
 
     override fun onCleared() {
+        Log.d()
         eventBusDisposable.clear()
         clipboardManager.removePrimaryClipChangedListener(clipboardManagerListener)
     }
 
     private fun startListeningForClipboardChanges() {
+        Log.d()
         clipboardManagerListener = ClipboardManager.OnPrimaryClipChangedListener {
             val clipboardItem = clipboardManager.primaryClip?.getItemAt(0)
-            Logger.d("checkClipboardAndProceed: $clipboardItem")
+            Log.d("checkClipboardAndProceed: $clipboardItem")
 
             if (clipboardItem != null) {
                 eventBus.send(Message(Event.CLIPBOARD_NOT_EMPTY))
@@ -68,35 +72,37 @@ constructor(
     }
 
     private fun startListeningForMessages() {
+        Log.d()
         eventBusDisposable.add(eventBus.listenForMessages()
             .subscribe {
-                Logger.d("onNext message: ${it.text}")
+                Log.d("onNext message: ${it.text}")
                 processMessage(it)
             }
         )
     }
 
     private fun processMessage(message: Message) {
+        Log.d("message: $message")
         when (message.event) {
             Event.INTENT_ACTION_URL -> {
-                Logger.d("INTENT_ACTION_URL - ${message.text}")
+                Log.d("INTENT_ACTION_URL - ${message.text}")
                 actionUrl = checkUrl(message.text ?: "")
             }
 
             Event.CLIPBOARD_URL -> {
-                Logger.d("CLIPBOARD_URL - ${message.text}")
+                Log.d("CLIPBOARD_URL - ${message.text}")
                 clipboardUrl = checkUrl(message.text ?: "")
             }
 
             Event.CLIPBOARD_EMPTY -> view?.showClipboardEmpty()
             Event.CLIPBOARD_NOT_EMPTY -> view?.showClipboardNotEmpty()
             Event.URL_INVALID -> {
-                Logger.d("URL_INVALID - ${message.text}")
+                Log.d("URL_INVALID - ${message.text}")
 
                 view?.showUrlInvalid()
             }
             Event.URL_VALID -> {
-                Logger.d("URL_VALID - ${message.text}")
+                Log.d("URL_VALID - ${message.text}")
                 view?.showUrlValid()
             }
 
@@ -110,13 +116,13 @@ constructor(
             Event.CONVERSION_SUCCESS -> view?.showConversionSuccess()
             Event.CONVERSION_ERROR -> view?.showConversionError()
             else -> {
-                Logger.d("Received message - ${message.event} - ${message.text}")
+                Log.d("Received message - ${message.event} - ${message.text}")
             }
         }
     }
 
     private fun checkUrl(url: String): String? {
-        Logger.d("checkUrl: $url")
+        Log.d("url: $url")
         return if (isUrlValid(url)) {
             eventBus.send(Message(Event.URL_VALID))
             url
@@ -129,7 +135,7 @@ constructor(
     // TODO add network request to the url to check if response is ok
     // TODO find a better way to check youtube video url
     private fun isUrlValid(url: String): Boolean {
-        Logger.d("isUrlValid: $url")
+        Log.d("url: $url")
         if (url.isEmpty()) return false
 
         if (url.contains("yout")) return true

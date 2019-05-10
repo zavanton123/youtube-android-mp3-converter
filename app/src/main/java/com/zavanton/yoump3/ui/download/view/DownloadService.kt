@@ -10,7 +10,7 @@ import com.zavanton.yoump3.di.qualifier.channel.NormalNotificationChannel
 import com.zavanton.yoump3.ui.download.di.manager.DownloadServiceComponentManager
 import com.zavanton.yoump3.ui.download.presenter.IDownloadServicePresenter
 import com.zavanton.yoump3.ui.main.activity.view.MainActivity
-import com.zavanton.yoump3.utils.Logger
+import com.zavanton.yoump3.utils.Log
 import javax.inject.Inject
 
 class DownloadService : Service(), IDownloadService {
@@ -30,13 +30,13 @@ class DownloadService : Service(), IDownloadService {
 
     override fun onCreate() {
         super.onCreate()
-        Logger.d("onCreate")
+        Log.d()
 
         DownloadServiceComponentManager.inject(this)
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        Logger.d("onStartCommand")
+        Log.d()
 
         presenterDownloadService.bind(this)
         presenterDownloadService.onStartCommand()
@@ -47,7 +47,7 @@ class DownloadService : Service(), IDownloadService {
     override fun onBind(intent: Intent): IBinder? = null
 
     override fun onDestroy() {
-        Logger.d("onDestroy")
+        Log.d()
         super.onDestroy()
 
         presenterDownloadService.unbind(this)
@@ -55,7 +55,7 @@ class DownloadService : Service(), IDownloadService {
     }
 
     override fun startForeground() {
-        Logger.d("startForeground")
+        Log.d()
 
         val activityIntent = Intent(this, MainActivity::class.java)
             .apply { addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP) }
@@ -79,7 +79,7 @@ class DownloadService : Service(), IDownloadService {
     }
 
     override fun stopForeground() {
-        Logger.d("stopForeground")
+        Log.d()
         stopForeground(true)
     }
 }

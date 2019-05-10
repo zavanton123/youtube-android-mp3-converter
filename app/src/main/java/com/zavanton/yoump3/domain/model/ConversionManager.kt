@@ -5,7 +5,7 @@ import com.github.hiteshsondhi88.libffmpeg.FFmpeg
 import com.github.hiteshsondhi88.libffmpeg.LoadBinaryResponseHandler
 import com.github.hiteshsondhi88.libffmpeg.exceptions.FFmpegCommandAlreadyRunningException
 import com.github.hiteshsondhi88.libffmpeg.exceptions.FFmpegNotSupportedException
-import com.zavanton.yoump3.utils.Logger
+import com.zavanton.yoump3.utils.Log
 import io.reactivex.ObservableEmitter
 import javax.inject.Inject
 
@@ -14,27 +14,28 @@ class ConversionManager
 constructor(private val ffmpeg: FFmpeg) {
 
     fun init() {
+        Log.d()
         try {
             ffmpeg.loadBinary(object : LoadBinaryResponseHandler() {
 
                 override fun onStart() {
-                    Logger.d("FFmpeg - onStart")
+                    Log.d()
                 }
 
                 override fun onFailure() {
-                    Logger.d("FFmpeg - onFailure")
+                    Log.d()
                 }
 
                 override fun onSuccess() {
-                    Logger.d("FFmpeg - onSuccess")
+                    Log.d()
                 }
 
                 override fun onFinish() {
-                    Logger.d("FFmpeg - onFinish")
+                    Log.d()
                 }
             })
         } catch (exception: FFmpegNotSupportedException) {
-            Logger.e("FFmpeg - Error while initializing FFmpeg", exception)
+            Log.e(exception)
         }
     }
 
@@ -43,33 +44,33 @@ constructor(private val ffmpeg: FFmpeg) {
             ffmpeg.execute(commands, object : ExecuteBinaryResponseHandler() {
 
                 override fun onStart() {
-                    Logger.d("onStart")
+                    Log.d()
                 }
 
                 override fun onProgress(message: String) {
-                    Logger.d("onProgress: $message")
+                    Log.d("message: $message")
                     // TODO show percent of conversion completed
                     emitter.onNext(message)
                 }
 
                 override fun onFailure(message: String) {
                     val throwable = Throwable(message)
-                    Logger.e("onFailure: $message", throwable)
+                    Log.e(throwable, message)
                     emitter.onError(throwable)
                 }
 
                 override fun onSuccess(message: String) {
-                    Logger.d("onSuccess: $message")
+                    Log.d("message: $message")
                     emitter.onNext(message)
                 }
 
                 override fun onFinish() {
-                    Logger.d("onFinish")
+                    Log.d()
                     emitter.onComplete()
                 }
             })
         } catch (exception: FFmpegCommandAlreadyRunningException) {
-            Logger.e("ConversionManager - FFmpegCommandAlreadyRunningException", exception)
+            Log.e(exception)
             emitter.onError(exception)
         }
     }

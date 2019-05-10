@@ -1,6 +1,6 @@
 package com.zavanton.yoump3.eventbus
 
-import com.zavanton.yoump3.utils.Logger
+import com.zavanton.yoump3.utils.Log
 import io.reactivex.subjects.BehaviorSubject
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -11,18 +11,18 @@ class EventBus
 constructor() {
 
     init {
-        Logger.d("EventBus is init")
+        Log.d()
     }
 
     private val channel = BehaviorSubject.create<Message>()
 
     fun listenForMessages(): BehaviorSubject<Message> {
-        Logger.d("startListeningForMessages")
+        Log.d()
         return channel
     }
 
     fun send(message: Message) {
-        Logger.d("send: type - ${message.event} text - ${message.text}")
+        Log.d("message: $message")
         channel.onNext(message)
     }
 }

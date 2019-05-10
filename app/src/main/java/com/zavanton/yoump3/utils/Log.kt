@@ -3,17 +3,26 @@ package com.zavanton.yoump3.utils
 import android.util.Log
 import java.util.regex.Pattern
 
-object Logger {
+object Log {
 
+    private const val PREFIX = "zavdeb"
     private const val CALL_STACK_INDEX = 2
     private val ANONYMOUS_CLASS = Pattern.compile("(\\$\\d+)+$")
 
-    fun d(message: String) {
-        Log.d("zavantondebug", prependCallLocation(message))
+    fun d() {
+        Log.d(PREFIX, prependCallLocation(""))
     }
 
-    fun e(message: String, throwable: Throwable?) {
-        Log.e("zavantondebug", prependCallLocation(message), throwable)
+    fun e(throwable: Throwable?) {
+        Log.e(PREFIX, prependCallLocation(""), throwable)
+    }
+
+    fun d(message: String) {
+        Log.d(PREFIX, prependCallLocation(message))
+    }
+
+    fun e(throwable: Throwable?, message: String) {
+        Log.e(PREFIX, prependCallLocation(message), throwable)
     }
 
     private fun prependCallLocation(message: String): String {
@@ -25,8 +34,11 @@ object Logger {
         }
         val clazz = extractClassName(stackTrace[CALL_STACK_INDEX])
         val lineNumber = stackTrace[CALL_STACK_INDEX].lineNumber
+        val methodName = stackTrace[CALL_STACK_INDEX].methodName
 
-        return "($clazz:$lineNumber): $message"
+        val processedMessage = if (message.isNotEmpty()) ": $message" else ""
+
+        return "($clazz:$lineNumber) -> $methodName()$processedMessage"
     }
 
     private fun extractClassName(element: StackTraceElement): String {

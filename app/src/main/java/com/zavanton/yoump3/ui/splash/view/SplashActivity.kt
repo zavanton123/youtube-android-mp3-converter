@@ -9,7 +9,7 @@ import com.tbruyelle.rxpermissions2.RxPermissions
 import com.zavanton.yoump3.R
 import com.zavanton.yoump3.ui.main.activity.view.MainActivity
 import com.zavanton.yoump3.ui.splash.presenter.ISplashActivityPresenter
-import com.zavanton.yoump3.utils.Logger
+import com.zavanton.yoump3.utils.Log
 
 class SplashActivity : AppCompatActivity(), ISplashActivity {
 
@@ -22,6 +22,7 @@ class SplashActivity : AppCompatActivity(), ISplashActivity {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Log.d()
 
         setupPresenter()
         presenter.onViewCreated()
@@ -31,22 +32,25 @@ class SplashActivity : AppCompatActivity(), ISplashActivity {
 
     override fun onDestroy() {
         super.onDestroy()
+        Log.d()
 
         presenter.detach()
     }
 
     override fun processIntentExtras() {
+        Log.d()
         when (intent?.action) {
             Intent.ACTION_SEND -> {
                 processActionSend(intent)
             }
             else -> {
-                Logger.d("no extras found")
+                Log.d("no extras found")
             }
         }
     }
 
     override fun goToMainActivity() {
+        Log.d()
         Intent(this, MainActivity::class.java).apply {
             startActivity(this)
             finish()
@@ -54,6 +58,7 @@ class SplashActivity : AppCompatActivity(), ISplashActivity {
     }
 
     override fun repeatRequestPermissions() {
+        Log.d()
         MaterialDialog.Builder(this)
             .iconRes(R.drawable.ic_action_warning)
             .limitIconToDefaultSize()
@@ -66,14 +71,17 @@ class SplashActivity : AppCompatActivity(), ISplashActivity {
     }
 
     override fun onPositiveButtonClick() {
+        Log.d()
         goToMainActivity()
     }
 
     override fun onNegativeButtonClick() {
+        Log.d()
         this@SplashActivity.finish()
     }
 
     private fun setupPresenter() {
+        Log.d()
         presenter = ViewModelProviders.of(this)
             .get(SplashActivityViewModel::class.java)
             .presenter.apply {
@@ -82,16 +90,17 @@ class SplashActivity : AppCompatActivity(), ISplashActivity {
     }
 
     private fun processActionSend(intent: Intent) {
-        Logger.d("processActionSend")
+        Log.d("intent: $intent")
         if (TEXT_INTENT_TYPE == intent.type) {
             intent.getStringExtra(Intent.EXTRA_TEXT)?.let {
-                Logger.d("the extra contain this text: $it")
+                Log.d("the extra contain this text: $it")
                 presenter.processExtra(it)
             }
         }
     }
 
     private fun checkPermissionsAndStartApp() {
+        Log.d()
         presenter.checkPermissions(RxPermissions(this))
     }
 }

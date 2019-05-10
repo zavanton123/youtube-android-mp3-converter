@@ -6,7 +6,7 @@ import com.zavanton.yoump3.eventbus.Event
 import com.zavanton.yoump3.eventbus.EventBus
 import com.zavanton.yoump3.eventbus.Message
 import com.zavanton.yoump3.ui.splash.view.ISplashActivity
-import com.zavanton.yoump3.utils.Logger
+import com.zavanton.yoump3.utils.Log
 import com.zavanton.yoump3.utils.Permissions
 import io.reactivex.disposables.CompositeDisposable
 import javax.inject.Inject
@@ -21,29 +21,32 @@ constructor(private val eventBus: EventBus) : ISplashActivityPresenter {
     private val compositeDisposable = CompositeDisposable()
 
     init {
-        Logger.d("SplashActivityPresenter is init")
+        Log.d()
     }
 
     override fun attach(view: ISplashActivity) {
+        Log.d()
         this.view = view
     }
 
     override fun detach() {
+        Log.d()
         this.view = null
     }
 
     override fun onViewCreated() {
-        Logger.d("onViewCreated")
+        Log.d()
 
         view?.processIntentExtras()
     }
 
     override fun processExtra(extra: String) {
-        Logger.d("processExtra: $extra")
+        Log.d("extra: $extra")
         eventBus.send(Message(Event.INTENT_ACTION_URL, extra))
     }
 
     override fun checkPermissions(rxPermissions: RxPermissions) {
+        Log.d("rxPermissions: $rxPermissions")
         compositeDisposable.add(
             rxPermissions.request(*Permissions.PERMISSIONS)
                 .subscribe(
@@ -54,21 +57,23 @@ constructor(private val eventBus: EventBus) : ISplashActivityPresenter {
                             view?.repeatRequestPermissions()
                         }
                     },
-                    { Logger.e("An error occurred while checking permissions", it) }
+                    { Log.e(it, "An error occurred while checking permissions") }
                 )
         )
     }
 
     override fun onPositiveButtonClick() {
+        Log.d()
         view?.onPositiveButtonClick()
     }
 
     override fun onNegativeButtonClick() {
+        Log.d()
         view?.onNegativeButtonClick()
     }
 
     override fun onCleared() {
-        Logger.d("onCleared")
+        Log.d()
         compositeDisposable.dispose()
     }
 }
