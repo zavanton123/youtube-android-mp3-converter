@@ -7,11 +7,17 @@ import com.github.hiteshsondhi88.libffmpeg.exceptions.FFmpegCommandAlreadyRunnin
 import com.github.hiteshsondhi88.libffmpeg.exceptions.FFmpegNotSupportedException
 import com.zavanton.yoump3.utils.Log
 import io.reactivex.ObservableEmitter
+import java.util.regex.Pattern
 import javax.inject.Inject
 
 class ConversionManager
 @Inject
 constructor(private val ffmpeg: FFmpeg) {
+
+    companion object {
+        private const val TARGET = "time="
+        private const val TARGET_OFFSET = 8
+    }
 
     fun init() {
         Log.d()
@@ -48,9 +54,9 @@ constructor(private val ffmpeg: FFmpeg) {
                 }
 
                 override fun onProgress(message: String) {
-                    Log.d("$message")
-                    // TODO show percent of conversion completed
-                    emitter.onNext(message)
+                    Log.d(message)
+                    val progress = fetchProgress(message)
+                    emitter.onNext(progress)
                 }
 
                 override fun onFailure(message: String) {
@@ -60,7 +66,7 @@ constructor(private val ffmpeg: FFmpeg) {
                 }
 
                 override fun onSuccess(message: String) {
-                    Log.d("$message")
+                    Log.d(message)
                     emitter.onNext(message)
                 }
 
@@ -72,6 +78,22 @@ constructor(private val ffmpeg: FFmpeg) {
         } catch (exception: FFmpegCommandAlreadyRunningException) {
             Log.e(exception)
             emitter.onError(exception)
+        }
+    }
+
+    private fun fetchProgress(message: String): String {
+        Log.d()
+
+        // TODO
+        return if (message.contains(TARGET)) {
+            message
+
+//            val regex = "^[0-2][0-3]:[0-5][0-9]:[0-5][0-9]\$"
+//            val pattern = Pattern.compile(regex)
+//            val matcher = pattern.matcher(message)
+//            matcher.group(1)
+        } else {
+            ""
         }
     }
 }
