@@ -95,9 +95,27 @@ constructor(
     private fun processMessage(message: Message) {
         Log.i("$message")
         when (message.event) {
-            Event.INTENT_ACTION_URL -> actionUrl = checkUrl(message.text ?: "")
+            Event.INTENT_ACTION_URL -> {
 
-            Event.CLIPBOARD_URL -> clipboardUrl = checkUrl(message.text ?: "")
+                val url = message.text ?: ""
+                if (isUrlValid(url)) {
+                    actionUrl = url
+                    view?.showUrlValid()
+                } else {
+                    view?.showUrlInvalid()
+                }
+            }
+
+            Event.CLIPBOARD_URL -> {
+
+                val url = message.text ?: ""
+                if (isUrlValid(url)) {
+                    clipboardUrl = url
+                    view?.showUrlValid()
+                } else {
+                    view?.showUrlInvalid()
+                }
+            }
 
             Event.CLIPBOARD_EMPTY -> view?.showClipboardEmpty()
             Event.CLIPBOARD_NOT_EMPTY -> view?.showClipboardNotEmpty()
@@ -115,19 +133,6 @@ constructor(
             Event.CONVERSION_ERROR -> view?.showConversionError()
 
             else -> Log.i("Other event received")
-        }
-    }
-
-    private fun checkUrl(url: String): String? {
-        Log.d("url: $url")
-        return if (isUrlValid(url)) {
-            Log.i("${Message(Event.URL_VALID)}")
-            eventBus.send(Message(Event.URL_VALID))
-            url
-        } else {
-            Log.i("${Message(Event.URL_INVALID)}")
-            eventBus.send(Message(Event.URL_INVALID))
-            null
         }
     }
 
