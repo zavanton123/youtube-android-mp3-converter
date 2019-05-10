@@ -9,16 +9,40 @@ object Log {
     private const val CALL_STACK_INDEX = 2
     private val ANONYMOUS_CLASS = Pattern.compile("(\\$\\d+)+$")
 
+    fun v() {
+        Log.v(PREFIX, prependCallLocation(""))
+    }
+
+    fun v(message: String) {
+        Log.v(PREFIX, prependCallLocation(message))
+    }
+
     fun d() {
         Log.d(PREFIX, prependCallLocation(""))
     }
 
-    fun e(throwable: Throwable?) {
-        Log.e(PREFIX, prependCallLocation(""), throwable)
-    }
-
     fun d(message: String) {
         Log.d(PREFIX, prependCallLocation(message))
+    }
+
+    fun i() {
+        Log.i(PREFIX, prependCallLocation(""))
+    }
+
+    fun i(message: String) {
+        Log.i(PREFIX, prependCallLocation(message))
+    }
+
+    fun w() {
+        Log.w(PREFIX, prependCallLocation(""))
+    }
+
+    fun w(message: String) {
+        Log.w(PREFIX, prependCallLocation(message))
+    }
+
+    fun e(throwable: Throwable?) {
+        Log.e(PREFIX, prependCallLocation(""), throwable)
     }
 
     fun e(throwable: Throwable?, message: String) {

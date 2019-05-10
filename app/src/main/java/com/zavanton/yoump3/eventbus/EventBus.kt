@@ -11,18 +11,18 @@ class EventBus
 constructor() {
 
     init {
-        Log.d()
+        Log.i()
     }
 
     private val channel = BehaviorSubject.create<Message>()
 
     fun listenForMessages(): BehaviorSubject<Message> {
-        Log.d()
+        Log.i()
         return channel
     }
 
     fun send(message: Message) {
-        Log.d("message: $message")
+        Log.i("message: $message")
         channel.onNext(message)
     }
 }
