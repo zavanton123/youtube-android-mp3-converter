@@ -33,6 +33,7 @@ class MainFragment : Fragment(), IMainFragment {
         super.onViewCreated(view, savedInstanceState)
         Log.d()
 
+        presenter.onViewCreated()
         initUI()
     }
 

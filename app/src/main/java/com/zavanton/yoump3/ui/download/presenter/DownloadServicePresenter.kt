@@ -56,7 +56,7 @@ constructor(
     }
 
     private fun listenForMessages() {
-        Log.d()
+        Log.i()
         eventBusDisposable.add(eventBus.listenForMessages()
             .subscribe {
                 processMessage(it)
@@ -65,7 +65,7 @@ constructor(
     }
 
     private fun processMessage(message: Message) {
-        Log.i("message: ${message.event} -> ${message.text}")
+        Log.i("$message")
         when (message.event) {
             Event.DOWNLOAD_URL -> downloadAndConvert(message.text)
             else -> Log.i("Other event received")
@@ -95,7 +95,9 @@ constructor(
     }
 
     private fun downloadFile(url: String) {
-        Log.d("url: $url")
+        Log.i("url: $url")
+
+        Log.i("${Message(Event.DOWNLOAD_STARTED)}")
         eventBus.send(Message(Event.DOWNLOAD_STARTED))
 
         compositeDisposable.add(downloadInteractor.downloadFile(
@@ -116,6 +118,8 @@ constructor(
 
     private fun onDownloadProgress(progress: String) {
         Log.d("progress: $progress")
+
+        Log.i("Message(Event.DOWNLOAD_PROGRESS, progress)")
         eventBus.send(Message(Event.DOWNLOAD_PROGRESS, progress))
     }
 
@@ -127,12 +131,17 @@ constructor(
 
     private fun onDownloadComplete() {
         Log.d()
+
+        Log.i("${Message(Event.DOWNLOAD_SUCCESS)}")
         eventBus.send(Message(Event.DOWNLOAD_SUCCESS))
+
         convertToMp3()
     }
 
     private fun convertToMp3() {
         Log.d()
+
+        Log.i("${Message(Event.CONVERSION_STARTED)}")
         eventBus.send(Message(Event.CONVERSION_STARTED))
 
         compositeDisposable.add(convertInteractor.convertToMp3(
@@ -150,6 +159,8 @@ constructor(
 
     private fun onConvertProgress(progress: String) {
         Log.d("progress: $progress")
+
+        Log.i("${Message(Event.CONVERSION_PROGRESS, progress)}")
         eventBus.send(Message(Event.CONVERSION_PROGRESS, progress))
     }
 
@@ -161,6 +172,8 @@ constructor(
 
     private fun onConvertComplete() {
         Log.d()
+
+        Log.i("${Message(Event.CONVERSION_SUCCESS)}")
         eventBus.send(Message(Event.CONVERSION_SUCCESS))
         service?.stopForeground()
     }

@@ -16,13 +16,9 @@ constructor() {
 
     private val channel = BehaviorSubject.create<Message>()
 
-    fun listenForMessages(): BehaviorSubject<Message> {
-        Log.i()
-        return channel
-    }
+    fun listenForMessages(): BehaviorSubject<Message> = channel
 
     fun send(message: Message) {
-        Log.i("message: $message")
         channel.onNext(message)
     }
 }

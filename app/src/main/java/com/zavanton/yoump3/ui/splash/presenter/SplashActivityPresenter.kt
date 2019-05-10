@@ -36,12 +36,13 @@ constructor(private val eventBus: EventBus) : ISplashActivityPresenter {
 
     override fun onViewCreated() {
         Log.d()
-
         view?.processIntentExtras()
     }
 
     override fun processExtra(extra: String) {
-        Log.d("extra: $extra")
+        Log.d(extra)
+
+        Log.i("${Message(Event.INTENT_ACTION_URL, extra)}")
         eventBus.send(Message(Event.INTENT_ACTION_URL, extra))
     }
 

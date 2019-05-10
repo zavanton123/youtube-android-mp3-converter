@@ -93,7 +93,6 @@ class SplashActivity : AppCompatActivity(), ISplashActivity {
         Log.d("intent: $intent")
         if (TEXT_INTENT_TYPE == intent.type) {
             intent.getStringExtra(Intent.EXTRA_TEXT)?.let {
-                Log.d("the extra contain this text: $it")
                 presenter.processExtra(it)
             }
         }

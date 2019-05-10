@@ -33,6 +33,11 @@ constructor(
         startListeningForMessages()
     }
 
+    override fun onViewCreated() {
+        Log.i("clipboardUrl: $clipboardUrl")
+        Log.i("actionUrl: $actionUrl")
+    }
+
     override fun attach(mainFragment: IMainFragment) {
         Log.d()
         view = mainFragment
@@ -45,7 +50,10 @@ constructor(
 
     override fun startDownloadService() {
         Log.d()
+
+        Log.i("${Message(Event.DOWNLOAD_URL, actionUrl ?: clipboardUrl)}")
         eventBus.send(Message(Event.DOWNLOAD_URL, actionUrl ?: clipboardUrl))
+
         view?.startDownloadService()
     }
 
@@ -62,9 +70,13 @@ constructor(
             Log.d("checkClipboardAndProceed: $clipboardItem")
 
             if (clipboardItem != null) {
+                Log.i("${Message(Event.CLIPBOARD_NOT_EMPTY)}")
                 eventBus.send(Message(Event.CLIPBOARD_NOT_EMPTY))
+
+                Log.i("${Message(Event.CLIPBOARD_URL, clipboardItem.text.toString())}")
                 eventBus.send(Message(Event.CLIPBOARD_URL, clipboardItem.text.toString()))
             } else {
+                Log.i("${Message(Event.CLIPBOARD_EMPTY)}")
                 eventBus.send(Message(Event.CLIPBOARD_EMPTY))
             }
         }
@@ -72,17 +84,16 @@ constructor(
     }
 
     private fun startListeningForMessages() {
-        Log.d()
+        Log.i()
         eventBusDisposable.add(eventBus.listenForMessages()
             .subscribe {
-                Log.d("onNext message: ${it.text}")
                 processMessage(it)
             }
         )
     }
 
     private fun processMessage(message: Message) {
-        Log.i("message: ${message.event} -> ${message.text}")
+        Log.i("$message")
         when (message.event) {
             Event.INTENT_ACTION_URL -> actionUrl = checkUrl(message.text ?: "")
 
@@ -110,9 +121,11 @@ constructor(
     private fun checkUrl(url: String): String? {
         Log.d("url: $url")
         return if (isUrlValid(url)) {
+            Log.i("${Message(Event.URL_VALID)}")
             eventBus.send(Message(Event.URL_VALID))
             url
         } else {
+            Log.i("${Message(Event.URL_INVALID)}")
             eventBus.send(Message(Event.URL_INVALID))
             null
         }

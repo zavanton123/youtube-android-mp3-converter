@@ -48,7 +48,7 @@ constructor(private val ffmpeg: FFmpeg) {
                 }
 
                 override fun onProgress(message: String) {
-                    Log.d("message: $message")
+                    Log.d("$message")
                     // TODO show percent of conversion completed
                     emitter.onNext(message)
                 }
@@ -60,7 +60,7 @@ constructor(private val ffmpeg: FFmpeg) {
                 }
 
                 override fun onSuccess(message: String) {
-                    Log.d("message: $message")
+                    Log.d("$message")
                     emitter.onNext(message)
                 }
 
