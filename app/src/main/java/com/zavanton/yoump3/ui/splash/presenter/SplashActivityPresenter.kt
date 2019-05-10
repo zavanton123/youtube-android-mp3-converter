@@ -2,6 +2,9 @@ package com.zavanton.yoump3.ui.splash.presenter
 
 import com.tbruyelle.rxpermissions2.RxPermissions
 import com.zavanton.yoump3.di.scope.ActivityScope
+import com.zavanton.yoump3.eventbus.Event
+import com.zavanton.yoump3.eventbus.EventBus
+import com.zavanton.yoump3.eventbus.Message
 import com.zavanton.yoump3.ui.splash.view.ISplashActivity
 import com.zavanton.yoump3.utils.Logger
 import com.zavanton.yoump3.utils.Permissions
@@ -11,7 +14,7 @@ import javax.inject.Inject
 @ActivityScope
 class SplashActivityPresenter
 @Inject
-constructor() : ISplashActivityPresenter {
+constructor(private val eventBus: EventBus) : ISplashActivityPresenter {
 
     private var view: ISplashActivity? = null
 
@@ -37,6 +40,7 @@ constructor() : ISplashActivityPresenter {
 
     override fun processExtra(extra: String) {
         Logger.d("SplashActivityPresenter - processExtra: $extra")
+        eventBus.send(Message(Event.NEW_SEND_ACTION, extra))
     }
 
     override fun checkPermissions(rxPermissions: RxPermissions) {
