@@ -79,6 +79,7 @@ class DownloadService : Service(), IDownloadService {
     }
 
     override fun stopForeground() {
+        Logger.d("DownloadService - stopForeground")
         stopForeground(true)
     }
 }

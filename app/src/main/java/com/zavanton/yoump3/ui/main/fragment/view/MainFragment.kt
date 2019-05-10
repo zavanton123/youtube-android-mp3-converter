@@ -9,13 +9,13 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import com.zavanton.yoump3.R
 import com.zavanton.yoump3.ui.download.view.DownloadService
-import com.zavanton.yoump3.ui.main.fragment.presenter.MainFragmentContract
+import com.zavanton.yoump3.ui.main.fragment.presenter.IMainFragmentPresenter
 import com.zavanton.yoump3.utils.Logger
 import kotlinx.android.synthetic.main.fmt_main.*
 
-class MainFragment : Fragment(), MainFragmentContract.MvpView {
+class MainFragment : Fragment(), IMainFragment {
 
-    lateinit var presenter: MainFragmentContract.MvpPresenter
+    lateinit var presenter: IMainFragmentPresenter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         Logger.d("MainFragment - onCreate")
@@ -38,6 +38,7 @@ class MainFragment : Fragment(), MainFragmentContract.MvpView {
         Logger.d("MainFragment - onDestroy")
         super.onDestroy()
 
+        presenter.stopListeningForMessages()
         presenter.detach()
     }
 
@@ -52,6 +53,7 @@ class MainFragment : Fragment(), MainFragmentContract.MvpView {
     private fun initUI() {
         initToolbar()
         initFab()
+        presenter.startListeningForMessages()
     }
 
     private fun initToolbar() {
@@ -70,15 +72,55 @@ class MainFragment : Fragment(), MainFragmentContract.MvpView {
         requireActivity().startService(intent)
     }
 
-    override fun showFullClipboard() {
-        Logger.d("showFullClipboard")
-        vBox.setImageResource(R.drawable.ic_ok)
-        vClipboardState.text = getString(R.string.clipboard_full)
+    override fun showClipboardEmpty() {
+        Logger.d("showClipboardEmpty")
+        vBox.setImageResource(R.drawable.ic_warning)
+        vStatus.text = getString(R.string.clipboard_empty)
     }
 
-    override fun showEmptyClipboard() {
-        Logger.d("showEmptyClipboard")
-        vBox.setImageResource(R.drawable.ic_warning)
-        vClipboardState.text = getString(R.string.clipboard_empty)
+    override fun showClipboardNotEmpty() {
+        Logger.d("showClipboardNotEmpty")
+        vBox.setImageResource(R.drawable.ic_ok)
+        vStatus.text = getString(R.string.clipboard_full)
+    }
+
+    override fun showUrlValid() {
+        vStatus.text = getString(R.string.url_valid)
+    }
+
+    override fun showUrlInvalid() {
+        vStatus.text = getString(R.string.url_invalid)
+    }
+
+    override fun showDownloadStarted() {
+        vStatus.text = getString(R.string.download_started)
+    }
+
+    override fun showDownloadProgress(downloadProgress: String?) {
+        vStatus.text = getString(R.string.download_progress, downloadProgress)
+    }
+
+    override fun showDownloadSuccess() {
+        vStatus.text = getString(R.string.download_success)
+    }
+
+    override fun showDownloadError() {
+        vStatus.text = getString(R.string.download_error)
+    }
+
+    override fun showConversionStarted() {
+        vStatus.text = getString(R.string.conversion_started)
+    }
+
+    override fun showConversionProgress(conversionProgress: String?) {
+        vStatus.text = getString(R.string.conversion_progress, conversionProgress)
+    }
+
+    override fun showConversionSuccess() {
+        vStatus.text = getString(R.string.conversion_success)
+    }
+
+    override fun showConversionError() {
+        vStatus.text = getString(R.string.conversion_error)
     }
 }

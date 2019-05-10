@@ -35,14 +35,14 @@
 
             <ImageView
                     android:id="@+id/vBox"
-                    android:contentDescription="@string/clipboard_state"
+                    android:contentDescription="@string/status"
                     app:srcCompat="@drawable/ic_ok"
                     android:layout_marginBottom="32dp"
                     android:layout_width="128dp"
                     android:layout_height="128dp"/>
 
             <TextView
-                    android:id="@+id/vClipboardState"
+                    android:id="@+id/vStatus"
                     style="@style/TextViewStyle"
                     android:text="@string/clipboard_empty"
                     android:layout_marginLeft="32dp"

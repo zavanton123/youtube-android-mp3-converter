@@ -31,6 +31,7 @@ constructor(
     private val client: OkHttpClient
 ) : IDownloadInteractor {
 
+    // TODO has to return Observable<Double> - to trace download progress in percent
     @SuppressLint("StaticFieldLeak")
     override fun downloadFile(
         urlLink: String,
@@ -92,23 +93,25 @@ constructor(
         }
     }
 
+    // TODO get the file size and send download progress relative to the total file size
     private fun writeToFile(
         inputStream: InputStream,
         file: File,
         emitter: ObservableEmitter<String>
     ) {
         try {
-            val out = FileOutputStream(file)
-            val buf = ByteArray(1024)
-            var len = inputStream.read(buf)
-            while (len > 0) {
-                out.write(buf, 0, len)
-                len = inputStream.read(buf)
+            val fileOutputStream = FileOutputStream(file)
+            val buffer = ByteArray(1024)
+            var length = inputStream.read(buffer)
+            while (length > 0) {
+                fileOutputStream.write(buffer, 0, length)
+                length = inputStream.read(buffer)
+                emitter.onNext("Progress: $length")
             }
-            out.close()
+            fileOutputStream.close()
             inputStream.close()
 
-            emitter.onNext("File is downloaded")
+            emitter.onComplete()
 
         } catch (exception: IOException) {
             Logger.e("Error while writing to output file", exception)
