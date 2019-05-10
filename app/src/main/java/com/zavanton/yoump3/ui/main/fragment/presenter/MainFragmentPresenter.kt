@@ -29,13 +29,23 @@ constructor(
 
     init {
         Log.d()
-        startListeningForClipboardChanges()
-        startListeningForMessages()
+
     }
 
     override fun onViewCreated() {
         Log.i("clipboardUrl: $clipboardUrl")
         Log.i("actionUrl: $actionUrl")
+        startListeningForClipboardChanges()
+        startListeningForMessages()
+    }
+
+    override fun onDestroyView() {
+        Log.d()
+
+        eventBusDisposable.clear()
+        eventBusDisposable = CompositeDisposable()
+
+        clipboardManager.removePrimaryClipChangedListener(clipboardManagerListener)
     }
 
     override fun attach(mainFragment: IMainFragment) {
@@ -55,12 +65,6 @@ constructor(
         eventBus.send(Message(Event.DOWNLOAD_URL, actionUrl ?: clipboardUrl))
 
         view?.startDownloadService()
-    }
-
-    override fun onCleared() {
-        Log.d()
-        eventBusDisposable.clear()
-        clipboardManager.removePrimaryClipChangedListener(clipboardManagerListener)
     }
 
     private fun startListeningForClipboardChanges() {

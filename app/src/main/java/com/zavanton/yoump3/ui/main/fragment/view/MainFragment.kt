@@ -37,6 +37,13 @@ class MainFragment : Fragment(), IMainFragment {
         initUI()
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        Log.d()
+
+        presenter.onDestroyView()
+    }
+
     override fun onDestroy() {
         super.onDestroy()
         Log.d()

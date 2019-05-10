@@ -21,6 +21,5 @@ class MainFragmentViewModel : ViewModel() {
         super.onCleared()
 
         MainFragmentComponentManager.clear()
-        presenter.onCleared()
     }
 }
