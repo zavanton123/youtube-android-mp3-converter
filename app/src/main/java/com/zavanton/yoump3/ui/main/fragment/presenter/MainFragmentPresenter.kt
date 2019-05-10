@@ -95,16 +95,7 @@ constructor(
     private fun processMessage(message: Message) {
         Log.i("$message")
         when (message.event) {
-            Event.INTENT_ACTION_URL -> {
-
-                val url = message.text ?: ""
-                if (isUrlValid(url)) {
-                    actionUrl = url
-                    view?.showUrlValid()
-                } else {
-                    view?.showUrlInvalid()
-                }
-            }
+            Event.INTENT_ACTION_URL -> processMessageWithUrl(message)
 
             Event.CLIPBOARD_URL -> {
 
@@ -133,6 +124,24 @@ constructor(
             Event.CONVERSION_ERROR -> view?.showConversionError()
 
             else -> Log.i("Other event received")
+        }
+    }
+
+    private fun processMessageWithUrl(message: Message) {
+        val url = message.text ?: ""
+        if (isUrlValid(url)) {
+            view?.showUrlValid()
+            assignUrl(message, url)
+        } else {
+            view?.showUrlInvalid()
+        }
+    }
+
+    private fun assignUrl(message: Message, url: String) {
+        when (message.event) {
+            Event.CLIPBOARD_URL -> clipboardUrl = url
+            Event.INTENT_ACTION_URL -> actionUrl = url
+            else -> Log.d("other event")
         }
     }
 

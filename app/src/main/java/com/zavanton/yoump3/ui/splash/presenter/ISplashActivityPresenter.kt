@@ -8,7 +8,6 @@ interface ISplashActivityPresenter {
     fun attach(view: ISplashActivity)
     fun detach()
 
-    fun onViewCreated()
     fun processExtra(extra: String)
 
     fun checkPermissions(rxPermissions: RxPermissions)

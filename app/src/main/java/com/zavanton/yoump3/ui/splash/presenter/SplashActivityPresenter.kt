@@ -34,11 +34,6 @@ constructor(private val eventBus: EventBus) : ISplashActivityPresenter {
         this.view = null
     }
 
-    override fun onViewCreated() {
-        Log.d()
-        view?.processIntentExtras()
-    }
-
     override fun processExtra(extra: String) {
         Log.d(extra)
 
@@ -53,7 +48,7 @@ constructor(private val eventBus: EventBus) : ISplashActivityPresenter {
                 .subscribe(
                     { arePermissionsGranted ->
                         if (arePermissionsGranted) {
-                            view?.goToMainActivity()
+                            view?.proceedWithApp()
                         } else {
                             view?.repeatRequestPermissions()
                         }

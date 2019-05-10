@@ -25,8 +25,6 @@ class SplashActivity : AppCompatActivity(), ISplashActivity {
         Log.d()
 
         setupPresenter()
-        presenter.onViewCreated()
-
         checkPermissionsAndStartApp()
     }
 
@@ -37,7 +35,14 @@ class SplashActivity : AppCompatActivity(), ISplashActivity {
         presenter.detach()
     }
 
-    override fun processIntentExtras() {
+    override fun proceedWithApp() {
+        Log.d()
+
+        processIntentExtras()
+        goToMainActivity()
+    }
+
+    private fun processIntentExtras() {
         Log.d()
         when (intent?.action) {
             Intent.ACTION_SEND -> {
@@ -49,8 +54,16 @@ class SplashActivity : AppCompatActivity(), ISplashActivity {
         }
     }
 
-    override fun goToMainActivity() {
-        Log.d()
+    private fun processActionSend(intent: Intent) {
+        Log.d("intent: $intent")
+        if (TEXT_INTENT_TYPE == intent.type) {
+            intent.getStringExtra(Intent.EXTRA_TEXT)?.let {
+                presenter.processExtra(it)
+            }
+        }
+    }
+
+    private fun goToMainActivity() {
         Intent(this, MainActivity::class.java).apply {
             startActivity(this)
             finish()
@@ -72,7 +85,7 @@ class SplashActivity : AppCompatActivity(), ISplashActivity {
 
     override fun onPositiveButtonClick() {
         Log.d()
-        goToMainActivity()
+        proceedWithApp()
     }
 
     override fun onNegativeButtonClick() {
@@ -86,15 +99,6 @@ class SplashActivity : AppCompatActivity(), ISplashActivity {
             .get(SplashActivityViewModel::class.java)
             .presenter.apply {
             attach(this@SplashActivity)
-        }
-    }
-
-    private fun processActionSend(intent: Intent) {
-        Log.d("intent: $intent")
-        if (TEXT_INTENT_TYPE == intent.type) {
-            intent.getStringExtra(Intent.EXTRA_TEXT)?.let {
-                presenter.processExtra(it)
-            }
         }
     }
 
