@@ -38,7 +38,7 @@ constructor(
         downloadsFolder: String,
         targetFilename: String,
         videoExtension: String
-    ): Observable<String> {
+    ): Observable<Int> {
         Log.d()
         return Observable.create { emitter ->
 
@@ -75,7 +75,7 @@ constructor(
         downloadsFolder: String,
         targetFilename: String,
         videoExtension: String,
-        emitter: ObservableEmitter<String>
+        emitter: ObservableEmitter<Int>
     ) {
         Log.d()
         url?.apply {
@@ -99,17 +99,19 @@ constructor(
     private fun writeToFile(
         inputStream: InputStream,
         file: File,
-        emitter: ObservableEmitter<String>
+        emitter: ObservableEmitter<Int>
     ) {
         Log.d()
         try {
             val fileOutputStream = FileOutputStream(file)
             val buffer = ByteArray(1024)
             var length = inputStream.read(buffer)
+            var downloaded = 0
             while (length > 0) {
                 fileOutputStream.write(buffer, 0, length)
                 length = inputStream.read(buffer)
-                emitter.onNext("Progress: $length")
+                downloaded += length
+                emitter.onNext(downloaded)
             }
             fileOutputStream.close()
             inputStream.close()

@@ -116,11 +116,11 @@ constructor(
         )
     }
 
-    private fun onDownloadProgress(progress: String) {
+    private fun onDownloadProgress(progress: Int) {
         Log.d("progress: $progress")
 
         Log.i("Message(Event.DOWNLOAD_PROGRESS, progress)")
-        eventBus.send(Message(Event.DOWNLOAD_PROGRESS, progress))
+        eventBus.send(Message(Event.DOWNLOAD_PROGRESS, progress.toString()))
     }
 
     private fun onDownloadError(error: Throwable) {

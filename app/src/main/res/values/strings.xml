@@ -22,7 +22,7 @@
     <string name="url_invalid">Url is invalid</string>
 
     <string name="download_started">Download started</string>
-    <string name="download_progress">Download progress: %1$s</string>
+    <string name="download_progress">Downloaded %1$s Mb</string>
     <string name="download_success">Download is successful</string>
     <string name="download_error">Download failed</string>
 

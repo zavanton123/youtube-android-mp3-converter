@@ -8,6 +8,7 @@ import com.zavanton.yoump3.eventbus.Message
 import com.zavanton.yoump3.ui.main.fragment.view.IMainFragment
 import com.zavanton.yoump3.utils.Log
 import io.reactivex.disposables.CompositeDisposable
+import java.text.DecimalFormat
 import javax.inject.Inject
 
 @FragmentScope
@@ -118,7 +119,7 @@ constructor(
             Event.URL_VALID -> view?.showUrlValid()
 
             Event.DOWNLOAD_STARTED -> view?.showDownloadStarted()
-            Event.DOWNLOAD_PROGRESS -> view?.showDownloadProgress(message.text)
+            Event.DOWNLOAD_PROGRESS -> showDownloadProgress(message)
             Event.DOWNLOAD_SUCCESS -> view?.showDownloadSuccess()
             Event.DOWNLOAD_ERROR -> view?.showDownloadError()
 
@@ -129,6 +130,22 @@ constructor(
 
             else -> Log.i("Other event received")
         }
+    }
+
+    private fun showDownloadProgress(message: Message) {
+        Log.d()
+        message.text?.apply {
+            view?.showDownloadProgress(formatDownloadProgress())
+        }
+    }
+
+    private fun String.formatDownloadProgress(): String? {
+        Log.d()
+        val progress = Integer.valueOf(this)
+        val progressInKB = (progress / 1024).toDouble()
+        val progressInMB = progressInKB / 1024
+        val format = DecimalFormat("#.##")
+        return format.format(progressInMB)
     }
 
     private fun processMessageWithUrl(message: Message) {
