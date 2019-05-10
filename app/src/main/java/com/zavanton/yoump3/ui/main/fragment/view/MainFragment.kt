@@ -18,7 +18,7 @@ class MainFragment : Fragment(), IMainFragment {
     lateinit var presenter: IMainFragmentPresenter
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        Logger.d("MainFragment - onCreate")
+        Logger.d("onCreate")
         super.onCreate(savedInstanceState)
 
         setupPresenter()
@@ -35,7 +35,7 @@ class MainFragment : Fragment(), IMainFragment {
     }
 
     override fun onDestroy() {
-        Logger.d("MainFragment - onDestroy")
+        Logger.d("onDestroy")
         super.onDestroy()
 
         presenter.detach()
@@ -65,7 +65,7 @@ class MainFragment : Fragment(), IMainFragment {
     }
 
     override fun startDownloadService() {
-        Logger.d("MainFragment - startDownloadService")
+        Logger.d("startDownloadService")
         val intent = Intent(requireContext(), DownloadService::class.java)
         requireActivity().startService(intent)
     }

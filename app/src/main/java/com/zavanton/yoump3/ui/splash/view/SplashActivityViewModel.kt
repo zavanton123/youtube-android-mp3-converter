@@ -17,7 +17,7 @@ class SplashActivityViewModel : ViewModel() {
     }
 
     override fun onCleared() {
-        Logger.d("SplashActivityViewModel - onCleared()")
+        Logger.d("onCleared()")
         super.onCleared()
 
         presenter.onCleared()

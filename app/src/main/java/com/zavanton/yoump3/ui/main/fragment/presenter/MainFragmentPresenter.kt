@@ -42,7 +42,7 @@ constructor(
     }
 
     override fun startDownloadService() {
-        Logger.d("MainFragmentPresenter - startDownloadService")
+        Logger.d("startDownloadService")
         eventBus.send(Message(Event.DOWNLOAD_URL, actionUrl ?: clipboardUrl))
         view?.startDownloadService()
     }

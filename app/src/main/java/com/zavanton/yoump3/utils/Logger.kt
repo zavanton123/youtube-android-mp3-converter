@@ -26,7 +26,7 @@ object Logger {
         val clazz = extractClassName(stackTrace[CALL_STACK_INDEX])
         val lineNumber = stackTrace[CALL_STACK_INDEX].lineNumber
 
-        return ".($clazz:$lineNumber) - $message"
+        return "($clazz:$lineNumber): $message"
     }
 
     private fun extractClassName(element: StackTraceElement): String {

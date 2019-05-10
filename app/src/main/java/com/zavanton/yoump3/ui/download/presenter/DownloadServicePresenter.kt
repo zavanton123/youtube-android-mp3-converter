@@ -46,7 +46,7 @@ constructor(
     private val eventBusDisposable = CompositeDisposable()
 
     override fun onStartCommand() {
-        Logger.d("DownloadServicePresenter - onStartCommand")
+        Logger.d("onStartCommand")
 
         listenForMessages()
     }
@@ -63,7 +63,7 @@ constructor(
     private fun processMessage(message: Message) {
         when (message.event) {
             Event.DOWNLOAD_URL -> {
-                Logger.d("DownloadServicePresenter - download url: ${message.text}")
+                Logger.d("download url: ${message.text}")
                 downloadAndConvert(message.text)
             }
             else -> {

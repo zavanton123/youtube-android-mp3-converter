@@ -30,13 +30,13 @@ class DownloadService : Service(), IDownloadService {
 
     override fun onCreate() {
         super.onCreate()
-        Logger.d("DownloadService - onCreate")
+        Logger.d("onCreate")
 
         DownloadServiceComponentManager.inject(this)
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        Logger.d("DownloadService - onStartCommand")
+        Logger.d("onStartCommand")
 
         presenterDownloadService.bind(this)
         presenterDownloadService.onStartCommand()
@@ -47,7 +47,7 @@ class DownloadService : Service(), IDownloadService {
     override fun onBind(intent: Intent): IBinder? = null
 
     override fun onDestroy() {
-        Logger.d("DownloadService - onDestroy")
+        Logger.d("onDestroy")
         super.onDestroy()
 
         presenterDownloadService.unbind(this)
@@ -55,7 +55,7 @@ class DownloadService : Service(), IDownloadService {
     }
 
     override fun startForeground() {
-        Logger.d("DownloadService - startForeground")
+        Logger.d("startForeground")
 
         val activityIntent = Intent(this, MainActivity::class.java)
             .apply { addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP) }
@@ -79,7 +79,7 @@ class DownloadService : Service(), IDownloadService {
     }
 
     override fun stopForeground() {
-        Logger.d("DownloadService - stopForeground")
+        Logger.d("stopForeground")
         stopForeground(true)
     }
 }

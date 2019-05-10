@@ -1,6 +1,5 @@
 package com.zavanton.yoump3.ui.main.activity.view
 
-import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProviders
@@ -14,7 +13,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Logger.d("MainActivity - onCreate")
+        Logger.d("onCreate")
         setContentView(R.layout.ac_fragment_container)
 
         initViewModel()
@@ -34,6 +33,4 @@ class MainActivity : AppCompatActivity() {
                 .commit()
         }
     }
-
-
 }

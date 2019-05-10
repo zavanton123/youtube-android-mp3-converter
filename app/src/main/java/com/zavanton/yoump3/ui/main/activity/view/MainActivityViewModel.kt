@@ -14,7 +14,7 @@ class MainActivityViewModel : ViewModel() {
     override fun onCleared() {
         super.onCleared()
 
-        Logger.d("MainActivityViewModel - onCleared")
+        Logger.d("onCleared")
         MainActivityComponentManager.clear()
     }
 }

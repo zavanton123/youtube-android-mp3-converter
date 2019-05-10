@@ -41,7 +41,7 @@ class SplashActivity : AppCompatActivity(), ISplashActivity {
                 processActionSend(intent)
             }
             else -> {
-                Logger.d("SplashActivity - no extras found")
+                Logger.d("no extras found")
             }
         }
     }
@@ -82,10 +82,10 @@ class SplashActivity : AppCompatActivity(), ISplashActivity {
     }
 
     private fun processActionSend(intent: Intent) {
-        Logger.d("SplashActivity - processActionSend")
+        Logger.d("processActionSend")
         if (TEXT_INTENT_TYPE == intent.type) {
             intent.getStringExtra(Intent.EXTRA_TEXT)?.let {
-                Logger.d("SplashActivity - the extra contain this text: $it")
+                Logger.d("the extra contain this text: $it")
                 presenter.processExtra(it)
             }
         }

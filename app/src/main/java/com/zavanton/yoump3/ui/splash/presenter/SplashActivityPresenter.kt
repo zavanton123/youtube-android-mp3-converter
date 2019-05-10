@@ -33,13 +33,13 @@ constructor(private val eventBus: EventBus) : ISplashActivityPresenter {
     }
 
     override fun onViewCreated() {
-        Logger.d("SplashActivityPresenter - onViewCreated")
+        Logger.d("onViewCreated")
 
         view?.processIntentExtras()
     }
 
     override fun processExtra(extra: String) {
-        Logger.d("SplashActivityPresenter - processExtra: $extra")
+        Logger.d("processExtra: $extra")
         eventBus.send(Message(Event.INTENT_ACTION_URL, extra))
     }
 
@@ -68,7 +68,7 @@ constructor(private val eventBus: EventBus) : ISplashActivityPresenter {
     }
 
     override fun onCleared() {
-        Logger.d("SplashActivityPresenter - onCleared")
+        Logger.d("onCleared")
         compositeDisposable.dispose()
     }
 }

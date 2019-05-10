@@ -17,7 +17,7 @@ class MainFragmentViewModel : ViewModel() {
     }
 
     override fun onCleared() {
-        Logger.d("MainFragmentViewModel - onCleared")
+        Logger.d("onCleared")
         super.onCleared()
 
         MainFragmentComponentManager.clear()
