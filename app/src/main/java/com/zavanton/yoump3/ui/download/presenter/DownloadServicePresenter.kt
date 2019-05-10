@@ -92,11 +92,11 @@ constructor(
     }
 
     // TODO add network request to the url to check if response is ok
+    // TODO find a better way to check youtube video url
     private fun isUrlValid(url: String): Boolean {
         Logger.d("isUrlValid: $url")
         if (url.isEmpty()) return false
 
-        // TODO find a better way to check youtube video url
         if (url.contains("yout")) return true
 
         return false

@@ -20,7 +20,7 @@ import javax.inject.Singleton
         NetworkModule::class,
         EventBusModule::class,
         NotificationModule::class,
-        FfmpegModule::class
+        ConversionModule::class
     ]
 )
 interface AppComponent {

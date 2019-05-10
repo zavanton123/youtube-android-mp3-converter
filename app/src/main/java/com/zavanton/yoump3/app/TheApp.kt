@@ -4,7 +4,7 @@ import android.app.Application
 import android.app.NotificationManager
 import android.os.Build
 import com.zavanton.yoump3.di.manager.ApplicationComponentManager
-import com.zavanton.yoump3.domain.model.FfmpegManager
+import com.zavanton.yoump3.domain.model.ConversionManager
 import com.zavanton.yoump3.utils.NotificationChannels
 import javax.inject.Inject
 
@@ -14,7 +14,7 @@ class TheApp : Application() {
     lateinit var notificationManager: NotificationManager
 
     @Inject
-    lateinit var ffmpegManager: FfmpegManager
+    lateinit var conversionManager: ConversionManager
 
     override fun onCreate() {
         super.onCreate()
@@ -35,6 +35,6 @@ class TheApp : Application() {
     }
 
     private fun initFfmpeg() {
-        ffmpegManager.init()
+        conversionManager.init()
     }
 }

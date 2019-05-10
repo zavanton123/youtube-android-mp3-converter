@@ -3,13 +3,13 @@ package com.zavanton.yoump3.di.module
 import android.content.Context
 import com.github.hiteshsondhi88.libffmpeg.FFmpeg
 import com.zavanton.yoump3.di.qualifier.context.ApplicationContext
-import com.zavanton.yoump3.domain.model.FfmpegManager
+import com.zavanton.yoump3.domain.model.ConversionManager
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
 
 @Module
-class FfmpegModule {
+class ConversionModule {
 
     @Singleton
     @Provides
@@ -19,5 +19,5 @@ class FfmpegModule {
 
     @Singleton
     @Provides
-    fun provideFfmpegManager(ffmpeg: FFmpeg): FfmpegManager = FfmpegManager(ffmpeg)
+    fun provideFfmpegManager(ffmpeg: FFmpeg): ConversionManager = ConversionManager(ffmpeg)
 }

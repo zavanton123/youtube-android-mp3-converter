@@ -9,7 +9,7 @@ import com.zavanton.yoump3.utils.Logger
 import io.reactivex.ObservableEmitter
 import javax.inject.Inject
 
-class FfmpegManager
+class ConversionManager
 @Inject
 constructor(private val ffmpeg: FFmpeg) {
 
@@ -48,6 +48,7 @@ constructor(private val ffmpeg: FFmpeg) {
 
                 override fun onProgress(message: String) {
                     Logger.d("onProgress: $message")
+                    // TODO show percent of conversion completed
                     emitter.onNext(message)
                 }
 
@@ -68,7 +69,7 @@ constructor(private val ffmpeg: FFmpeg) {
                 }
             })
         } catch (exception: FFmpegCommandAlreadyRunningException) {
-            Logger.e("FfmpegManager - FFmpegCommandAlreadyRunningException", exception)
+            Logger.e("ConversionManager - FFmpegCommandAlreadyRunningException", exception)
             emitter.onError(exception)
         }
     }
