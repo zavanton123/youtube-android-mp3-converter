@@ -59,22 +59,16 @@ constructor(
         Log.d()
         eventBusDisposable.add(eventBus.listenForMessages()
             .subscribe {
-                Log.d("onNext: $it")
                 processMessage(it)
             }
         )
     }
 
     private fun processMessage(message: Message) {
-        Log.d("message: $message")
+        Log.i("message: ${message.event} -> ${message.text}")
         when (message.event) {
-            Event.DOWNLOAD_URL -> {
-                Log.d("download url: ${message.text}")
-                downloadAndConvert(message.text)
-            }
-            else -> {
-                Log.d("message: ${message.event} - ${message.text}")
-            }
+            Event.DOWNLOAD_URL -> downloadAndConvert(message.text)
+            else -> Log.i("Other event received")
         }
     }
 

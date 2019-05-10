@@ -82,29 +82,16 @@ constructor(
     }
 
     private fun processMessage(message: Message) {
-        Log.d("message: $message")
+        Log.i("message: ${message.event} -> ${message.text}")
         when (message.event) {
-            Event.INTENT_ACTION_URL -> {
-                Log.d("INTENT_ACTION_URL - ${message.text}")
-                actionUrl = checkUrl(message.text ?: "")
-            }
+            Event.INTENT_ACTION_URL -> actionUrl = checkUrl(message.text ?: "")
 
-            Event.CLIPBOARD_URL -> {
-                Log.d("CLIPBOARD_URL - ${message.text}")
-                clipboardUrl = checkUrl(message.text ?: "")
-            }
+            Event.CLIPBOARD_URL -> clipboardUrl = checkUrl(message.text ?: "")
 
             Event.CLIPBOARD_EMPTY -> view?.showClipboardEmpty()
             Event.CLIPBOARD_NOT_EMPTY -> view?.showClipboardNotEmpty()
-            Event.URL_INVALID -> {
-                Log.d("URL_INVALID - ${message.text}")
-
-                view?.showUrlInvalid()
-            }
-            Event.URL_VALID -> {
-                Log.d("URL_VALID - ${message.text}")
-                view?.showUrlValid()
-            }
+            Event.URL_INVALID -> view?.showUrlInvalid()
+            Event.URL_VALID -> view?.showUrlValid()
 
             Event.DOWNLOAD_STARTED -> view?.showDownloadStarted()
             Event.DOWNLOAD_PROGRESS -> view?.showDownloadProgress(message.text)
@@ -115,9 +102,8 @@ constructor(
             Event.CONVERSION_PROGRESS -> view?.showConversionProgress(message.text)
             Event.CONVERSION_SUCCESS -> view?.showConversionSuccess()
             Event.CONVERSION_ERROR -> view?.showConversionError()
-            else -> {
-                Log.d("Received message - ${message.event} - ${message.text}")
-            }
+
+            else -> Log.i("Other event received")
         }
     }
 
