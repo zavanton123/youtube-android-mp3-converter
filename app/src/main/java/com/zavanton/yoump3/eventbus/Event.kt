@@ -2,7 +2,9 @@ package com.zavanton.yoump3.eventbus
 
 enum class Event {
 
-    NEW_SEND_ACTION,
+    CLIPBOARD_URL,
+    INTENT_ACTION_URL,
+    DOWNLOAD_URL,
 
     CLIPBOARD_EMPTY,
     CLIPBOARD_NOT_EMPTY,
@@ -18,5 +20,6 @@ enum class Event {
     CONVERSION_STARTED,
     CONVERSION_PROGRESS,
     CONVERSION_SUCCESS,
-    CONVERSION_ERROR
+    CONVERSION_ERROR,
+
 }

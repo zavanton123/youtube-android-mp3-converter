@@ -1,5 +1,6 @@
 package com.zavanton.yoump3.ui.main.fragment.presenter
 
+import android.content.ClipboardManager
 import com.zavanton.yoump3.di.scope.FragmentScope
 import com.zavanton.yoump3.eventbus.Event
 import com.zavanton.yoump3.eventbus.EventBus
@@ -13,23 +14,77 @@ import javax.inject.Inject
 class MainFragmentPresenter
 @Inject
 constructor(
-    private val eventBus: EventBus
+    private val eventBus: EventBus,
+    private val clipboardManager: ClipboardManager
 ) : IMainFragmentPresenter {
 
     var view: IMainFragment? = null
 
+    private var clipboardUrl: String? = null
+    private var actionUrl: String? = null
+
     private var eventBusDisposable = CompositeDisposable()
+
+    private lateinit var clipboardManagerListener: ClipboardManager.OnPrimaryClipChangedListener
 
     init {
         Logger.d("MainFragmentPresenter is init")
+        startListeningForClipboardChanges()
+        startListeningForMessages()
+    }
+
+    override fun attach(mainFragment: IMainFragment) {
+        view = mainFragment
+    }
+
+    override fun detach() {
+        view = null
+    }
+
+    private fun startListeningForClipboardChanges() {
+        clipboardManagerListener = ClipboardManager.OnPrimaryClipChangedListener {
+            val clipboardItem = clipboardManager.primaryClip?.getItemAt(0)
+            Logger.d("checkClipboardAndProceed: $clipboardItem")
+
+            if (clipboardItem != null) {
+                eventBus.send(Message(Event.CLIPBOARD_NOT_EMPTY))
+                eventBus.send(Message(Event.CLIPBOARD_URL, clipboardItem.text.toString()))
+            } else {
+                eventBus.send(Message(Event.CLIPBOARD_EMPTY))
+            }
+        }
+        clipboardManager.addPrimaryClipChangedListener(clipboardManagerListener)
+    }
+
+    private fun checkUrl(url: String): String? {
+        Logger.d("checkUrl: $url")
+        return if (isUrlValid(url)) {
+            eventBus.send(Message(Event.URL_VALID))
+            url
+        } else {
+            eventBus.send(Message(Event.URL_INVALID))
+            null
+        }
+    }
+
+    // TODO add network request to the url to check if response is ok
+    // TODO find a better way to check youtube video url
+    private fun isUrlValid(url: String): Boolean {
+        Logger.d("isUrlValid: $url")
+        if (url.isEmpty()) return false
+
+        if (url.contains("yout")) return true
+
+        return false
     }
 
     override fun startDownloadService() {
         Logger.d("MainFragmentPresenter - startDownloadService")
+        eventBus.send(Message(Event.DOWNLOAD_URL, actionUrl ?: clipboardUrl))
         view?.startDownloadService()
     }
 
-    override fun startListeningForMessages() {
+    private fun startListeningForMessages() {
         eventBusDisposable.add(eventBus.listenForMessages()
             .subscribe {
                 Logger.d("onNext message: ${it.text}")
@@ -38,20 +93,25 @@ constructor(
         )
     }
 
-    override fun stopListeningForMessages() {
+    override fun onCleared() {
         eventBusDisposable.clear()
-        eventBusDisposable = CompositeDisposable()
+        clipboardManager.removePrimaryClipChangedListener(clipboardManagerListener)
     }
 
     private fun processMessage(message: Message) {
         when (message.event) {
-            Event.NEW_SEND_ACTION -> {
-                Logger.d("NEW_SEND_ACTION - ${message.text}")
+            Event.INTENT_ACTION_URL -> {
+                Logger.d("INTENT_ACTION_URL - ${message.text}")
+                actionUrl = checkUrl(message.text ?: "")
+            }
+
+            Event.CLIPBOARD_URL -> {
+                Logger.d("CLIPBOARD_URL - ${message.text}")
+                clipboardUrl = checkUrl(message.text ?: "")
             }
 
             Event.CLIPBOARD_EMPTY -> view?.showClipboardEmpty()
             Event.CLIPBOARD_NOT_EMPTY -> view?.showClipboardNotEmpty()
-
             Event.URL_INVALID -> view?.showUrlInvalid()
             Event.URL_VALID -> view?.showUrlValid()
 
@@ -64,14 +124,9 @@ constructor(
             Event.CONVERSION_PROGRESS -> view?.showConversionProgress(message.text)
             Event.CONVERSION_SUCCESS -> view?.showConversionSuccess()
             Event.CONVERSION_ERROR -> view?.showConversionError()
+            else -> {
+                Logger.d("Received message - ${message.event} - ${message.text}")
+            }
         }
-    }
-
-    override fun attach(mainFragment: IMainFragment) {
-        view = mainFragment
-    }
-
-    override fun detach() {
-        view = null
     }
 }

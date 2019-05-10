@@ -1,7 +1,5 @@
 package com.zavanton.yoump3.ui.download.presenter
 
-import android.content.ClipData
-import android.content.ClipboardManager
 import android.os.Environment
 import com.zavanton.yoump3.di.qualifier.scheduler.IoThreadScheduler
 import com.zavanton.yoump3.di.qualifier.scheduler.MainThreadScheduler
@@ -27,7 +25,7 @@ constructor(
     private val mainThreadScheduler: Scheduler,
     @IoThreadScheduler
     private val ioThreadScheduler: Scheduler,
-    private val clipboardManager: ClipboardManager,
+
     private val downloadInteractor: IDownloadInteractor,
     private val convertInteractor: IConvertInteractor,
     private val eventBus: EventBus
@@ -45,12 +43,33 @@ constructor(
     private var service: IDownloadService? = null
 
     private val compositeDisposable = CompositeDisposable()
+    private val eventBusDisposable = CompositeDisposable()
 
     override fun onStartCommand() {
         Logger.d("DownloadServicePresenter - onStartCommand")
 
-        service?.startForeground()
-        runTask()
+        listenForMessages()
+    }
+
+    private fun listenForMessages() {
+        eventBusDisposable.add(eventBus.listenForMessages()
+            .subscribe {
+                Logger.d("onNext: $it")
+                processMessage(it)
+            }
+        )
+    }
+
+    private fun processMessage(message: Message) {
+        when (message.event) {
+            Event.DOWNLOAD_URL -> {
+                Logger.d("DownloadServicePresenter - download url: ${message.text}")
+                downloadAndConvert(message.text)
+            }
+            else -> {
+                Logger.d("message: ${message.event} - ${message.text}")
+            }
+        }
     }
 
     override fun bind(downloadService: IDownloadService) {
@@ -60,46 +79,17 @@ constructor(
     override fun unbind(downloadService: IDownloadService) {
         service = null
         compositeDisposable.clear()
+        eventBusDisposable.clear()
     }
 
     // TODO check if internet connection is ok
-    private fun runTask() {
-        Logger.d("runTask")
-        val clipboardItem = clipboardManager.primaryClip?.getItemAt(0)
-        checkClipboardAndProceed(clipboardItem)
-    }
+    private fun downloadAndConvert(url: String?) {
+        Logger.d("downloadAndConvert")
+        service?.startForeground()
 
-    private fun checkClipboardAndProceed(clipboardItem: ClipData.Item?) {
-        Logger.d("checkClipboardAndProceed: $clipboardItem")
-        if (clipboardItem != null) {
-            eventBus.send(Message(Event.CLIPBOARD_NOT_EMPTY))
-            checkUrlAndProceed(clipboardItem.text.toString())
-        } else {
-            eventBus.send(Message(Event.CLIPBOARD_EMPTY))
-            service?.stopForeground()
+        url?.let {
+            downloadFile(it)
         }
-    }
-
-    private fun checkUrlAndProceed(url: String) {
-        Logger.d("checkUrlAndProceed: $url")
-        if (isUrlValid(url)) {
-            eventBus.send(Message(Event.URL_VALID))
-            downloadFile(url)
-        } else {
-            eventBus.send(Message(Event.URL_INVALID))
-            service?.stopForeground()
-        }
-    }
-
-    // TODO add network request to the url to check if response is ok
-    // TODO find a better way to check youtube video url
-    private fun isUrlValid(url: String): Boolean {
-        Logger.d("isUrlValid: $url")
-        if (url.isEmpty()) return false
-
-        if (url.contains("yout")) return true
-
-        return false
     }
 
     private fun downloadFile(url: String) {

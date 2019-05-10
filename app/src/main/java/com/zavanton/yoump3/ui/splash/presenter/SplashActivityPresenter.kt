@@ -40,7 +40,7 @@ constructor(private val eventBus: EventBus) : ISplashActivityPresenter {
 
     override fun processExtra(extra: String) {
         Logger.d("SplashActivityPresenter - processExtra: $extra")
-        eventBus.send(Message(Event.NEW_SEND_ACTION, extra))
+        eventBus.send(Message(Event.INTENT_ACTION_URL, extra))
     }
 
     override fun checkPermissions(rxPermissions: RxPermissions) {

@@ -38,7 +38,6 @@ class MainFragment : Fragment(), IMainFragment {
         Logger.d("MainFragment - onDestroy")
         super.onDestroy()
 
-        presenter.stopListeningForMessages()
         presenter.detach()
     }
 
@@ -53,7 +52,6 @@ class MainFragment : Fragment(), IMainFragment {
     private fun initUI() {
         initToolbar()
         initFab()
-        presenter.startListeningForMessages()
     }
 
     private fun initToolbar() {
