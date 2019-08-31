@@ -2,6 +2,7 @@ package com.zavanton.yoump3.di.module
 
 import android.app.NotificationManager
 import android.content.Context
+import android.os.Build
 import androidx.core.app.NotificationCompat
 import com.zavanton.yoump3.di.ApplicationContext
 import com.zavanton.yoump3.di.HighNotificationChannel
@@ -21,7 +22,12 @@ class NotificationModule {
         @ApplicationContext
         context: Context
     ): NotificationManager =
-        context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        (context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager)
+            .apply {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    createNotificationChannels(NotificationChannels.NOTIFICATION_CHANNELS)
+                }
+            }
 
     @Singleton
     @Provides

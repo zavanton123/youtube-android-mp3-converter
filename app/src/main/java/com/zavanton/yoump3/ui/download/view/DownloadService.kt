@@ -1,5 +1,6 @@
 package com.zavanton.yoump3.ui.download.view
 
+import android.app.NotificationManager
 import android.app.PendingIntent
 import android.app.Service
 import android.content.Intent
@@ -23,6 +24,9 @@ class DownloadService : Service(), IDownloadService {
 
     @Inject
     lateinit var presenterDownloadService: IDownloadServicePresenter
+
+    @Inject
+    lateinit var notificationManager: NotificationManager
 
     @Inject
     @field:NormalNotificationChannel
@@ -80,6 +84,7 @@ class DownloadService : Service(), IDownloadService {
 
     override fun stopForeground() {
         Log.d()
+        notificationManager.cancel(FOREGROUND_NOTIFICATION_ID)
         stopForeground(true)
     }
 }
