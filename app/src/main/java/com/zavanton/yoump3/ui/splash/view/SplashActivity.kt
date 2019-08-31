@@ -6,9 +6,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.afollestad.materialdialogs.MaterialDialog
-import com.tbruyelle.rxpermissions2.RxPermissions
 import com.zavanton.yoump3.R
 import com.zavanton.yoump3.ui.main.activity.view.MainActivity
+import com.zavanton.yoump3.ui.splash.viewModel.SplashActivityViewModel
+import com.zavanton.yoump3.ui.splash.viewModel.SplashActivityViewModelFactory
+import com.zavanton.yoump3.ui.splash.viewModel.SplashEvent
 import com.zavanton.yoump3.utils.Log
 
 class SplashActivity : AppCompatActivity() {
@@ -24,24 +26,27 @@ class SplashActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         Log.d()
 
-        viewModel = ViewModelProviders.of(this, SplashActivityViewModelFactory())
+        viewModel = ViewModelProviders.of(this,
+            SplashActivityViewModelFactory(this)
+        )
             .get(SplashActivityViewModel::class.java)
 
         setupUi()
 
-        viewModel.checkPermissions(RxPermissions(this))
+        viewModel.checkPermissions()
     }
 
     private fun setupUi() {
         viewModel.splashEvent.observe(this,
-            Observer<SplashEvent> { t ->
-                when (t) {
+            Observer<SplashEvent> { splashEvent ->
+                when (splashEvent) {
                     SplashEvent.ProceedWithApp -> proceedWithApp()
                     SplashEvent.RepeatRequestPermissions -> repeatRequestPermissions()
                     SplashEvent.PositiveButtonClick -> onPositiveButtonClick()
                     SplashEvent.NegativeButtonClick -> onNegativeButtonClick()
                 }
-            })
+            }
+        )
     }
 
     private fun proceedWithApp() {
@@ -53,13 +58,10 @@ class SplashActivity : AppCompatActivity() {
 
     private fun processIntentExtras() {
         Log.d()
-        when (intent?.action) {
-            Intent.ACTION_SEND -> {
-                processActionSend(intent)
-            }
-            else -> {
-                Log.d("no extras found")
-            }
+        if (intent?.action == Intent.ACTION_SEND) {
+            processActionSend(intent)
+        } else {
+            Log.d("no extras found")
         }
     }
 
@@ -99,6 +101,6 @@ class SplashActivity : AppCompatActivity() {
 
     private fun onNegativeButtonClick() {
         Log.d()
-        this@SplashActivity.finish()
+        finish()
     }
 }

@@ -1,4 +1,4 @@
-package com.zavanton.yoump3.ui.splash.view
+package com.zavanton.yoump3.ui.splash.viewModel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -15,7 +15,8 @@ import javax.inject.Inject
 
 @ActivityScope
 class SplashActivityViewModel @Inject constructor(
-    private val eventBus: EventBus
+    private val eventBus: EventBus,
+    private val rxPermissions: RxPermissions
 ) : ViewModel(), ISplashActivityViewModel {
 
     var splashEvent: MutableLiveData<SplashEvent> = MutableLiveData()
@@ -29,7 +30,7 @@ class SplashActivityViewModel @Inject constructor(
         eventBus.send(Message(Event.INTENT_ACTION_URL, extra))
     }
 
-    override fun checkPermissions(rxPermissions: RxPermissions) {
+    override fun checkPermissions() {
         Log.d("rxPermissions: $rxPermissions")
         compositeDisposable.add(
             rxPermissions.request(*Permissions.PERMISSIONS)
@@ -38,7 +39,8 @@ class SplashActivityViewModel @Inject constructor(
                         if (arePermissionsGranted) {
                             splashEvent.value = SplashEvent.ProceedWithApp
                         } else {
-                            splashEvent.value = SplashEvent.RepeatRequestPermissions
+                            splashEvent.value =
+                                SplashEvent.RepeatRequestPermissions
                         }
                     },
                     { Log.e(it, "An error occurred while checking permissions") }

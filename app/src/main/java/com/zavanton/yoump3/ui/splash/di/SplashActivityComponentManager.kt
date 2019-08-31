@@ -1,5 +1,6 @@
 package com.zavanton.yoump3.ui.splash.di
 
+import androidx.fragment.app.FragmentActivity
 import com.zavanton.yoump3.di.AppComponentManager
 import com.zavanton.yoump3.utils.Log
 
@@ -7,11 +8,11 @@ object SplashActivityComponentManager {
 
     private var splashActivityComponent: SplashActivityComponent? = null
 
-    fun get(): SplashActivityComponent? {
+    fun get(activity: FragmentActivity): SplashActivityComponent? {
         Log.d()
         if (splashActivityComponent == null) {
             splashActivityComponent = AppComponentManager.appComponent
-                .plusSplashActivityComponent()
+                .plusSplashActivityComponent(SplashActivityProvideModule(activity))
         }
 
         return splashActivityComponent

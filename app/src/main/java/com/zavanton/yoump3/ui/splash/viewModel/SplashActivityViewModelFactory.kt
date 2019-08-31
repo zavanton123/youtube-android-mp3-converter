@@ -1,17 +1,20 @@
-package com.zavanton.yoump3.ui.splash.view
+package com.zavanton.yoump3.ui.splash.viewModel
 
+import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.zavanton.yoump3.ui.splash.di.SplashActivityComponentManager
 import javax.inject.Inject
 
-class SplashActivityViewModelFactory : ViewModelProvider.Factory {
+class SplashActivityViewModelFactory(
+    activity: FragmentActivity
+) : ViewModelProvider.Factory {
 
     @Inject
     lateinit var viewModel: ISplashActivityViewModel
 
     init {
-        SplashActivityComponentManager.get()
+        SplashActivityComponentManager.get(activity)
             ?.inject(this)
     }
 
