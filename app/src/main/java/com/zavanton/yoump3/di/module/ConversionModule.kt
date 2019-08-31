@@ -19,5 +19,8 @@ class ConversionModule {
 
     @Singleton
     @Provides
-    fun provideFfmpegManager(ffmpeg: FFmpeg): ConversionManager = ConversionManager(ffmpeg)
+    fun provideFfmpegManager(ffmpeg: FFmpeg): ConversionManager =
+        ConversionManager(ffmpeg).apply {
+            init()
+        }
 }
