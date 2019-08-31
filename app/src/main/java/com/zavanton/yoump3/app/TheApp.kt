@@ -3,7 +3,7 @@ package com.zavanton.yoump3.app
 import android.app.Application
 import android.app.NotificationManager
 import android.os.Build
-import com.zavanton.yoump3.di.manager.ApplicationComponentManager
+import com.zavanton.yoump3.di.AppComponentManager
 import com.zavanton.yoump3.domain.model.ConversionManager
 import com.zavanton.yoump3.utils.Log
 import com.zavanton.yoump3.utils.NotificationChannels
@@ -28,7 +28,7 @@ class TheApp : Application() {
 
     private fun initDependencies() {
         Log.d()
-        ApplicationComponentManager.inject(this)
+        AppComponentManager.inject(this)
     }
 
     private fun initNotificationChannels() {

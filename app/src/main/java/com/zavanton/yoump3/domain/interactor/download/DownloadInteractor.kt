@@ -6,8 +6,8 @@ import android.util.SparseArray
 import at.huber.youtubeExtractor.VideoMeta
 import at.huber.youtubeExtractor.YouTubeExtractor
 import at.huber.youtubeExtractor.YtFile
-import com.zavanton.yoump3.di.qualifier.context.ApplicationContext
-import com.zavanton.yoump3.di.qualifier.scheduler.IoThreadScheduler
+import com.zavanton.yoump3.di.ApplicationContext
+import com.zavanton.yoump3.di.IoThreadScheduler
 import com.zavanton.yoump3.utils.Log
 import com.zavanton.yoump3.utils.YoutubeTags
 import io.reactivex.Observable

@@ -1,9 +1,9 @@
 package com.zavanton.yoump3.ui.download.presenter
 
 import android.os.Environment
-import com.zavanton.yoump3.di.qualifier.scheduler.IoThreadScheduler
-import com.zavanton.yoump3.di.qualifier.scheduler.MainThreadScheduler
-import com.zavanton.yoump3.di.scope.ServiceScope
+import com.zavanton.yoump3.di.IoThreadScheduler
+import com.zavanton.yoump3.di.MainThreadScheduler
+import com.zavanton.yoump3.di.ServiceScope
 import com.zavanton.yoump3.domain.interactor.convert.IConvertInteractor
 import com.zavanton.yoump3.domain.interactor.download.IDownloadInteractor
 import com.zavanton.yoump3.eventbus.Event

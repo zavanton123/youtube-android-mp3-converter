@@ -1,7 +1,7 @@
 package com.zavanton.yoump3.ui.splash.view
 
 import androidx.lifecycle.ViewModel
-import com.zavanton.yoump3.ui.splash.di.manager.SplashActivityComponentManager
+import com.zavanton.yoump3.ui.splash.di.SplashActivityComponentManager
 import com.zavanton.yoump3.ui.splash.presenter.ISplashActivityPresenter
 import com.zavanton.yoump3.utils.Log
 import javax.inject.Inject

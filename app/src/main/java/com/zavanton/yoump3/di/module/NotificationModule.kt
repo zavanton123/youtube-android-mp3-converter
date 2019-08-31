@@ -3,10 +3,10 @@ package com.zavanton.yoump3.di.module
 import android.app.NotificationManager
 import android.content.Context
 import androidx.core.app.NotificationCompat
-import com.zavanton.yoump3.di.qualifier.channel.HighNotificationChannel
-import com.zavanton.yoump3.di.qualifier.channel.LowNotificationChannel
-import com.zavanton.yoump3.di.qualifier.channel.NormalNotificationChannel
-import com.zavanton.yoump3.di.qualifier.context.ApplicationContext
+import com.zavanton.yoump3.di.ApplicationContext
+import com.zavanton.yoump3.di.HighNotificationChannel
+import com.zavanton.yoump3.di.LowNotificationChannel
+import com.zavanton.yoump3.di.NormalNotificationChannel
 import com.zavanton.yoump3.utils.NotificationChannels
 import dagger.Module
 import dagger.Provides

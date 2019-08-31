@@ -1,6 +1,6 @@
 package com.zavanton.yoump3.ui.main.activity.di.manager
 
-import com.zavanton.yoump3.di.manager.ApplicationComponentManager
+import com.zavanton.yoump3.di.AppComponentManager
 import com.zavanton.yoump3.ui.main.activity.di.component.MainActivityComponent
 import com.zavanton.yoump3.ui.main.activity.di.module.MainActivityProvideModule
 import com.zavanton.yoump3.ui.main.activity.view.MainActivityViewModel
@@ -14,7 +14,7 @@ object MainActivityComponentManager {
         Log.d()
 
         if (mainActivityComponent == null) {
-            mainActivityComponent = ApplicationComponentManager.appComponent
+            mainActivityComponent = AppComponentManager.appComponent
                 .plusMainActivityComponent(MainActivityProvideModule())
         }
 

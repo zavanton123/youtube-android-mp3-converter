@@ -1,12 +1,10 @@
-package com.zavanton.yoump3.di.manager
+package com.zavanton.yoump3.di
 
 import com.zavanton.yoump3.app.TheApp
-import com.zavanton.yoump3.di.component.AppComponent
-import com.zavanton.yoump3.di.component.DaggerAppComponent
 import com.zavanton.yoump3.di.module.AppModule
 import com.zavanton.yoump3.utils.Log
 
-object ApplicationComponentManager {
+object AppComponentManager {
 
     lateinit var appComponent: AppComponent
 

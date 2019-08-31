@@ -1,8 +1,6 @@
-package com.zavanton.yoump3.ui.splash.di.manager
+package com.zavanton.yoump3.ui.splash.di
 
-import com.zavanton.yoump3.di.manager.ApplicationComponentManager
-import com.zavanton.yoump3.ui.splash.di.component.SplashActivityComponent
-import com.zavanton.yoump3.ui.splash.di.module.SplashActivityProvideModule
+import com.zavanton.yoump3.di.AppComponentManager
 import com.zavanton.yoump3.ui.splash.view.SplashActivityViewModel
 import com.zavanton.yoump3.utils.Log
 
@@ -13,7 +11,7 @@ object SplashActivityComponentManager {
     fun inject(splashActivityViewModel: SplashActivityViewModel) {
         Log.d()
         if (splashActivityComponent == null) {
-            splashActivityComponent = ApplicationComponentManager.appComponent
+            splashActivityComponent = AppComponentManager.appComponent
                 .plusSplashActivityComponent(SplashActivityProvideModule())
         }
         splashActivityComponent?.inject(splashActivityViewModel)

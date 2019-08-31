@@ -2,7 +2,7 @@ package com.zavanton.yoump3.di.module
 
 import android.content.Context
 import com.github.hiteshsondhi88.libffmpeg.FFmpeg
-import com.zavanton.yoump3.di.qualifier.context.ApplicationContext
+import com.zavanton.yoump3.di.ApplicationContext
 import com.zavanton.yoump3.domain.model.ConversionManager
 import dagger.Module
 import dagger.Provides

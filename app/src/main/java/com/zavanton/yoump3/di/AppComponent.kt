@@ -1,4 +1,4 @@
-package com.zavanton.yoump3.di.component
+package com.zavanton.yoump3.di
 
 import com.zavanton.yoump3.app.TheApp
 import com.zavanton.yoump3.di.module.*
@@ -6,8 +6,8 @@ import com.zavanton.yoump3.ui.download.di.component.DownloadServiceComponent
 import com.zavanton.yoump3.ui.download.di.module.DownloadServiceProvideModule
 import com.zavanton.yoump3.ui.main.activity.di.component.MainActivityComponent
 import com.zavanton.yoump3.ui.main.activity.di.module.MainActivityProvideModule
-import com.zavanton.yoump3.ui.splash.di.component.SplashActivityComponent
-import com.zavanton.yoump3.ui.splash.di.module.SplashActivityProvideModule
+import com.zavanton.yoump3.ui.splash.di.SplashActivityComponent
+import com.zavanton.yoump3.ui.splash.di.SplashActivityProvideModule
 import dagger.Component
 import javax.inject.Singleton
 

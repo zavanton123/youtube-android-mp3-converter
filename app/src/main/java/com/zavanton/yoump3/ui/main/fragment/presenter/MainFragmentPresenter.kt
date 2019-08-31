@@ -1,7 +1,7 @@
 package com.zavanton.yoump3.ui.main.fragment.presenter
 
 import android.content.ClipboardManager
-import com.zavanton.yoump3.di.scope.FragmentScope
+import com.zavanton.yoump3.di.FragmentScope
 import com.zavanton.yoump3.eventbus.Event
 import com.zavanton.yoump3.eventbus.EventBus
 import com.zavanton.yoump3.eventbus.Message

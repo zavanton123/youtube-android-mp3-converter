@@ -1,6 +1,6 @@
 package com.zavanton.yoump3.ui.download.di.manager
 
-import com.zavanton.yoump3.di.manager.ApplicationComponentManager
+import com.zavanton.yoump3.di.AppComponentManager
 import com.zavanton.yoump3.ui.download.di.component.DownloadServiceComponent
 import com.zavanton.yoump3.ui.download.di.module.DownloadServiceProvideModule
 import com.zavanton.yoump3.ui.download.view.DownloadService
@@ -14,7 +14,7 @@ object DownloadServiceComponentManager {
         Log.d()
 
         if (downloadServiceComponent == null) {
-            downloadServiceComponent = ApplicationComponentManager.appComponent
+            downloadServiceComponent = AppComponentManager.appComponent
                 .plusDownloadServiceComponent(DownloadServiceProvideModule())
         }
 

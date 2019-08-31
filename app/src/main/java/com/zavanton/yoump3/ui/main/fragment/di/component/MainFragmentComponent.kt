@@ -1,6 +1,6 @@
 package com.zavanton.yoump3.ui.main.fragment.di.component
 
-import com.zavanton.yoump3.di.scope.FragmentScope
+import com.zavanton.yoump3.di.FragmentScope
 import com.zavanton.yoump3.ui.main.fragment.di.module.MainFragmentBindModule
 import com.zavanton.yoump3.ui.main.fragment.di.module.MainFragmentProvideModule
 import com.zavanton.yoump3.ui.main.fragment.view.MainFragmentViewModel

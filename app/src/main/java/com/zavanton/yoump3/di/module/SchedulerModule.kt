@@ -1,7 +1,7 @@
 package com.zavanton.yoump3.di.module
 
-import com.zavanton.yoump3.di.qualifier.scheduler.IoThreadScheduler
-import com.zavanton.yoump3.di.qualifier.scheduler.MainThreadScheduler
+import com.zavanton.yoump3.di.IoThreadScheduler
+import com.zavanton.yoump3.di.MainThreadScheduler
 import dagger.Module
 import dagger.Provides
 import io.reactivex.Scheduler

@@ -6,7 +6,7 @@ import android.content.Intent
 import android.os.IBinder
 import androidx.core.app.NotificationCompat
 import com.zavanton.yoump3.R
-import com.zavanton.yoump3.di.qualifier.channel.NormalNotificationChannel
+import com.zavanton.yoump3.di.NormalNotificationChannel
 import com.zavanton.yoump3.ui.download.di.manager.DownloadServiceComponentManager
 import com.zavanton.yoump3.ui.download.presenter.IDownloadServicePresenter
 import com.zavanton.yoump3.ui.main.activity.view.MainActivity
