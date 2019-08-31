@@ -8,7 +8,7 @@ import at.huber.youtubeExtractor.YouTubeExtractor
 import at.huber.youtubeExtractor.YtFile
 import com.zavanton.yoump3.di.qualifier.context.ApplicationContext
 import com.zavanton.yoump3.di.qualifier.scheduler.IoThreadScheduler
-import com.zavanton.yoump3.utils.Logger
+import com.zavanton.yoump3.utils.Log
 import com.zavanton.yoump3.utils.YoutubeTags
 import io.reactivex.Observable
 import io.reactivex.ObservableEmitter
@@ -31,20 +31,21 @@ constructor(
     private val client: OkHttpClient
 ) : IDownloadInteractor {
 
+    // TODO has to return Observable<Double> - to trace download progress in percent
     @SuppressLint("StaticFieldLeak")
     override fun downloadFile(
         urlLink: String,
         downloadsFolder: String,
         targetFilename: String,
         videoExtension: String
-    ): Observable<String> {
-
+    ): Observable<Int> {
+        Log.d()
         return Observable.create { emitter ->
 
             object : YouTubeExtractor(context) {
 
                 override fun onExtractionComplete(ytFiles: SparseArray<YtFile>?, vMeta: VideoMeta) {
-                    Logger.d("onExtractionComplete")
+                    Log.d()
                     if (ytFiles != null) {
 
                         val url = getUrl(ytFiles)
@@ -57,6 +58,7 @@ constructor(
     }
 
     private fun getUrl(ytFiles: SparseArray<YtFile>): String? {
+        Log.d()
         var youtubeFile: YtFile? = null
         for (tag in YoutubeTags.ALL) {
 
@@ -73,8 +75,9 @@ constructor(
         downloadsFolder: String,
         targetFilename: String,
         videoExtension: String,
-        emitter: ObservableEmitter<String>
+        emitter: ObservableEmitter<Int>
     ) {
+        Log.d()
         url?.apply {
 
             ioThreadScheduler.scheduleDirect {
@@ -92,26 +95,31 @@ constructor(
         }
     }
 
+    // TODO get the file size and send download progress relative to the total file size
     private fun writeToFile(
         inputStream: InputStream,
         file: File,
-        emitter: ObservableEmitter<String>
+        emitter: ObservableEmitter<Int>
     ) {
+        Log.d()
         try {
-            val out = FileOutputStream(file)
-            val buf = ByteArray(1024)
-            var len = inputStream.read(buf)
-            while (len > 0) {
-                out.write(buf, 0, len)
-                len = inputStream.read(buf)
+            val fileOutputStream = FileOutputStream(file)
+            val buffer = ByteArray(1024)
+            var length = inputStream.read(buffer)
+            var downloaded = 0
+            while (length > 0) {
+                fileOutputStream.write(buffer, 0, length)
+                length = inputStream.read(buffer)
+                downloaded += length
+                emitter.onNext(downloaded)
             }
-            out.close()
+            fileOutputStream.close()
             inputStream.close()
 
-            emitter.onNext("File is downloaded")
+            emitter.onComplete()
 
         } catch (exception: IOException) {
-            Logger.e("Error while writing to output file", exception)
+            Log.e(exception, "Error while writing to output file")
             emitter.onError(exception)
         }
     }

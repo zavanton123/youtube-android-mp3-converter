@@ -2,19 +2,19 @@ package com.zavanton.yoump3.ui.main.activity.view
 
 import androidx.lifecycle.ViewModel
 import com.zavanton.yoump3.ui.main.activity.di.manager.MainActivityComponentManager
-import com.zavanton.yoump3.utils.Logger
+import com.zavanton.yoump3.utils.Log
 
 class MainActivityViewModel : ViewModel() {
 
     init {
-        Logger.d("MainActivityViewModel is init")
+        Log.d()
         MainActivityComponentManager.inject(this)
     }
 
     override fun onCleared() {
         super.onCleared()
+        Log.d()
 
-        Logger.d("MainActivityViewModel - onCleared")
         MainActivityComponentManager.clear()
     }
 }

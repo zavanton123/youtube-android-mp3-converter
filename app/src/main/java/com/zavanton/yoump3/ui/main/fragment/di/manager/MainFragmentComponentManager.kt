@@ -4,14 +4,14 @@ import com.zavanton.yoump3.ui.main.activity.di.manager.MainActivityComponentMana
 import com.zavanton.yoump3.ui.main.fragment.di.component.MainFragmentComponent
 import com.zavanton.yoump3.ui.main.fragment.di.module.MainFragmentProvideModule
 import com.zavanton.yoump3.ui.main.fragment.view.MainFragmentViewModel
-import com.zavanton.yoump3.utils.Logger
+import com.zavanton.yoump3.utils.Log
 
 object MainFragmentComponentManager {
 
     private var mainFragmentComponent: MainFragmentComponent? = null
 
     fun inject(mainFragmentViewModel: MainFragmentViewModel) {
-        Logger.d("MainFragmentComponentManager - inject")
+        Log.d()
 
         mainFragmentComponent = MainActivityComponentManager.mainActivityComponent
             ?.plusMainFragmentComponent(MainFragmentProvideModule())
@@ -20,7 +20,7 @@ object MainFragmentComponentManager {
     }
 
     fun clear() {
-        Logger.d("MainFragmentComponentManager - clear")
+        Log.d()
         mainFragmentComponent = null
     }
 }
