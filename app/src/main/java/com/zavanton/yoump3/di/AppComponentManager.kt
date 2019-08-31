@@ -10,11 +10,9 @@ object AppComponentManager {
 
     fun inject(theApp: TheApp) {
         Log.d()
+
         appComponent = DaggerAppComponent.builder()
             .appModule(AppModule(theApp))
             .build()
-            .apply {
-                inject(theApp)
-            }
     }
 }

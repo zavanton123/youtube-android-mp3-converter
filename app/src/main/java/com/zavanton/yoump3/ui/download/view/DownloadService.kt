@@ -8,7 +8,7 @@ import android.os.IBinder
 import androidx.core.app.NotificationCompat
 import com.zavanton.yoump3.R
 import com.zavanton.yoump3.di.NormalNotificationChannel
-import com.zavanton.yoump3.ui.download.di.manager.DownloadServiceComponentManager
+import com.zavanton.yoump3.ui.download.di.DownloadServiceComponentManager
 import com.zavanton.yoump3.ui.download.presenter.IDownloadServicePresenter
 import com.zavanton.yoump3.ui.main.activity.view.MainActivity
 import com.zavanton.yoump3.utils.Log

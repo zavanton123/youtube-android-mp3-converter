@@ -2,8 +2,8 @@ package com.zavanton.yoump3.di
 
 import com.zavanton.yoump3.app.TheApp
 import com.zavanton.yoump3.di.module.*
-import com.zavanton.yoump3.ui.download.di.component.DownloadServiceComponent
-import com.zavanton.yoump3.ui.download.di.module.DownloadServiceProvideModule
+import com.zavanton.yoump3.ui.download.di.DownloadServiceComponent
+import com.zavanton.yoump3.ui.download.di.DownloadServiceProvideModule
 import com.zavanton.yoump3.ui.main.activity.di.component.MainActivityComponent
 import com.zavanton.yoump3.ui.main.activity.di.module.MainActivityProvideModule
 import com.zavanton.yoump3.ui.splash.di.SplashActivityComponent

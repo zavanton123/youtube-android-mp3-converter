@@ -18,9 +18,7 @@ import java.util.*
 import javax.inject.Inject
 
 @ServiceScope
-class DownloadServicePresenter
-@Inject
-constructor(
+class DownloadServicePresenter @Inject constructor(
     @MainThreadScheduler
     private val mainThreadScheduler: Scheduler,
     @IoThreadScheduler
