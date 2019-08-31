@@ -6,9 +6,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class EventBus
-@Inject
-constructor() {
+class EventBus @Inject constructor() {
 
     init {
         Log.i()

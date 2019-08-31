@@ -10,11 +10,6 @@ class TheApp : Application() {
         super.onCreate()
         Log.d()
 
-        initDependencies()
-    }
-
-    private fun initDependencies() {
-        Log.d()
         AppComponentManager.inject(this)
     }
 }
