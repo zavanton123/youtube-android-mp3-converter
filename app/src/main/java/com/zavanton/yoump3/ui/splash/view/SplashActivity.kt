@@ -3,39 +3,48 @@ package com.zavanton.yoump3.ui.splash.view
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.afollestad.materialdialogs.MaterialDialog
 import com.tbruyelle.rxpermissions2.RxPermissions
 import com.zavanton.yoump3.R
 import com.zavanton.yoump3.ui.main.activity.view.MainActivity
-import com.zavanton.yoump3.ui.splash.presenter.ISplashActivityPresenter
 import com.zavanton.yoump3.utils.Log
 
-class SplashActivity : AppCompatActivity(), ISplashActivity {
+class SplashActivity : AppCompatActivity() {
 
     companion object {
 
         private const val TEXT_INTENT_TYPE = "text/plain"
     }
 
-    lateinit var presenter: ISplashActivityPresenter
+    lateinit var viewModel: SplashActivityViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Log.d()
 
-        setupPresenter()
-        checkPermissionsAndStartApp()
+        viewModel = ViewModelProviders.of(this, SplashActivityViewModelFactory())
+            .get(SplashActivityViewModel::class.java)
+
+        setupUi()
+
+        viewModel.checkPermissions(RxPermissions(this))
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        Log.d()
-
-        presenter.detach()
+    private fun setupUi() {
+        viewModel.splashEvent.observe(this,
+            Observer<SplashEvent> { t ->
+                when (t) {
+                    SplashEvent.ProceedWithApp -> proceedWithApp()
+                    SplashEvent.RepeatRequestPermissions -> repeatRequestPermissions()
+                    SplashEvent.PositiveButtonClick -> onPositiveButtonClick()
+                    SplashEvent.NegativeButtonClick -> onNegativeButtonClick()
+                }
+            })
     }
 
-    override fun proceedWithApp() {
+    private fun proceedWithApp() {
         Log.d()
 
         processIntentExtras()
@@ -58,7 +67,7 @@ class SplashActivity : AppCompatActivity(), ISplashActivity {
         Log.d("intent: $intent")
         if (TEXT_INTENT_TYPE == intent.type) {
             intent.getStringExtra(Intent.EXTRA_TEXT)?.let {
-                presenter.processExtra(it)
+                viewModel.processExtra(it)
             }
         }
     }
@@ -70,7 +79,7 @@ class SplashActivity : AppCompatActivity(), ISplashActivity {
         }
     }
 
-    override fun repeatRequestPermissions() {
+    private fun repeatRequestPermissions() {
         Log.d()
         MaterialDialog.Builder(this)
             .iconRes(R.drawable.ic_action_warning)
@@ -78,32 +87,18 @@ class SplashActivity : AppCompatActivity(), ISplashActivity {
             .title(getString(R.string.need_permissions))
             .positiveText(getString(R.string.grant))
             .negativeText(getString(R.string.do_not_grant))
-            .onPositive { _, _ -> presenter.onPositiveButtonClick() }
-            .onNegative { _, _ -> presenter.onNegativeButtonClick() }
+            .onPositive { _, _ -> viewModel.onPositiveButtonClick() }
+            .onNegative { _, _ -> viewModel.onNegativeButtonClick() }
             .show()
     }
 
-    override fun onPositiveButtonClick() {
+    private fun onPositiveButtonClick() {
         Log.d()
         proceedWithApp()
     }
 
-    override fun onNegativeButtonClick() {
+    private fun onNegativeButtonClick() {
         Log.d()
         this@SplashActivity.finish()
-    }
-
-    private fun setupPresenter() {
-        Log.d()
-        presenter = ViewModelProviders.of(this)
-            .get(SplashActivityViewModel::class.java)
-            .presenter.apply {
-            attach(this@SplashActivity)
-        }
-    }
-
-    private fun checkPermissionsAndStartApp() {
-        Log.d()
-        presenter.checkPermissions(RxPermissions(this))
     }
 }

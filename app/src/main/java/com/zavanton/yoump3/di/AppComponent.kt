@@ -7,7 +7,6 @@ import com.zavanton.yoump3.ui.download.di.module.DownloadServiceProvideModule
 import com.zavanton.yoump3.ui.main.activity.di.component.MainActivityComponent
 import com.zavanton.yoump3.ui.main.activity.di.module.MainActivityProvideModule
 import com.zavanton.yoump3.ui.splash.di.SplashActivityComponent
-import com.zavanton.yoump3.ui.splash.di.SplashActivityProvideModule
 import dagger.Component
 import javax.inject.Singleton
 
@@ -27,7 +26,7 @@ interface AppComponent {
 
     fun inject(theApp: TheApp)
 
-    fun plusSplashActivityComponent(module: SplashActivityProvideModule): SplashActivityComponent
+    fun plusSplashActivityComponent(): SplashActivityComponent
 
     fun plusMainActivityComponent(module: MainActivityProvideModule): MainActivityComponent
 
