@@ -3,19 +3,29 @@ package com.zavanton.yoump3.ui.splash.di
 import androidx.fragment.app.FragmentActivity
 import com.tbruyelle.rxpermissions2.RxPermissions
 import com.zavanton.yoump3.core.di.ActivityScope
+import com.zavanton.yoump3.di.*
 import com.zavanton.yoump3.ui.splash.viewModel.ISplashActivityViewModel
 import com.zavanton.yoump3.ui.splash.viewModel.SplashActivityViewModel
 import com.zavanton.yoump3.ui.splash.viewModel.SplashActivityViewModelFactory
 import dagger.Binds
+import dagger.Component
 import dagger.Module
 import dagger.Provides
-import dagger.Subcomponent
 
 @ActivityScope
-@Subcomponent(
+@Component(
     modules = [
         SplashActivityProvideModule::class,
         SplashActivityBindModule::class
+    ],
+    dependencies = [
+        AppApi::class,
+        SchedulerApi::class,
+        ClipboardApi::class,
+        NetworkApi::class,
+        EventBusApi::class,
+        NotificationApi::class,
+        ConversionApi::class
     ]
 )
 interface SplashActivityComponent {

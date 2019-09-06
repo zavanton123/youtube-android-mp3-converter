@@ -10,8 +10,6 @@ import com.zavanton.yoump3.core.di.*
 import com.zavanton.yoump3.di.module.*
 import com.zavanton.yoump3.domain.model.ConversionManager
 import com.zavanton.yoump3.eventbus.EventBus
-import com.zavanton.yoump3.ui.splash.di.SplashActivityComponent
-import com.zavanton.yoump3.ui.splash.di.SplashActivityProvideModule
 import dagger.Component
 import io.reactivex.Scheduler
 import okhttp3.OkHttpClient
@@ -89,8 +87,4 @@ interface AppComponent :
     ConversionApi {
 
     fun inject(theApp: TheApp)
-
-    fun plusSplashActivityComponent(module: SplashActivityProvideModule): SplashActivityComponent
 }
-
-
