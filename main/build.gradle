@@ -1,23 +1,23 @@
-apply plugin: 'com.android.application'
-
-apply plugin: 'kotlin-android'
-
+apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android-extensions'
-
+apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 
 android {
-    compileSdkVersion 28
+    compileSdkVersion 29
+    buildToolsVersion "29.0.2"
+
+
     defaultConfig {
-        applicationId "com.zavanton.youtube_downloader"
-        minSdkVersion 19
-        targetSdkVersion 28
+        minSdkVersion 15
+        targetSdkVersion 29
         versionCode 1
         versionName "1.0"
+
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        vectorDrawables.useSupportLibrary = true
-        multiDexEnabled = true
+
     }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -25,18 +25,13 @@ android {
         }
     }
 
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    implementation project (":core")
-    implementation project (":download")
-    implementation project (":main")
+    implementation project(":core")
+    implementation project(":download")
 
     // Kotlin
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
@@ -120,5 +115,4 @@ dependencies {
     // Material dialogs
     implementation 'com.afollestad.material-dialogs:core:0.9.6.0'
     implementation 'com.afollestad.material-dialogs:commons:0.9.6.0'
-
 }
