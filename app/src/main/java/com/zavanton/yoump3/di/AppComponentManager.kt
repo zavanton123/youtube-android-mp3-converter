@@ -2,7 +2,7 @@ package com.zavanton.yoump3.di
 
 import com.zavanton.yoump3.app.TheApp
 import com.zavanton.yoump3.di.module.AppModule
-import com.zavanton.yoump3.utils.Log
+import com.zavanton.yoump3.core.utils.Log
 
 object AppComponentManager {
 

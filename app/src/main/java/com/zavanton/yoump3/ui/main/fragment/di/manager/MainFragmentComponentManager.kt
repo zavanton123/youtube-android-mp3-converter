@@ -4,7 +4,7 @@ import com.zavanton.yoump3.ui.main.activity.di.MainActivityComponentManager
 import com.zavanton.yoump3.ui.main.fragment.di.component.MainFragmentComponent
 import com.zavanton.yoump3.ui.main.fragment.di.module.MainFragmentProvideModule
 import com.zavanton.yoump3.ui.main.fragment.view.MainFragmentViewModel
-import com.zavanton.yoump3.utils.Log
+import com.zavanton.yoump3.core.utils.Log
 
 object MainFragmentComponentManager {
 

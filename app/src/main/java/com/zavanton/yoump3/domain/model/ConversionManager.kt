@@ -5,9 +5,8 @@ import com.github.hiteshsondhi88.libffmpeg.FFmpeg
 import com.github.hiteshsondhi88.libffmpeg.LoadBinaryResponseHandler
 import com.github.hiteshsondhi88.libffmpeg.exceptions.FFmpegCommandAlreadyRunningException
 import com.github.hiteshsondhi88.libffmpeg.exceptions.FFmpegNotSupportedException
-import com.zavanton.yoump3.utils.Log
+import com.zavanton.yoump3.core.utils.Log
 import io.reactivex.ObservableEmitter
-import java.util.regex.Pattern
 import javax.inject.Inject
 
 class ConversionManager

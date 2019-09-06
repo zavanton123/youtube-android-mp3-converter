@@ -2,7 +2,7 @@ package com.zavanton.yoump3.app
 
 import android.app.Application
 import com.zavanton.yoump3.di.AppComponentManager
-import com.zavanton.yoump3.utils.Log
+import com.zavanton.yoump3.core.utils.Log
 
 class TheApp : Application() {
 

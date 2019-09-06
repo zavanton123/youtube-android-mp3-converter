@@ -1,4 +1,4 @@
-package com.zavanton.yoump3.utils
+package com.zavanton.yoump3.core.utils
 
 object YoutubeTags {
 

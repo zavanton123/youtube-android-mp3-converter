@@ -1,6 +1,7 @@
 package com.zavanton.yoump3.di
 
 import com.zavanton.yoump3.app.TheApp
+import com.zavanton.yoump3.core.di.AppScope
 import com.zavanton.yoump3.di.module.*
 import com.zavanton.yoump3.ui.download.di.DownloadServiceComponent
 import com.zavanton.yoump3.ui.download.di.DownloadServiceProvideModule
@@ -9,9 +10,8 @@ import com.zavanton.yoump3.ui.main.activity.di.MainActivityProvideModule
 import com.zavanton.yoump3.ui.splash.di.SplashActivityComponent
 import com.zavanton.yoump3.ui.splash.di.SplashActivityProvideModule
 import dagger.Component
-import javax.inject.Singleton
 
-@Singleton
+@AppScope
 @Component(
     modules = [
         AppModule::class,

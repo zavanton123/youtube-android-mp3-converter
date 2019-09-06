@@ -3,13 +3,13 @@ package com.zavanton.yoump3.ui.splash.viewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.tbruyelle.rxpermissions2.RxPermissions
-import com.zavanton.yoump3.di.ActivityScope
+import com.zavanton.yoump3.core.di.ActivityScope
 import com.zavanton.yoump3.eventbus.Event
 import com.zavanton.yoump3.eventbus.EventBus
 import com.zavanton.yoump3.eventbus.Message
 import com.zavanton.yoump3.ui.splash.di.SplashActivityComponentManager
-import com.zavanton.yoump3.utils.Log
-import com.zavanton.yoump3.utils.Permissions
+import com.zavanton.yoump3.core.utils.Log
+import com.zavanton.yoump3.core.utils.Permissions
 import io.reactivex.disposables.CompositeDisposable
 import javax.inject.Inject
 

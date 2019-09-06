@@ -1,14 +1,14 @@
 package com.zavanton.yoump3.di.module
 
+import com.zavanton.yoump3.core.di.AppScope
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
-import javax.inject.Singleton
 
 @Module
 class NetworkModule {
 
-    @Singleton
+    @AppScope
     @Provides
     fun provideClient(): OkHttpClient = OkHttpClient()
 }

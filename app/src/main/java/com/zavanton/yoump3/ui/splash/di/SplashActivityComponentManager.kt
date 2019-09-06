@@ -2,7 +2,7 @@ package com.zavanton.yoump3.ui.splash.di
 
 import androidx.fragment.app.FragmentActivity
 import com.zavanton.yoump3.di.AppComponentManager
-import com.zavanton.yoump3.utils.Log
+import com.zavanton.yoump3.core.utils.Log
 
 object SplashActivityComponentManager {
 

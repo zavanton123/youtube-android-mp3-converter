@@ -6,13 +6,9 @@ import android.content.Context
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
-import com.zavanton.yoump3.di.ApplicationContext
-import com.zavanton.yoump3.di.HighNotificationChannel
-import com.zavanton.yoump3.di.LowNotificationChannel
-import com.zavanton.yoump3.di.NormalNotificationChannel
+import com.zavanton.yoump3.core.di.*
 import dagger.Module
 import dagger.Provides
-import javax.inject.Singleton
 
 @Module
 class NotificationModule {
@@ -56,7 +52,7 @@ class NotificationModule {
     }
 
 
-    @Singleton
+    @AppScope
     @Provides
     fun provideNotificationManager(
         @ApplicationContext
@@ -69,7 +65,7 @@ class NotificationModule {
                 }
             }
 
-    @Singleton
+    @AppScope
     @Provides
     @NormalNotificationChannel
     fun provideNotificationBuilderWithNormalNotificationChannel(
@@ -78,7 +74,7 @@ class NotificationModule {
     ): NotificationCompat.Builder =
         NotificationCompat.Builder(context, NOTIFICATION_CHANNEL_NORMAL)
 
-    @Singleton
+    @AppScope
     @Provides
     @LowNotificationChannel
     fun provideNotificationBuilderWithLowNotificationChannel(
@@ -87,7 +83,7 @@ class NotificationModule {
     ): NotificationCompat.Builder =
         NotificationCompat.Builder(context, NOTIFICATION_CHANNEL_LOW)
 
-    @Singleton
+    @AppScope
     @Provides
     @HighNotificationChannel
     fun provideNotificationBuilderWithHighNotificationChannel(

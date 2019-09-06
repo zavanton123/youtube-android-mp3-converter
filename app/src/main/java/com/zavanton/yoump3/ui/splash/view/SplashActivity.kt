@@ -11,7 +11,7 @@ import com.zavanton.yoump3.ui.main.activity.view.MainActivity
 import com.zavanton.yoump3.ui.splash.viewModel.SplashActivityViewModel
 import com.zavanton.yoump3.ui.splash.viewModel.SplashActivityViewModelFactory
 import com.zavanton.yoump3.ui.splash.viewModel.SplashEvent
-import com.zavanton.yoump3.utils.Log
+import com.zavanton.yoump3.core.utils.Log
 
 class SplashActivity : AppCompatActivity() {
 

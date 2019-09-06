@@ -3,7 +3,7 @@ package com.zavanton.yoump3.ui.main.fragment.view
 import androidx.lifecycle.ViewModel
 import com.zavanton.yoump3.ui.main.fragment.di.manager.MainFragmentComponentManager
 import com.zavanton.yoump3.ui.main.fragment.presenter.IMainFragmentPresenter
-import com.zavanton.yoump3.utils.Log
+import com.zavanton.yoump3.core.utils.Log
 import javax.inject.Inject
 
 class MainFragmentViewModel : ViewModel() {

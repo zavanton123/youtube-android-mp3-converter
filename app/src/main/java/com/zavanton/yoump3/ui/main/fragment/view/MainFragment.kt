@@ -10,7 +10,7 @@ import androidx.lifecycle.ViewModelProviders
 import com.zavanton.yoump3.R
 import com.zavanton.yoump3.ui.download.view.DownloadService
 import com.zavanton.yoump3.ui.main.fragment.presenter.IMainFragmentPresenter
-import com.zavanton.yoump3.utils.Log
+import com.zavanton.yoump3.core.utils.Log
 import kotlinx.android.synthetic.main.fmt_main.*
 
 class MainFragment : Fragment(), IMainFragment {

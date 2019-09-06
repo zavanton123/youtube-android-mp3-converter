@@ -2,7 +2,7 @@ package com.zavanton.yoump3.ui.download.di
 
 import com.zavanton.yoump3.di.AppComponentManager
 import com.zavanton.yoump3.ui.download.view.DownloadService
-import com.zavanton.yoump3.utils.Log
+import com.zavanton.yoump3.core.utils.Log
 
 object DownloadServiceComponentManager {
 

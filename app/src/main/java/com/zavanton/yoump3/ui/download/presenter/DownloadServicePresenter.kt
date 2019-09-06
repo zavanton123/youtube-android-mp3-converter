@@ -1,16 +1,16 @@
 package com.zavanton.yoump3.ui.download.presenter
 
 import android.os.Environment
-import com.zavanton.yoump3.di.IoThreadScheduler
-import com.zavanton.yoump3.di.MainThreadScheduler
-import com.zavanton.yoump3.di.ServiceScope
+import com.zavanton.yoump3.core.di.IoThreadScheduler
+import com.zavanton.yoump3.core.di.MainThreadScheduler
+import com.zavanton.yoump3.core.di.ServiceScope
 import com.zavanton.yoump3.domain.interactor.convert.IConvertInteractor
 import com.zavanton.yoump3.domain.interactor.download.IDownloadInteractor
 import com.zavanton.yoump3.eventbus.Event
 import com.zavanton.yoump3.eventbus.EventBus
 import com.zavanton.yoump3.eventbus.Message
 import com.zavanton.yoump3.ui.download.view.IDownloadService
-import com.zavanton.yoump3.utils.Log
+import com.zavanton.yoump3.core.utils.Log
 import io.reactivex.Scheduler
 import io.reactivex.disposables.CompositeDisposable
 import java.text.SimpleDateFormat

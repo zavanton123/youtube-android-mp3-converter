@@ -1,4 +1,4 @@
-package com.zavanton.yoump3.di
+package com.zavanton.yoump3.core.di
 
 import javax.inject.Qualifier
 

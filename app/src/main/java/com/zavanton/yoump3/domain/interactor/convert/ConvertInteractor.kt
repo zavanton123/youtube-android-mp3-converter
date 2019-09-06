@@ -1,8 +1,8 @@
 package com.zavanton.yoump3.domain.interactor.convert
 
-import com.zavanton.yoump3.di.IoThreadScheduler
+import com.zavanton.yoump3.core.di.IoThreadScheduler
 import com.zavanton.yoump3.domain.model.ConversionManager
-import com.zavanton.yoump3.utils.Log
+import com.zavanton.yoump3.core.utils.Log
 import io.reactivex.Observable
 import io.reactivex.Scheduler
 import javax.inject.Inject

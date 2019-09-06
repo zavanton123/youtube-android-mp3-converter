@@ -5,7 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProviders
 import com.zavanton.yoump3.R
 import com.zavanton.yoump3.ui.main.fragment.view.MainFragment
-import com.zavanton.yoump3.utils.Log
+import com.zavanton.yoump3.core.utils.Log
 
 class MainActivity : AppCompatActivity() {
 

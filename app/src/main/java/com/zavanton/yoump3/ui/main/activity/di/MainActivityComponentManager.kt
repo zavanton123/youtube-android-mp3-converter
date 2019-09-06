@@ -2,7 +2,7 @@ package com.zavanton.yoump3.ui.main.activity.di
 
 import com.zavanton.yoump3.di.AppComponentManager
 import com.zavanton.yoump3.ui.main.activity.view.MainActivityViewModel
-import com.zavanton.yoump3.utils.Log
+import com.zavanton.yoump3.core.utils.Log
 
 object MainActivityComponentManager {
 

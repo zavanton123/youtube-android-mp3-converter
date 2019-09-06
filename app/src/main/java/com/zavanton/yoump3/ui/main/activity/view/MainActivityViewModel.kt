@@ -2,7 +2,7 @@ package com.zavanton.yoump3.ui.main.activity.view
 
 import androidx.lifecycle.ViewModel
 import com.zavanton.yoump3.ui.main.activity.di.MainActivityComponentManager
-import com.zavanton.yoump3.utils.Log
+import com.zavanton.yoump3.core.utils.Log
 
 class MainActivityViewModel : ViewModel() {
 

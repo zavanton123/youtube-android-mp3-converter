@@ -1,8 +1,6 @@
 package com.zavanton.yoump3.ui.main.activity.di
 
-import com.zavanton.yoump3.di.ActivityScope
-import com.zavanton.yoump3.ui.main.activity.di.MainActivityBindModule
-import com.zavanton.yoump3.ui.main.activity.di.MainActivityProvideModule
+import com.zavanton.yoump3.core.di.ActivityScope
 import com.zavanton.yoump3.ui.main.activity.view.MainActivityViewModel
 import com.zavanton.yoump3.ui.main.fragment.di.component.MainFragmentComponent
 import com.zavanton.yoump3.ui.main.fragment.di.module.MainFragmentProvideModule

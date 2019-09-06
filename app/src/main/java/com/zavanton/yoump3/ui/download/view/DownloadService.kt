@@ -7,11 +7,11 @@ import android.content.Intent
 import android.os.IBinder
 import androidx.core.app.NotificationCompat
 import com.zavanton.yoump3.R
-import com.zavanton.yoump3.di.NormalNotificationChannel
+import com.zavanton.yoump3.core.di.NormalNotificationChannel
 import com.zavanton.yoump3.ui.download.di.DownloadServiceComponentManager
 import com.zavanton.yoump3.ui.download.presenter.IDownloadServicePresenter
 import com.zavanton.yoump3.ui.main.activity.view.MainActivity
-import com.zavanton.yoump3.utils.Log
+import com.zavanton.yoump3.core.utils.Log
 import javax.inject.Inject
 
 class DownloadService : Service(), IDownloadService {

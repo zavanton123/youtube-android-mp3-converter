@@ -1,11 +1,11 @@
 package com.zavanton.yoump3.eventbus
 
-import com.zavanton.yoump3.utils.Log
+import com.zavanton.yoump3.core.di.AppScope
+import com.zavanton.yoump3.core.utils.Log
 import io.reactivex.subjects.BehaviorSubject
 import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
+@AppScope
 class EventBus @Inject constructor() {
 
     init {
