@@ -1,4 +1,4 @@
-package com.zavanton.yoump3.di.module
+package com.zavanton.yoump3.core.di.module
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -72,7 +72,9 @@ class NotificationModule {
         @ApplicationContext
         context: Context
     ): NotificationCompat.Builder =
-        NotificationCompat.Builder(context, NOTIFICATION_CHANNEL_NORMAL)
+        NotificationCompat.Builder(context,
+            NOTIFICATION_CHANNEL_NORMAL
+        )
 
     @AppScope
     @Provides
@@ -81,7 +83,9 @@ class NotificationModule {
         @ApplicationContext
         context: Context
     ): NotificationCompat.Builder =
-        NotificationCompat.Builder(context, NOTIFICATION_CHANNEL_LOW)
+        NotificationCompat.Builder(context,
+            NOTIFICATION_CHANNEL_LOW
+        )
 
     @AppScope
     @Provides
@@ -90,5 +94,7 @@ class NotificationModule {
         @ApplicationContext
         context: Context
     ): NotificationCompat.Builder =
-        NotificationCompat.Builder(context, NOTIFICATION_CHANNEL_HIGH)
+        NotificationCompat.Builder(context,
+            NOTIFICATION_CHANNEL_HIGH
+        )
 }

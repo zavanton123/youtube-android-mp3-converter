@@ -1,4 +1,4 @@
-package com.zavanton.yoump3.eventbus
+package com.zavanton.yoump3.core.eventBus
 
 enum class Event {
 

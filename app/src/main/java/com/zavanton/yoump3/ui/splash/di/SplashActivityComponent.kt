@@ -2,8 +2,7 @@ package com.zavanton.yoump3.ui.splash.di
 
 import androidx.fragment.app.FragmentActivity
 import com.tbruyelle.rxpermissions2.RxPermissions
-import com.zavanton.yoump3.core.di.ActivityScope
-import com.zavanton.yoump3.di.*
+import com.zavanton.yoump3.core.di.*
 import com.zavanton.yoump3.ui.splash.viewModel.ISplashActivityViewModel
 import com.zavanton.yoump3.ui.splash.viewModel.SplashActivityViewModel
 import com.zavanton.yoump3.ui.splash.viewModel.SplashActivityViewModelFactory

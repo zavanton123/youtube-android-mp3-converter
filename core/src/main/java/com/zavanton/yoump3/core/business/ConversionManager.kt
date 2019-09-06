@@ -1,4 +1,4 @@
-package com.zavanton.yoump3.domain.model
+package com.zavanton.yoump3.core.business
 
 import com.github.hiteshsondhi88.libffmpeg.ExecuteBinaryResponseHandler
 import com.github.hiteshsondhi88.libffmpeg.FFmpeg

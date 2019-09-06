@@ -1,4 +1,4 @@
-package com.zavanton.yoump3.eventbus
+package com.zavanton.yoump3.core.eventBus
 
 import com.zavanton.yoump3.core.di.AppScope
 import com.zavanton.yoump3.core.utils.Log

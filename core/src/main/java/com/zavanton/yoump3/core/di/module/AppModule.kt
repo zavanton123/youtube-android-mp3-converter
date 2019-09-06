@@ -1,4 +1,4 @@
-package com.zavanton.yoump3.di.module
+package com.zavanton.yoump3.core.di.module
 
 import android.content.Context
 import com.zavanton.yoump3.core.di.AppScope

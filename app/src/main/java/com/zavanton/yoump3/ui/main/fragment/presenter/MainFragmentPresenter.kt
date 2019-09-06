@@ -2,9 +2,9 @@ package com.zavanton.yoump3.ui.main.fragment.presenter
 
 import android.content.ClipboardManager
 import com.zavanton.yoump3.core.di.FragmentScope
-import com.zavanton.yoump3.eventbus.Event
-import com.zavanton.yoump3.eventbus.EventBus
-import com.zavanton.yoump3.eventbus.Message
+import com.zavanton.yoump3.core.eventBus.Event
+import com.zavanton.yoump3.core.eventBus.EventBus
+import com.zavanton.yoump3.core.eventBus.Message
 import com.zavanton.yoump3.ui.main.fragment.view.IMainFragment
 import com.zavanton.yoump3.core.utils.Log
 import io.reactivex.disposables.CompositeDisposable
@@ -62,8 +62,16 @@ constructor(
     override fun startDownloadService() {
         Log.d()
 
-        Log.i("${Message(Event.DOWNLOAD_URL, actionUrl ?: clipboardUrl)}")
-        eventBus.send(Message(Event.DOWNLOAD_URL, actionUrl ?: clipboardUrl))
+        Log.i("${Message(
+            Event.DOWNLOAD_URL,
+            actionUrl ?: clipboardUrl
+        )}")
+        eventBus.send(
+            Message(
+                Event.DOWNLOAD_URL,
+                actionUrl ?: clipboardUrl
+            )
+        )
 
         view?.startDownloadService()
     }
@@ -78,8 +86,16 @@ constructor(
                 Log.i("${Message(Event.CLIPBOARD_NOT_EMPTY)}")
                 eventBus.send(Message(Event.CLIPBOARD_NOT_EMPTY))
 
-                Log.i("${Message(Event.CLIPBOARD_URL, clipboardItem.text.toString())}")
-                eventBus.send(Message(Event.CLIPBOARD_URL, clipboardItem.text.toString()))
+                Log.i("${Message(
+                    Event.CLIPBOARD_URL,
+                    clipboardItem.text.toString()
+                )}")
+                eventBus.send(
+                    Message(
+                        Event.CLIPBOARD_URL,
+                        clipboardItem.text.toString()
+                    )
+                )
             } else {
                 Log.i("${Message(Event.CLIPBOARD_EMPTY)}")
                 eventBus.send(Message(Event.CLIPBOARD_EMPTY))

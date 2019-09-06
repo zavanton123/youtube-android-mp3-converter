@@ -1,7 +1,6 @@
 package com.zavanton.yoump3.ui.download.di
 
-import com.zavanton.yoump3.core.di.ServiceScope
-import com.zavanton.yoump3.di.*
+import com.zavanton.yoump3.core.di.*
 import com.zavanton.yoump3.domain.interactor.convert.ConvertInteractor
 import com.zavanton.yoump3.domain.interactor.convert.IConvertInteractor
 import com.zavanton.yoump3.domain.interactor.download.DownloadInteractor

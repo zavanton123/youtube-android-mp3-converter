@@ -4,9 +4,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.tbruyelle.rxpermissions2.RxPermissions
 import com.zavanton.yoump3.core.di.ActivityScope
-import com.zavanton.yoump3.eventbus.Event
-import com.zavanton.yoump3.eventbus.EventBus
-import com.zavanton.yoump3.eventbus.Message
+import com.zavanton.yoump3.core.eventBus.Event
+import com.zavanton.yoump3.core.eventBus.EventBus
+import com.zavanton.yoump3.core.eventBus.Message
 import com.zavanton.yoump3.ui.splash.di.SplashActivityComponentManager
 import com.zavanton.yoump3.core.utils.Log
 import com.zavanton.yoump3.core.utils.Permissions
@@ -26,8 +26,16 @@ class SplashActivityViewModel @Inject constructor(
     override fun processExtra(extra: String) {
         Log.d(extra)
 
-        Log.i("${Message(Event.INTENT_ACTION_URL, extra)}")
-        eventBus.send(Message(Event.INTENT_ACTION_URL, extra))
+        Log.i("${Message(
+            Event.INTENT_ACTION_URL,
+            extra
+        )}")
+        eventBus.send(
+            Message(
+                Event.INTENT_ACTION_URL,
+                extra
+            )
+        )
     }
 
     override fun checkPermissions() {

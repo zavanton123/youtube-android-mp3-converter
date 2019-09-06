@@ -1,6 +1,7 @@
 package com.zavanton.yoump3.ui.splash.di
 
 import androidx.fragment.app.FragmentActivity
+import com.zavanton.yoump3.core.di.CoreComponentManager
 import com.zavanton.yoump3.core.utils.Log
 import com.zavanton.yoump3.di.AppComponentManager
 
@@ -14,13 +15,13 @@ object SplashActivityComponentManager {
         return splashActivityComponent ?: DaggerSplashActivityComponent
             .builder()
             .splashActivityProvideModule(SplashActivityProvideModule(activity))
-            .appApi(AppComponentManager.getAppComponent())
-            .schedulerApi(AppComponentManager.getAppComponent())
-            .clipboardApi(AppComponentManager.getAppComponent())
-            .networkApi(AppComponentManager.getAppComponent())
-            .eventBusApi(AppComponentManager.getAppComponent())
-            .notificationApi(AppComponentManager.getAppComponent())
-            .conversionApi(AppComponentManager.getAppComponent())
+            .appApi(CoreComponentManager.getCoreComponent())
+            .schedulerApi(CoreComponentManager.getCoreComponent())
+            .clipboardApi(CoreComponentManager.getCoreComponent())
+            .networkApi(CoreComponentManager.getCoreComponent())
+            .eventBusApi(CoreComponentManager.getCoreComponent())
+            .notificationApi(CoreComponentManager.getCoreComponent())
+            .conversionApi(CoreComponentManager.getCoreComponent())
             .build()
             .also {
                 splashActivityComponent = it

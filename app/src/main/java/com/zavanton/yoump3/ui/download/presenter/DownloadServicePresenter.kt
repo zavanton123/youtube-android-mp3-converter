@@ -6,9 +6,9 @@ import com.zavanton.yoump3.core.di.MainThreadScheduler
 import com.zavanton.yoump3.core.di.ServiceScope
 import com.zavanton.yoump3.domain.interactor.convert.IConvertInteractor
 import com.zavanton.yoump3.domain.interactor.download.IDownloadInteractor
-import com.zavanton.yoump3.eventbus.Event
-import com.zavanton.yoump3.eventbus.EventBus
-import com.zavanton.yoump3.eventbus.Message
+import com.zavanton.yoump3.core.eventBus.Event
+import com.zavanton.yoump3.core.eventBus.EventBus
+import com.zavanton.yoump3.core.eventBus.Message
 import com.zavanton.yoump3.ui.download.view.IDownloadService
 import com.zavanton.yoump3.core.utils.Log
 import io.reactivex.Scheduler
@@ -118,7 +118,12 @@ class DownloadServicePresenter @Inject constructor(
         Log.d("progress: $progress")
 
         Log.i("Message(Event.DOWNLOAD_PROGRESS, progress)")
-        eventBus.send(Message(Event.DOWNLOAD_PROGRESS, progress.toString()))
+        eventBus.send(
+            Message(
+                Event.DOWNLOAD_PROGRESS,
+                progress.toString()
+            )
+        )
     }
 
     private fun onDownloadError(error: Throwable) {
@@ -158,8 +163,16 @@ class DownloadServicePresenter @Inject constructor(
     private fun onConvertProgress(progress: String) {
         Log.d("progress: $progress")
 
-        Log.i("${Message(Event.CONVERSION_PROGRESS, progress)}")
-        eventBus.send(Message(Event.CONVERSION_PROGRESS, progress))
+        Log.i("${Message(
+            Event.CONVERSION_PROGRESS,
+            progress
+        )}")
+        eventBus.send(
+            Message(
+                Event.CONVERSION_PROGRESS,
+                progress
+            )
+        )
     }
 
     private fun onConvertError(error: Throwable) {

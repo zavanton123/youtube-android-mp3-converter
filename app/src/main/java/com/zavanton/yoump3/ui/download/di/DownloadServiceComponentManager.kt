@@ -1,7 +1,7 @@
 package com.zavanton.yoump3.ui.download.di
 
+import com.zavanton.yoump3.core.di.CoreComponentManager
 import com.zavanton.yoump3.core.utils.Log
-import com.zavanton.yoump3.di.AppComponentManager
 
 object DownloadServiceComponentManager {
 
@@ -11,13 +11,13 @@ object DownloadServiceComponentManager {
 
         return downloadServiceComponent ?: DaggerDownloadServiceComponent
             .builder()
-            .appApi(AppComponentManager.getAppComponent())
-            .schedulerApi(AppComponentManager.getAppComponent())
-            .clipboardApi(AppComponentManager.getAppComponent())
-            .networkApi(AppComponentManager.getAppComponent())
-            .eventBusApi(AppComponentManager.getAppComponent())
-            .notificationApi(AppComponentManager.getAppComponent())
-            .conversionApi(AppComponentManager.getAppComponent())
+            .appApi(CoreComponentManager.getCoreComponent())
+            .schedulerApi(CoreComponentManager.getCoreComponent())
+            .clipboardApi(CoreComponentManager.getCoreComponent())
+            .networkApi(CoreComponentManager.getCoreComponent())
+            .eventBusApi(CoreComponentManager.getCoreComponent())
+            .notificationApi(CoreComponentManager.getCoreComponent())
+            .conversionApi(CoreComponentManager.getCoreComponent())
             .build()
             .also {
                 downloadServiceComponent = it
