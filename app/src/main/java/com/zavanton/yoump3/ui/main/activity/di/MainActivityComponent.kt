@@ -1,17 +1,27 @@
 package com.zavanton.yoump3.ui.main.activity.di
 
 import com.zavanton.yoump3.core.di.ActivityScope
+import com.zavanton.yoump3.di.*
 import com.zavanton.yoump3.ui.main.activity.view.MainActivityViewModel
 import com.zavanton.yoump3.ui.main.fragment.di.component.MainFragmentComponent
 import com.zavanton.yoump3.ui.main.fragment.di.module.MainFragmentProvideModule
+import dagger.Component
 import dagger.Module
-import dagger.Subcomponent
 
 @ActivityScope
-@Subcomponent(
+@Component(
     modules = [
         MainActivityProvideModule::class,
         MainActivityBindModule::class
+    ],
+    dependencies = [
+        AppApi::class,
+        SchedulerApi::class,
+        ClipboardApi::class,
+        NetworkApi::class,
+        EventBusApi::class,
+        NotificationApi::class,
+        ConversionApi::class
     ]
 )
 interface MainActivityComponent {

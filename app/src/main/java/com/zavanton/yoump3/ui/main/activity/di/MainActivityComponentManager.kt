@@ -1,22 +1,26 @@
 package com.zavanton.yoump3.ui.main.activity.di
 
-import com.zavanton.yoump3.di.AppComponentManager
-import com.zavanton.yoump3.ui.main.activity.view.MainActivityViewModel
 import com.zavanton.yoump3.core.utils.Log
+import com.zavanton.yoump3.di.AppComponentManager
 
 object MainActivityComponentManager {
 
-    var mainActivityComponent: MainActivityComponent? = null
+    private var mainActivityComponent: MainActivityComponent? = null
 
-    fun inject(mainActivityViewModel: MainActivityViewModel) {
-        Log.d()
-
-        if (mainActivityComponent == null) {
-            mainActivityComponent = AppComponentManager.getAppComponent()
-                .plusMainActivityComponent(MainActivityProvideModule())
-        }
-
-        mainActivityComponent?.inject(mainActivityViewModel)
+    fun getMainActivityComponent(): MainActivityComponent {
+        return mainActivityComponent ?: DaggerMainActivityComponent
+            .builder()
+            .appApi(AppComponentManager.getAppComponent())
+            .schedulerApi(AppComponentManager.getAppComponent())
+            .clipboardApi(AppComponentManager.getAppComponent())
+            .networkApi(AppComponentManager.getAppComponent())
+            .eventBusApi(AppComponentManager.getAppComponent())
+            .notificationApi(AppComponentManager.getAppComponent())
+            .conversionApi(AppComponentManager.getAppComponent())
+            .build()
+            .also {
+                mainActivityComponent = it
+            }
     }
 
     fun clear() {

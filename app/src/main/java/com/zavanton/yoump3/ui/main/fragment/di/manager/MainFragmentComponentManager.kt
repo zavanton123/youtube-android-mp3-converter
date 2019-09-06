@@ -13,8 +13,8 @@ object MainFragmentComponentManager {
     fun inject(mainFragmentViewModel: MainFragmentViewModel) {
         Log.d()
 
-        mainFragmentComponent = MainActivityComponentManager.mainActivityComponent
-            ?.plusMainFragmentComponent(MainFragmentProvideModule())
+        mainFragmentComponent = MainActivityComponentManager.getMainActivityComponent()
+            .plusMainFragmentComponent(MainFragmentProvideModule())
 
         mainFragmentComponent?.inject(mainFragmentViewModel)
     }

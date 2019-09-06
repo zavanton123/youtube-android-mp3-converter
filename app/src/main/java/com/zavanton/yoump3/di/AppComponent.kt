@@ -10,8 +10,6 @@ import com.zavanton.yoump3.core.di.*
 import com.zavanton.yoump3.di.module.*
 import com.zavanton.yoump3.domain.model.ConversionManager
 import com.zavanton.yoump3.eventbus.EventBus
-import com.zavanton.yoump3.ui.main.activity.di.MainActivityComponent
-import com.zavanton.yoump3.ui.main.activity.di.MainActivityProvideModule
 import com.zavanton.yoump3.ui.splash.di.SplashActivityComponent
 import com.zavanton.yoump3.ui.splash.di.SplashActivityProvideModule
 import dagger.Component
@@ -93,8 +91,6 @@ interface AppComponent :
     fun inject(theApp: TheApp)
 
     fun plusSplashActivityComponent(module: SplashActivityProvideModule): SplashActivityComponent
-
-    fun plusMainActivityComponent(module: MainActivityProvideModule): MainActivityComponent
 }
 
 
