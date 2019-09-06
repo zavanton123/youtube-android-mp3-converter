@@ -4,8 +4,8 @@ import com.zavanton.yoump3.app.TheApp
 import com.zavanton.yoump3.di.module.*
 import com.zavanton.yoump3.ui.download.di.DownloadServiceComponent
 import com.zavanton.yoump3.ui.download.di.DownloadServiceProvideModule
-import com.zavanton.yoump3.ui.main.activity.di.component.MainActivityComponent
-import com.zavanton.yoump3.ui.main.activity.di.module.MainActivityProvideModule
+import com.zavanton.yoump3.ui.main.activity.di.MainActivityComponent
+import com.zavanton.yoump3.ui.main.activity.di.MainActivityProvideModule
 import com.zavanton.yoump3.ui.splash.di.SplashActivityComponent
 import com.zavanton.yoump3.ui.splash.di.SplashActivityProvideModule
 import dagger.Component

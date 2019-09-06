@@ -1,8 +1,6 @@
-package com.zavanton.yoump3.ui.main.activity.di.manager
+package com.zavanton.yoump3.ui.main.activity.di
 
 import com.zavanton.yoump3.di.AppComponentManager
-import com.zavanton.yoump3.ui.main.activity.di.component.MainActivityComponent
-import com.zavanton.yoump3.ui.main.activity.di.module.MainActivityProvideModule
 import com.zavanton.yoump3.ui.main.activity.view.MainActivityViewModel
 import com.zavanton.yoump3.utils.Log
 

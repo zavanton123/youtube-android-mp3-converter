@@ -1,6 +1,6 @@
 package com.zavanton.yoump3.ui.main.fragment.di.manager
 
-import com.zavanton.yoump3.ui.main.activity.di.manager.MainActivityComponentManager
+import com.zavanton.yoump3.ui.main.activity.di.MainActivityComponentManager
 import com.zavanton.yoump3.ui.main.fragment.di.component.MainFragmentComponent
 import com.zavanton.yoump3.ui.main.fragment.di.module.MainFragmentProvideModule
 import com.zavanton.yoump3.ui.main.fragment.view.MainFragmentViewModel
