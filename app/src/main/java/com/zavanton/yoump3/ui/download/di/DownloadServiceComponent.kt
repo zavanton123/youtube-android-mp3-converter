@@ -1,6 +1,7 @@
 package com.zavanton.yoump3.ui.download.di
 
 import com.zavanton.yoump3.core.di.ServiceScope
+import com.zavanton.yoump3.di.*
 import com.zavanton.yoump3.domain.interactor.convert.ConvertInteractor
 import com.zavanton.yoump3.domain.interactor.convert.IConvertInteractor
 import com.zavanton.yoump3.domain.interactor.download.DownloadInteractor
@@ -9,14 +10,23 @@ import com.zavanton.yoump3.ui.download.presenter.DownloadServicePresenter
 import com.zavanton.yoump3.ui.download.presenter.IDownloadServicePresenter
 import com.zavanton.yoump3.ui.download.view.DownloadService
 import dagger.Binds
+import dagger.Component
 import dagger.Module
-import dagger.Subcomponent
 
 @ServiceScope
-@Subcomponent(
+@Component(
     modules = [
         DownloadServiceProvideModule::class,
         DownloadServiceBindModule::class
+    ],
+    dependencies = [
+        AppApi::class,
+        SchedulerApi::class,
+        ClipboardApi::class,
+        NetworkApi::class,
+        EventBusApi::class,
+        NotificationApi::class,
+        ConversionApi::class
     ]
 )
 interface DownloadServiceComponent {

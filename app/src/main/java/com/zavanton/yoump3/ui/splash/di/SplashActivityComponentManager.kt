@@ -11,7 +11,7 @@ object SplashActivityComponentManager {
     fun get(activity: FragmentActivity): SplashActivityComponent? {
         Log.d()
         if (splashActivityComponent == null) {
-            splashActivityComponent = AppComponentManager.appComponent
+            splashActivityComponent = AppComponentManager.getAppComponent()
                 .plusSplashActivityComponent(SplashActivityProvideModule(activity))
         }
 

@@ -1,22 +1,27 @@
 package com.zavanton.yoump3.ui.download.di
 
-import com.zavanton.yoump3.di.AppComponentManager
-import com.zavanton.yoump3.ui.download.view.DownloadService
 import com.zavanton.yoump3.core.utils.Log
+import com.zavanton.yoump3.di.AppComponentManager
 
 object DownloadServiceComponentManager {
 
     private var downloadServiceComponent: DownloadServiceComponent? = null
 
-    fun inject(downloadService: DownloadService) {
-        Log.d()
+    fun getDownloadServiceComponent(): DownloadServiceComponent {
 
-        if (downloadServiceComponent == null) {
-            downloadServiceComponent = AppComponentManager.appComponent
-                .plusDownloadServiceComponent(DownloadServiceProvideModule())
-        }
-
-        downloadServiceComponent?.inject(downloadService)
+        return downloadServiceComponent ?: DaggerDownloadServiceComponent
+            .builder()
+            .appApi(AppComponentManager.getAppComponent())
+            .schedulerApi(AppComponentManager.getAppComponent())
+            .clipboardApi(AppComponentManager.getAppComponent())
+            .networkApi(AppComponentManager.getAppComponent())
+            .eventBusApi(AppComponentManager.getAppComponent())
+            .notificationApi(AppComponentManager.getAppComponent())
+            .conversionApi(AppComponentManager.getAppComponent())
+            .build()
+            .also {
+                downloadServiceComponent = it
+            }
     }
 
     fun clear() {

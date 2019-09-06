@@ -1,18 +1,27 @@
 package com.zavanton.yoump3.di
 
 import com.zavanton.yoump3.app.TheApp
-import com.zavanton.yoump3.di.module.AppModule
 import com.zavanton.yoump3.core.utils.Log
+import com.zavanton.yoump3.di.module.AppModule
 
 object AppComponentManager {
 
-    lateinit var appComponent: AppComponent
+    private var appComponent: AppComponent? = null
 
-    fun inject(theApp: TheApp) {
+    private lateinit var theApp: TheApp
+
+    fun init(theApp: TheApp){
+        this.theApp = theApp
+    }
+
+    fun getAppComponent(): AppComponent {
         Log.d()
 
-        appComponent = DaggerAppComponent.builder()
+        return appComponent ?: DaggerAppComponent.builder()
             .appModule(AppModule(theApp))
             .build()
+            .also {
+                appComponent = it
+            }
     }
 }

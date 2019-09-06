@@ -12,7 +12,7 @@ object MainActivityComponentManager {
         Log.d()
 
         if (mainActivityComponent == null) {
-            mainActivityComponent = AppComponentManager.appComponent
+            mainActivityComponent = AppComponentManager.getAppComponent()
                 .plusMainActivityComponent(MainActivityProvideModule())
         }
 
