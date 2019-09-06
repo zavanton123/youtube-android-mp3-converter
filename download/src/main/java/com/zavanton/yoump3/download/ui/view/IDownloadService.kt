@@ -1,4 +1,4 @@
-package com.zavanton.yoump3.ui.download.view
+package com.zavanton.yoump3.download.ui.view
 
 interface IDownloadService {
 

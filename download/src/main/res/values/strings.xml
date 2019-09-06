@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">download</string>
+
+    <string name="notification_title">YouMP3 is currently working</string>
+    <string name="notification_content_info">The YouMP3 service is running...</string>
+    <string name="notification_content_text">Downloading a Youtube video and converting it to mp3...</string>
+
+</resources>

@@ -1,16 +1,16 @@
-package com.zavanton.yoump3.ui.download.presenter
+package com.zavanton.yoump3.download.ui.presenter
 
 import android.os.Environment
 import com.zavanton.yoump3.core.di.IoThreadScheduler
 import com.zavanton.yoump3.core.di.MainThreadScheduler
 import com.zavanton.yoump3.core.di.ServiceScope
-import com.zavanton.yoump3.domain.interactor.convert.IConvertInteractor
-import com.zavanton.yoump3.domain.interactor.download.IDownloadInteractor
 import com.zavanton.yoump3.core.eventBus.Event
 import com.zavanton.yoump3.core.eventBus.EventBus
 import com.zavanton.yoump3.core.eventBus.Message
-import com.zavanton.yoump3.ui.download.view.IDownloadService
 import com.zavanton.yoump3.core.utils.Log
+import com.zavanton.yoump3.download.interactor.convert.IConvertInteractor
+import com.zavanton.yoump3.download.interactor.download.IDownloadInteractor
+import com.zavanton.yoump3.download.ui.view.IDownloadService
 import io.reactivex.Scheduler
 import io.reactivex.disposables.CompositeDisposable
 import java.text.SimpleDateFormat
@@ -163,10 +163,12 @@ class DownloadServicePresenter @Inject constructor(
     private fun onConvertProgress(progress: String) {
         Log.d("progress: $progress")
 
-        Log.i("${Message(
-            Event.CONVERSION_PROGRESS,
-            progress
-        )}")
+        Log.i(
+            "${Message(
+                Event.CONVERSION_PROGRESS,
+                progress
+            )}"
+        )
         eventBus.send(
             Message(
                 Event.CONVERSION_PROGRESS,

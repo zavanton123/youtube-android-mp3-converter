@@ -1,4 +1,4 @@
-package com.zavanton.yoump3.ui.download.di
+package com.zavanton.yoump3.download.di
 
 import com.zavanton.yoump3.core.di.CoreComponentManager
 import com.zavanton.yoump3.core.utils.Log

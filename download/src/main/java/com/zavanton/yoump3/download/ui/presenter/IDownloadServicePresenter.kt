@@ -1,6 +1,6 @@
-package com.zavanton.yoump3.ui.download.presenter
+package com.zavanton.yoump3.download.ui.presenter
 
-import com.zavanton.yoump3.ui.download.view.IDownloadService
+import com.zavanton.yoump3.download.ui.view.IDownloadService
 
 interface IDownloadServicePresenter {
 

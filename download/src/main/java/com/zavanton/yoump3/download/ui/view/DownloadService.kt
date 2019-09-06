@@ -1,4 +1,4 @@
-package com.zavanton.yoump3.ui.download.view
+package com.zavanton.yoump3.download.ui.view
 
 import android.app.NotificationManager
 import android.app.PendingIntent
@@ -6,12 +6,11 @@ import android.app.Service
 import android.content.Intent
 import android.os.IBinder
 import androidx.core.app.NotificationCompat
-import com.zavanton.yoump3.R
 import com.zavanton.yoump3.core.di.NormalNotificationChannel
 import com.zavanton.yoump3.core.utils.Log
-import com.zavanton.yoump3.ui.download.di.DownloadServiceComponentManager
-import com.zavanton.yoump3.ui.download.presenter.IDownloadServicePresenter
-import com.zavanton.yoump3.ui.main.activity.view.MainActivity
+import com.zavanton.yoump3.download.R
+import com.zavanton.yoump3.download.di.DownloadServiceComponentManager
+import com.zavanton.yoump3.download.ui.presenter.IDownloadServicePresenter
 import javax.inject.Inject
 
 class DownloadService : Service(), IDownloadService {
@@ -61,7 +60,11 @@ class DownloadService : Service(), IDownloadService {
     override fun startForeground() {
         Log.d()
 
-        val activityIntent = Intent(this, MainActivity::class.java)
+        // todo zavanton uncomment
+//        val activityIntent = Intent(this, MainActivity::class.java)
+//            .apply { addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP) }
+
+        val activityIntent = Intent()
             .apply { addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP) }
 
         val pendingIntent = PendingIntent.getActivity(

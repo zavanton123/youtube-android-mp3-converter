@@ -1,13 +1,13 @@
-package com.zavanton.yoump3.ui.download.di
+package com.zavanton.yoump3.download.di
 
 import com.zavanton.yoump3.core.di.*
-import com.zavanton.yoump3.domain.interactor.convert.ConvertInteractor
-import com.zavanton.yoump3.domain.interactor.convert.IConvertInteractor
-import com.zavanton.yoump3.domain.interactor.download.DownloadInteractor
-import com.zavanton.yoump3.domain.interactor.download.IDownloadInteractor
-import com.zavanton.yoump3.ui.download.presenter.DownloadServicePresenter
-import com.zavanton.yoump3.ui.download.presenter.IDownloadServicePresenter
-import com.zavanton.yoump3.ui.download.view.DownloadService
+import com.zavanton.yoump3.download.interactor.convert.ConvertInteractor
+import com.zavanton.yoump3.download.interactor.convert.IConvertInteractor
+import com.zavanton.yoump3.download.interactor.download.DownloadInteractor
+import com.zavanton.yoump3.download.interactor.download.IDownloadInteractor
+import com.zavanton.yoump3.download.ui.presenter.DownloadServicePresenter
+import com.zavanton.yoump3.download.ui.presenter.IDownloadServicePresenter
+import com.zavanton.yoump3.download.ui.view.DownloadService
 import dagger.Binds
 import dagger.Component
 import dagger.Module

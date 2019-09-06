@@ -38,7 +38,7 @@
                 android:theme="@style/AppTheme.NoActionBar"/>
 
         <service
-                android:name=".ui.download.view.DownloadService"
+                android:name="com.zavanton.yoump3.download.ui.view.DownloadService"
                 android:exported="false">
         </service>
     </application>
