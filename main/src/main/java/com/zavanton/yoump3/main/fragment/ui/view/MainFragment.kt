@@ -6,34 +6,36 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import com.zavanton.yoump3.download.ui.view.DownloadService
-import com.zavanton.yoump3.main.fragment.ui.presenter.IMainFragmentPresenter
 import com.zavanton.yoump3.core.utils.Log
+import com.zavanton.yoump3.download.ui.view.DownloadService
 import com.zavanton.yoump3.main.R
+import com.zavanton.yoump3.main.fragment.ui.viewModel.IMainFragmentViewModel
+import com.zavanton.yoump3.main.fragment.ui.viewModel.MainAction
+import com.zavanton.yoump3.main.fragment.ui.viewModel.MainFragmentViewModel
+import com.zavanton.yoump3.main.fragment.ui.viewModel.MainFragmentViewModelFactory
 import kotlinx.android.synthetic.main.fmt_main.*
 
-class MainFragment : Fragment(), IMainFragment {
+class MainFragment : Fragment() {
 
-    lateinit var presenter: IMainFragmentPresenter
+    private lateinit var viewModel: IMainFragmentViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         Log.d()
         super.onCreate(savedInstanceState)
 
-        setupPresenter()
+        viewModel = ViewModelProviders.of(this, MainFragmentViewModelFactory())
+            .get(MainFragmentViewModel::class.java)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        Log.d()
-        return inflater.inflate(R.layout.fmt_main, container, false)
-    }
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View =
+        inflater.inflate(R.layout.fmt_main, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Log.d()
 
-        presenter.onViewCreated()
+        viewModel.onViewCreated()
         initUI()
     }
 
@@ -41,29 +43,37 @@ class MainFragment : Fragment(), IMainFragment {
         super.onDestroyView()
         Log.d()
 
-        presenter.onDestroyView()
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        Log.d()
-
-        presenter.detach()
-    }
-
-    private fun setupPresenter() {
-        Log.d()
-        presenter = ViewModelProviders.of(this)
-            .get(MainFragmentViewModel::class.java)
-            .presenter.apply {
-            attach(this@MainFragment)
-        }
+        viewModel.onDestroyView()
     }
 
     private fun initUI() {
         Log.d()
         initToolbar()
         initFab()
+
+        listenForActions()
+    }
+
+    private fun listenForActions() {
+        viewModel.mainActionLiveData.observe(this,
+            Observer<MainAction> { mainAction ->
+                when (mainAction) {
+                    MainAction.ShowClipboardNotEmpty -> showClipboardNotEmpty()
+                    MainAction.ShowClipboardEmpty -> showClipboardEmpty()
+                    MainAction.ShowUrlValid -> showUrlValid()
+                    MainAction.ShowUrlInvalid -> showUrlInvalid()
+                    MainAction.StartDownloadService -> startDownloadService()
+                    MainAction.ShowDownloadStarted -> showDownloadStarted()
+                    is MainAction.ShowDownloadProgress -> showDownloadProgress(mainAction.downloadProgress)
+                    MainAction.ShowDownloadSuccess -> showDownloadSuccess()
+                    MainAction.ShowDownloadError -> showDownloadError()
+                    MainAction.ShowConversionStarted -> showConversionStarted()
+                    is MainAction.ShowConversionProgress -> showConversionProgress(mainAction.conversionProgress)
+                    MainAction.ShowConversionSuccess -> showConversionSuccess()
+                    MainAction.ShowConversionError -> showConversionError()
+                    MainAction.OtherAction -> Log.d("some other action")
+                }
+            })
     }
 
     private fun initToolbar() {
@@ -74,74 +84,74 @@ class MainFragment : Fragment(), IMainFragment {
     private fun initFab() {
         Log.d()
         vFab.setOnClickListener {
-            presenter.startDownloadService()
+            viewModel.startDownloadService()
         }
     }
 
-    override fun startDownloadService() {
+    private fun startDownloadService() {
         Log.d()
         val intent = Intent(requireContext(), DownloadService::class.java)
         requireActivity().startService(intent)
     }
 
-    override fun showClipboardEmpty() {
+    private fun showClipboardEmpty() {
         Log.d()
         vBox.setImageResource(R.drawable.ic_warning)
         vStatus.text = getString(R.string.clipboard_empty)
     }
 
-    override fun showClipboardNotEmpty() {
+    private fun showClipboardNotEmpty() {
         Log.d()
         vBox.setImageResource(R.drawable.ic_ok)
         vStatus.text = getString(R.string.clipboard_full)
     }
 
-    override fun showUrlValid() {
+    private fun showUrlValid() {
         Log.d()
         vStatus.text = getString(R.string.url_valid)
     }
 
-    override fun showUrlInvalid() {
+    private fun showUrlInvalid() {
         Log.d()
         vStatus.text = getString(R.string.url_invalid)
     }
 
-    override fun showDownloadStarted() {
+    private fun showDownloadStarted() {
         Log.d()
         vStatus.text = getString(R.string.download_started)
     }
 
-    override fun showDownloadProgress(downloadProgress: String?) {
+    private fun showDownloadProgress(downloadProgress: String?) {
         Log.d()
         vStatus.text = getString(R.string.download_progress, downloadProgress)
     }
 
-    override fun showDownloadSuccess() {
+    private fun showDownloadSuccess() {
         Log.d()
         vStatus.text = getString(R.string.download_success)
     }
 
-    override fun showDownloadError() {
+    private fun showDownloadError() {
         Log.d()
         vStatus.text = getString(R.string.download_error)
     }
 
-    override fun showConversionStarted() {
+    private fun showConversionStarted() {
         Log.d()
         vStatus.text = getString(R.string.conversion_started)
     }
 
-    override fun showConversionProgress(conversionProgress: String?) {
+    private fun showConversionProgress(conversionProgress: String?) {
         Log.d()
         vStatus.text = getString(R.string.conversion_progress, conversionProgress)
     }
 
-    override fun showConversionSuccess() {
+    private fun showConversionSuccess() {
         Log.d()
         vStatus.text = getString(R.string.conversion_success)
     }
 
-    override fun showConversionError() {
+    private fun showConversionError() {
         Log.d()
         vStatus.text = getString(R.string.conversion_error)
     }

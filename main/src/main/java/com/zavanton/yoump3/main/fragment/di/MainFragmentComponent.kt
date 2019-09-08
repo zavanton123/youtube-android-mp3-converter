@@ -1,9 +1,9 @@
 package com.zavanton.yoump3.main.fragment.di
 
 import com.zavanton.yoump3.core.di.FragmentScope
-import com.zavanton.yoump3.main.fragment.ui.presenter.IMainFragmentPresenter
-import com.zavanton.yoump3.main.fragment.ui.presenter.MainFragmentPresenter
-import com.zavanton.yoump3.main.fragment.ui.view.MainFragmentViewModel
+import com.zavanton.yoump3.main.fragment.ui.viewModel.IMainFragmentViewModel
+import com.zavanton.yoump3.main.fragment.ui.viewModel.MainFragmentViewModel
+import com.zavanton.yoump3.main.fragment.ui.viewModel.MainFragmentViewModelFactory
 import dagger.Binds
 import dagger.Module
 import dagger.Subcomponent
@@ -17,14 +17,14 @@ import dagger.Subcomponent
 )
 interface MainFragmentComponent {
 
-    fun inject(mainFragment: MainFragmentViewModel)
+    fun inject(factory: MainFragmentViewModelFactory)
 }
 
 @Module
 interface MainFragmentBindModule {
 
     @Binds
-    fun bindPresenter(presenter: MainFragmentPresenter): IMainFragmentPresenter
+    fun provideViewModel(impl: MainFragmentViewModel): IMainFragmentViewModel
 }
 
 @Module
