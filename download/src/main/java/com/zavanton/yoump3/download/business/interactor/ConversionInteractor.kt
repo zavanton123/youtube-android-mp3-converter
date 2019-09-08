@@ -1,4 +1,4 @@
-package com.zavanton.yoump3.download.business.interactor.conversion
+package com.zavanton.yoump3.download.business.interactor
 
 import com.zavanton.yoump3.core.di.ServiceScope
 import com.zavanton.yoump3.core.utils.Log

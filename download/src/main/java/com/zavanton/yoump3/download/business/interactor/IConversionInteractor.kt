@@ -1,4 +1,4 @@
-package com.zavanton.yoump3.download.business.interactor.conversion
+package com.zavanton.yoump3.download.business.interactor
 
 import io.reactivex.Observable
 

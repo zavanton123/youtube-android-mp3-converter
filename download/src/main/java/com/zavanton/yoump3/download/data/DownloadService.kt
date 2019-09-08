@@ -1,4 +1,4 @@
-package com.zavanton.yoump3.download.business.interactor.download
+package com.zavanton.yoump3.download.data
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -8,6 +8,8 @@ import at.huber.youtubeExtractor.YouTubeExtractor
 import at.huber.youtubeExtractor.YtFile
 import com.zavanton.yoump3.core.di.ApplicationContext
 import com.zavanton.yoump3.core.di.IoThreadScheduler
+import com.zavanton.yoump3.core.di.ServiceScope
+import com.zavanton.yoump3.core.utils.Constants.EMPTY_STRING
 import com.zavanton.yoump3.core.utils.Log
 import com.zavanton.yoump3.download.business.model.YoutubeTags
 import io.reactivex.Observable
@@ -21,44 +23,43 @@ import java.io.IOException
 import java.io.InputStream
 import javax.inject.Inject
 
-class DownloadInteractor
-@Inject
-constructor(
+@SuppressLint("StaticFieldLeak")
+@ServiceScope
+class DownloadService @Inject constructor(
     @ApplicationContext
-    private val context: Context,
+    private val appContext: Context,
+    private val client: OkHttpClient,
     @IoThreadScheduler
-    private val ioThreadScheduler: Scheduler,
-    private val client: OkHttpClient
-) : IDownloadInteractor {
+    private val ioThreadScheduler: Scheduler
+) : IDownloadService, YouTubeExtractor(appContext) {
 
-    // TODO has to return Observable<Double> - to trace download progress in percent
-    @SuppressLint("StaticFieldLeak")
-    override fun downloadFile(
+    private var downloadsFolder: String = EMPTY_STRING
+    private var targetFilename: String = EMPTY_STRING
+    private var videoExtension: String = EMPTY_STRING
+    private var emitter: ObservableEmitter<Int>? = null
+
+    override fun download(
         urlLink: String,
         downloadsFolder: String,
         targetFilename: String,
         videoExtension: String
-    ): Observable<Int> {
-        Log.d()
-        return Observable.create { emitter ->
+    ): Observable<Int> =
+        Observable.create<Int> { emitter ->
+            this.downloadsFolder = downloadsFolder
+            this.targetFilename = targetFilename
+            this.videoExtension = videoExtension
+            this.emitter = emitter
+            this.extract(urlLink, true, true)
+        }
 
-            object : YouTubeExtractor(context) {
-
-                override fun onExtractionComplete(ytFiles: SparseArray<YtFile>?, vMeta: VideoMeta) {
-                    Log.d()
-                    if (ytFiles != null) {
-
-                        val url = getUrl(ytFiles)
-
-                        downloadFileFromUrl(url, downloadsFolder, targetFilename, videoExtension, emitter)
-                    }
-                }
-            }.extract(urlLink, true, true)
+    override fun onExtractionComplete(ytFiles: SparseArray<YtFile>?, vMeta: VideoMeta) {
+        if (ytFiles != null) {
+            val url = getUrl(ytFiles)
+            downloadFileFromUrl(url, downloadsFolder, targetFilename, videoExtension, emitter)
         }
     }
 
     private fun getUrl(ytFiles: SparseArray<YtFile>): String? {
-        Log.d()
         var youtubeFile: YtFile? = null
         for (tag in YoutubeTags.ALL) {
 
@@ -75,12 +76,10 @@ constructor(
         downloadsFolder: String,
         targetFilename: String,
         videoExtension: String,
-        emitter: ObservableEmitter<Int>
+        emitter: ObservableEmitter<Int>?
     ) {
-        Log.d()
-        url?.apply {
-
-            ioThreadScheduler.scheduleDirect {
+        ioThreadScheduler.scheduleDirect {
+            url?.apply {
                 val request = Request.Builder().url(url).build()
                 val response = client.newCall(request).execute()
                 val inputStream = response.body()?.byteStream()
@@ -89,7 +88,6 @@ constructor(
                 inputStream?.apply {
                     writeToFile(this, outputFile, emitter)
                 }
-
                 response.body()?.close()
             }
         }
@@ -99,7 +97,7 @@ constructor(
     private fun writeToFile(
         inputStream: InputStream,
         file: File,
-        emitter: ObservableEmitter<Int>
+        emitter: ObservableEmitter<Int>?
     ) {
         Log.d()
         try {
@@ -111,16 +109,16 @@ constructor(
                 fileOutputStream.write(buffer, 0, length)
                 length = inputStream.read(buffer)
                 downloaded += length
-                emitter.onNext(downloaded)
+                emitter?.onNext(downloaded)
             }
             fileOutputStream.close()
             inputStream.close()
 
-            emitter.onComplete()
+            emitter?.onComplete()
 
         } catch (exception: IOException) {
             Log.e(exception, "Error while writing to output file")
-            emitter.onError(exception)
+            emitter?.onError(exception)
         }
     }
 }

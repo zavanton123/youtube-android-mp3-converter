@@ -6,12 +6,13 @@ import com.github.hiteshsondhi88.libffmpeg.LoadBinaryResponseHandler
 import com.github.hiteshsondhi88.libffmpeg.exceptions.FFmpegNotSupportedException
 import com.zavanton.yoump3.core.di.*
 import com.zavanton.yoump3.core.utils.Log
-import com.zavanton.yoump3.download.business.interactor.conversion.ConversionInteractor
+import com.zavanton.yoump3.download.business.interactor.ConversionInteractor
+import com.zavanton.yoump3.download.business.interactor.DownloadInteractor
+import com.zavanton.yoump3.download.business.interactor.IConversionInteractor
+import com.zavanton.yoump3.download.business.interactor.IDownloadInteractor
 import com.zavanton.yoump3.download.data.ConversionService
-import com.zavanton.yoump3.download.business.interactor.conversion.IConversionInteractor
 import com.zavanton.yoump3.download.data.IConversionService
-import com.zavanton.yoump3.download.business.interactor.download.DownloadInteractor
-import com.zavanton.yoump3.download.business.interactor.download.IDownloadInteractor
+import com.zavanton.yoump3.download.data.IDownloadService
 import com.zavanton.yoump3.download.eventBus.EventBus
 import com.zavanton.yoump3.download.ui.presenter.DownloadServicePresenter
 import com.zavanton.yoump3.download.ui.presenter.IDownloadServicePresenter
@@ -49,13 +50,16 @@ interface DownloadServiceComponent : EventBusApi {
 abstract class DownloadServiceBindModule {
 
     @Binds
-    abstract fun bindPresenter(presenter: DownloadServicePresenter): IDownloadServicePresenter
+    abstract fun bindPresenter(impl: DownloadServicePresenter): IDownloadServicePresenter
 
     @Binds
-    abstract fun bindDownloadInteractor(interactor: DownloadInteractor): IDownloadInteractor
+    abstract fun bindDownloadInteractor(impl: DownloadInteractor): IDownloadInteractor
 
     @Binds
-    abstract fun bindConvertInteractor(interactor: ConversionInteractor): IConversionInteractor
+    abstract fun bindDownloadService(impl: com.zavanton.yoump3.download.data.DownloadService): IDownloadService
+
+    @Binds
+    abstract fun bindConvertInteractor(impl: ConversionInteractor): IConversionInteractor
 
     @Binds
     abstract fun bindConversionService(impl: ConversionService): IConversionService

@@ -4,14 +4,16 @@ import android.os.Environment
 import com.zavanton.yoump3.core.di.IoThreadScheduler
 import com.zavanton.yoump3.core.di.MainThreadScheduler
 import com.zavanton.yoump3.core.di.ServiceScope
+import com.zavanton.yoump3.core.utils.Log
+import com.zavanton.yoump3.download.business.interactor.IConversionInteractor
+import com.zavanton.yoump3.download.business.interactor.IDownloadInteractor
 import com.zavanton.yoump3.download.eventBus.Event
 import com.zavanton.yoump3.download.eventBus.EventBus
-import com.zavanton.yoump3.core.utils.Log
-import com.zavanton.yoump3.download.business.interactor.conversion.IConversionInteractor
-import com.zavanton.yoump3.download.business.interactor.download.IDownloadInteractor
 import com.zavanton.yoump3.download.ui.view.IDownloadService
 import io.reactivex.Scheduler
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.schedulers.Schedulers
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
@@ -22,7 +24,6 @@ class DownloadServicePresenter @Inject constructor(
     private val mainThreadScheduler: Scheduler,
     @IoThreadScheduler
     private val ioThreadScheduler: Scheduler,
-
     private val downloadInteractor: IDownloadInteractor,
     private val conversionInteractor: IConversionInteractor,
     private val eventBus: EventBus
@@ -42,32 +43,13 @@ class DownloadServicePresenter @Inject constructor(
     private val compositeDisposable = CompositeDisposable()
     private val eventBusDisposable = CompositeDisposable()
 
-    init {
-        Log.d()
-    }
-
     override fun onStartCommand() {
-        Log.d()
-
-        listenForMessages()
-    }
-
-    private fun listenForMessages() {
-        Log.i()
-        eventBusDisposable.add(eventBus.listen()
+        eventBusDisposable.add(
+            eventBus.listen()
             .subscribe {
                 processEvent(it)
             }
         )
-    }
-
-    private fun processEvent(event: Event) {
-        Log.i("$event")
-        if (event is Event.SendDownloadUrl) {
-            downloadAndConvert(event.url)
-        } else {
-            Log.i("Other event received")
-        }
     }
 
     override fun bind(downloadService: IDownloadService) {
@@ -80,6 +62,15 @@ class DownloadServicePresenter @Inject constructor(
         service = null
         compositeDisposable.clear()
         eventBusDisposable.clear()
+    }
+
+    private fun processEvent(event: Event) {
+        Log.i("$event")
+        if (event is Event.SendDownloadUrl) {
+            downloadAndConvert(event.url)
+        } else {
+            Log.i("Other event received")
+        }
     }
 
     // TODO check if internet connection is ok
