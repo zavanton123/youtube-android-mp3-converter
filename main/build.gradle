@@ -2,6 +2,7 @@ apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
+apply from: '../versions.gradle'
 
 android {
     compileSdkVersion 29
@@ -33,86 +34,28 @@ dependencies {
     implementation project(":core")
     implementation project(":download")
 
-    // Kotlin
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    kapt architecture_components.lifecycle_compiler
 
-    // ViewModel
-    def view_model_version = "2.0.0"
-    implementation "androidx.lifecycle:lifecycle-extensions:$view_model_version"
-    kapt "androidx.lifecycle:lifecycle-compiler:$view_model_version"
-
-    // RxPermissions
-    implementation 'com.github.tbruyelle:RxPermissions:0.10.2'
-
-    // Youtube extractor
-    implementation 'com.github.HaarigerHarald:android-youtubeExtractor:v1.8.0'
-
-    // FFmpeg
-    implementation 'com.github.WritingMinds:ffmpeg-android-java:v0.3'
-
-    /////////////////////// ANKO ///////////////////////
-    implementation "org.jetbrains.anko:anko:0.10.8"
-
-    //////////////////////// AndroidX ////////////////////////
-
-    implementation 'androidx.core:core-ktx:1.1.0-alpha05'
-    implementation 'androidx.appcompat:appcompat:1.1.0-alpha04'
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.0-alpha5'
-    implementation 'androidx.recyclerview:recyclerview:1.1.0-alpha04'
-    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    implementation 'androidx.cardview:cardview:1.0.0'
-    implementation 'androidx.preference:preference:1.0.0'
-    implementation 'com.google.android.material:material:1.1.0-alpha05'
-
-    /////////////////////// BASIC ///////////////////////
-
-    // Dagger 2
-    implementation 'com.google.dagger:dagger:2.16'
-    kapt 'com.google.dagger:dagger-compiler:2.16'
-    implementation 'com.google.dagger:dagger-android:2.16'
-    implementation 'com.google.dagger:dagger-android-support:2.16'
-    kapt 'com.google.dagger:dagger-android-processor:2.16'
-
-    /////////////////////// NETWORKING ///////////////////////
-
-    // OkHttpClient
-    implementation 'com.squareup.okhttp3:okhttp:3.14.1'
-
-    /////////////////////// REACTIVE ///////////////////////
-
-    // RxJava
-    implementation 'io.reactivex.rxjava2:rxandroid:2.0.2'
-    implementation 'io.reactivex.rxjava2:rxjava:2.1.16'
-
-    //////////////////////// TESTING ////////////////////////
+    kapt dagger.compiler
+    kapt dagger.android_processor
 
     // JUnit5
-    testImplementation "org.junit.jupiter:junit-jupiter-api:5.0.2"
-    testImplementation "org.junit.jupiter:junit-jupiter-params:5.0.2"
-
-    // MockK
-    testImplementation "io.mockk:mockk:1.8.12.kotlin13"
-    androidTestImplementation "io.mockk:mockk-android:1.8.12.kotlin13"
+    testImplementation junit.junit_jupiter_api
+    testImplementation junit.junit_jupiter_params
 
     // Truth
-    testImplementation "com.google.truth:truth:0.40"
-    androidTestImplementation "com.google.truth:truth:0.40"
+    testImplementation truth.core
+    androidTestImplementation truth.core
 
-    // Android Testing Library (AndroidJUnitRunner)
-    androidTestImplementation 'androidx.test:runner:1.1.1'
+    // Android Testing Library
+    androidTestImplementation android_testing.runner
+    androidTestImplementation android_testing.rules
 
-    // Android Testing Library (JUnit Rules)
-    androidTestImplementation 'androidx.test:rules:1.1.1'
-
-    /////////////////////// UI ///////////////////////
-
-    // AppbarLayout
-    implementation 'androidx.appcompat:appcompat:1.0.2'
-
-    // Coordinator layout
-    implementation 'androidx.coordinatorlayout:coordinatorlayout:1.0.0'
-
-    // Material dialogs
-    implementation 'com.afollestad.material-dialogs:core:0.9.6.0'
-    implementation 'com.afollestad.material-dialogs:commons:0.9.6.0'
+    // Espresso UI Testing
+    androidTestImplementation espresso.core
+    androidTestImplementation espresso.contrib
+    androidTestImplementation espresso.intents
+    androidTestImplementation espresso.accessibility
+    androidTestImplementation espresso.web
+    androidTestImplementation espresso.idling_concurrent
 }

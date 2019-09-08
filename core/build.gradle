@@ -25,43 +25,42 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
-
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
     // Kotlin
-    implementation kotlin.core
+    api kotlin.core
 
     // AndroidX
-    implementation androidx.appcompet
-    implementation androidx.core_ktx
-    implementation androidx.constraintlayout
+    api androidx.appcompet
+    api androidx.core_ktx
+    api androidx.constraintlayout
 
     // ViewModel and LiveData
-    implementation architecture_components.lifecycle_extensions
+    api architecture_components.lifecycle_extensions
     kapt architecture_components.lifecycle_compiler
 
     // RxJava
-    implementation rxjava.core
-    implementation rxjava.android
+    api rxjava.core
+    api rxjava.android
 
     // Dagger 2
-    implementation dagger.core
+    api dagger.core
     kapt dagger.compiler
-    implementation dagger.android
-    implementation dagger.android_support
+    api dagger.android
+    api dagger.android_support
     kapt dagger.android_processor
 
     // Retrofit
-    implementation retrofit.core
-    implementation retrofit.gson_converter
-    implementation retrofit.rxjava2_adapter
+    api retrofit.core
+    api retrofit.gson_converter
+    api retrofit.rxjava2_adapter
 
     // OkHttp
-    implementation okhttp.core
-    implementation okhttp.loggint_interceptor
+    api okhttp.core
+    api okhttp.loggint_interceptor
 
     // JUnit5
     testImplementation junit.junit_jupiter_api
@@ -82,32 +81,32 @@ dependencies {
     androidTestImplementation espresso.accessibility
     androidTestImplementation espresso.web
     androidTestImplementation espresso.idling_concurrent
-    implementation espresso.idling_resource
+    api espresso.idling_resource
 
-    implementation rxpermissions.core
-    implementation youtube_extractor.core
-    implementation ffmpeg.core
+    api rxpermissions.core
+    api youtube_extractor.core
+    api ffmpeg.core
 
 
 
     /////////////////////// ANKO ///////////////////////
-    implementation "org.jetbrains.anko:anko:0.10.8"
+    api "org.jetbrains.anko:anko:0.10.8"
 
     //////////////////////// AndroidX ////////////////////////
 
-    implementation 'androidx.recyclerview:recyclerview:1.1.0-beta04'
-    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    implementation 'androidx.cardview:cardview:1.0.0'
-    implementation 'androidx.preference:preference:1.1.0'
-    implementation 'com.google.android.material:material:1.1.0-alpha10'
+    api 'androidx.recyclerview:recyclerview:1.1.0-beta04'
+    api 'androidx.legacy:legacy-support-v4:1.0.0'
+    api 'androidx.cardview:cardview:1.0.0'
+    api 'androidx.preference:preference:1.1.0'
+    api 'com.google.android.material:material:1.1.0-alpha10'
 
 
     // Coordinator layout
-    implementation 'androidx.coordinatorlayout:coordinatorlayout:1.0.0'
+    api 'androidx.coordinatorlayout:coordinatorlayout:1.0.0'
 
     // Material dialogs
-    implementation 'com.afollestad.material-dialogs:core:0.9.6.0'
-    implementation 'com.afollestad.material-dialogs:commons:0.9.6.0'
+    api 'com.afollestad.material-dialogs:core:0.9.6.0'
+    api 'com.afollestad.material-dialogs:commons:0.9.6.0'
 }
 repositories {
     mavenCentral()
