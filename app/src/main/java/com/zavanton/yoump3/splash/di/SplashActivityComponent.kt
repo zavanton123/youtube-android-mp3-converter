@@ -7,6 +7,7 @@ import com.zavanton.yoump3.business.interactor.PermissionInteractor
 import com.zavanton.yoump3.core.di.*
 import com.zavanton.yoump3.data.IPermissionService
 import com.zavanton.yoump3.data.PermissionService
+import com.zavanton.yoump3.download.di.EventBusApi
 import com.zavanton.yoump3.splash.ui.viewModel.ISplashActivityViewModel
 import com.zavanton.yoump3.splash.ui.viewModel.SplashActivityViewModel
 import com.zavanton.yoump3.splash.ui.viewModel.SplashActivityViewModelFactory

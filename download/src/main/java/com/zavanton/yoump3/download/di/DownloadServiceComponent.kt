@@ -3,6 +3,7 @@ package com.zavanton.yoump3.download.di
 import android.content.Context
 import com.github.hiteshsondhi88.libffmpeg.FFmpeg
 import com.zavanton.yoump3.core.di.*
+import com.zavanton.yoump3.download.eventBus.EventBus
 import com.zavanton.yoump3.download.interactor.convert.ConversionService
 import com.zavanton.yoump3.download.interactor.convert.ConvertInteractor
 import com.zavanton.yoump3.download.interactor.convert.IConvertInteractor
@@ -16,21 +17,26 @@ import dagger.Component
 import dagger.Module
 import dagger.Provides
 
+interface EventBusApi {
+
+    fun provideDownloadEventBus(): EventBus
+}
+
 @ServiceScope
 @Component(
     modules = [
         DownloadServiceBindModule::class,
-        ConversionModule::class
+        ConversionModule::class,
+        EventBusModule::class
     ],
     dependencies = [
         AppApi::class,
         SchedulerApi::class,
         NetworkApi::class,
-        EventBusApi::class,
         NotificationApi::class
     ]
 )
-interface DownloadServiceComponent {
+interface DownloadServiceComponent : EventBusApi {
 
     fun inject(downloadService: DownloadService)
 }
@@ -63,4 +69,12 @@ class ConversionModule {
         ConversionService(ffmpeg).apply {
             init()
         }
+}
+
+@Module
+class EventBusModule {
+
+    @ServiceScope
+    @Provides
+    fun provideDownloadEventBus(): EventBus = EventBus()
 }

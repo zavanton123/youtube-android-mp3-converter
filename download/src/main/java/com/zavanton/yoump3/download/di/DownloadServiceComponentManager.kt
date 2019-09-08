@@ -14,7 +14,6 @@ object DownloadServiceComponentManager {
             .appApi(CoreComponentManager.getCoreComponent())
             .schedulerApi(CoreComponentManager.getCoreComponent())
             .networkApi(CoreComponentManager.getCoreComponent())
-            .eventBusApi(CoreComponentManager.getCoreComponent())
             .notificationApi(CoreComponentManager.getCoreComponent())
             .build()
             .also {

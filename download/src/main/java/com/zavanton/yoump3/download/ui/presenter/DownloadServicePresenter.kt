@@ -4,8 +4,8 @@ import android.os.Environment
 import com.zavanton.yoump3.core.di.IoThreadScheduler
 import com.zavanton.yoump3.core.di.MainThreadScheduler
 import com.zavanton.yoump3.core.di.ServiceScope
-import com.zavanton.yoump3.core.eventBus.Event
-import com.zavanton.yoump3.core.eventBus.EventBus
+import com.zavanton.yoump3.download.eventBus.Event
+import com.zavanton.yoump3.download.eventBus.EventBus
 import com.zavanton.yoump3.core.utils.Log
 import com.zavanton.yoump3.download.interactor.convert.IConvertInteractor
 import com.zavanton.yoump3.download.interactor.download.IDownloadInteractor

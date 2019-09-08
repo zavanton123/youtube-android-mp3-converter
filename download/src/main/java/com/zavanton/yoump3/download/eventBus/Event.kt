@@ -1,4 +1,4 @@
-package com.zavanton.yoump3.core.eventBus
+package com.zavanton.yoump3.download.eventBus
 
 sealed class Event {
 
