@@ -2,15 +2,8 @@ package com.zavanton.yoump3.core.eventBus
 
 enum class Event {
 
-    CLIPBOARD_URL,
     INTENT_ACTION_URL,
     DOWNLOAD_URL,
-
-    CLIPBOARD_EMPTY,
-    CLIPBOARD_NOT_EMPTY,
-
-    URL_INVALID,
-    URL_VALID,
 
     DOWNLOAD_STARTED,
     DOWNLOAD_PROGRESS,

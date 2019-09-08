@@ -39,6 +39,12 @@ class MainFragment : Fragment() {
         initUI()
     }
 
+    override fun onResume() {
+        super.onResume()
+
+        viewModel.onResume()
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         Log.d()

@@ -12,6 +12,7 @@ import com.zavanton.yoump3.core.utils.Log
 import com.zavanton.yoump3.main.fragment.di.MainFragmentComponentManager
 import io.reactivex.disposables.CompositeDisposable
 import java.text.DecimalFormat
+import java.util.regex.Pattern
 import javax.inject.Inject
 
 @FragmentScope
@@ -20,21 +21,31 @@ class MainFragmentViewModel @Inject constructor(
     private val clipboardManager: ClipboardManager
 ) : ViewModel(), IMainFragmentViewModel {
 
+    companion object {
+
+        private const val VALID_URL_REGEX = "^(https?|ftp|file)://[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|]"
+    }
+
     override var mainActionLiveData: MutableLiveData<MainAction> = MutableLiveData()
 
     private var clipboardUrl: String? = null
     private var actionUrl: String? = null
+    private val urlPattern: Pattern = Pattern.compile(VALID_URL_REGEX)
 
     private var eventBusDisposable = CompositeDisposable()
 
-    private lateinit var clipboardManagerListener: ClipboardManager.OnPrimaryClipChangedListener
-
-
     override fun onViewCreated() {
-        Log.i("clipboardUrl: $clipboardUrl")
-        Log.i("actionUrl: $actionUrl")
-        startListeningForClipboardChanges()
-        startListeningForMessages()
+        eventBusDisposable.add(
+            eventBus.listenForMessages()
+                .subscribe { processMessage(it) }
+        )
+    }
+
+    override fun onResume() {
+        val url = getUrlFromClipboard()
+        Log.d("the url from clipboard is $url")
+
+        processClipboardUrl(url)
     }
 
     override fun onDestroyView() {
@@ -42,20 +53,17 @@ class MainFragmentViewModel @Inject constructor(
 
         eventBusDisposable.clear()
         eventBusDisposable = CompositeDisposable()
-
-        clipboardManager.removePrimaryClipChangedListener(clipboardManagerListener)
     }
 
+    override fun onCleared() {
+        Log.d()
+        super.onCleared()
+
+        MainFragmentComponentManager.clearMainFragmentComponent()
+    }
 
     override fun startDownloadService() {
         Log.d()
-
-        Log.i(
-            "${Message(
-                Event.DOWNLOAD_URL,
-                actionUrl ?: clipboardUrl
-            )}"
-        )
         eventBus.send(
             Message(
                 Event.DOWNLOAD_URL,
@@ -66,54 +74,27 @@ class MainFragmentViewModel @Inject constructor(
         mainActionLiveData.value = MainAction.StartDownloadService
     }
 
-    private fun startListeningForClipboardChanges() {
-        Log.d()
-        clipboardManagerListener = ClipboardManager.OnPrimaryClipChangedListener {
-            val clipboardItem = clipboardManager.primaryClip?.getItemAt(0)
-            Log.d("checkClipboardAndProceed: $clipboardItem")
+    private fun getUrlFromClipboard(): String =
+        clipboardManager.primaryClip
+            ?.getItemAt(0)
+            ?.text
+            ?.toString()
+            ?: EMPTY_STRING
 
-            if (clipboardItem != null) {
-                Log.i("${Message(Event.CLIPBOARD_NOT_EMPTY)}")
-                eventBus.send(Message(Event.CLIPBOARD_NOT_EMPTY))
-
-                Log.i(
-                    "${Message(
-                        Event.CLIPBOARD_URL,
-                        clipboardItem.text.toString()
-                    )}"
-                )
-                eventBus.send(
-                    Message(
-                        Event.CLIPBOARD_URL,
-                        clipboardItem.text.toString()
-                    )
-                )
-            } else {
-                Log.i("${Message(Event.CLIPBOARD_EMPTY)}")
-                eventBus.send(Message(Event.CLIPBOARD_EMPTY))
+    private fun processClipboardUrl(url: String) {
+        mainActionLiveData.value =
+            when {
+                url.isEmpty() -> MainAction.ShowClipboardEmpty
+                isUrlValid(url) -> MainAction.ShowUrlValid.also { clipboardUrl = url }
+                else -> MainAction.ShowUrlInvalid
             }
-        }
-        clipboardManager.addPrimaryClipChangedListener(clipboardManagerListener)
-    }
-
-    private fun startListeningForMessages() {
-        Log.i()
-        eventBusDisposable.add(eventBus.listenForMessages()
-            .subscribe {
-                processMessage(it)
-            }
-        )
     }
 
     private fun processMessage(message: Message) {
         Log.i("$message")
-        val action = when (message.event) {
+
+        mainActionLiveData.value = when (message.event) {
             Event.INTENT_ACTION_URL -> getUrlActionFromIntent(message)
-            Event.CLIPBOARD_URL -> getUrlActionFromClipboard(message)
-            Event.CLIPBOARD_EMPTY -> MainAction.ShowClipboardEmpty
-            Event.CLIPBOARD_NOT_EMPTY -> MainAction.ShowClipboardNotEmpty
-            Event.URL_INVALID -> MainAction.ShowUrlInvalid
-            Event.URL_VALID -> MainAction.ShowUrlValid
             Event.DOWNLOAD_STARTED -> MainAction.ShowDownloadStarted
             Event.DOWNLOAD_PROGRESS -> MainAction.ShowDownloadProgress(
                 formatDownloadProgress(message.text.orEmpty())
@@ -128,19 +109,19 @@ class MainFragmentViewModel @Inject constructor(
             Event.CONVERSION_ERROR -> MainAction.ShowConversionError
             else -> MainAction.OtherAction
         }
-
-        mainActionLiveData.value = action
     }
 
-    private fun getUrlActionFromClipboard(message: Message): MainAction =
+    private fun getUrlActionFromIntent(message: Message): MainAction =
         message.text.orEmpty().let { url ->
             if (isUrlValid(url)) {
-                clipboardUrl = url
+                actionUrl = url
                 MainAction.ShowUrlValid
             } else {
                 MainAction.ShowUrlInvalid
             }
         }
+
+    private fun isUrlValid(url: String) = urlPattern.matcher(url).matches()
 
     private fun formatDownloadProgress(value: String): String =
         try {
@@ -153,40 +134,4 @@ class MainFragmentViewModel @Inject constructor(
             Log.e(ex)
             EMPTY_STRING
         }
-
-    private fun getUrlActionFromIntent(message: Message): MainAction =
-        message.text.orEmpty().let { url ->
-            if (isUrlValid(url)) {
-                assignUrl(message, url)
-                MainAction.ShowUrlValid
-            } else {
-                MainAction.ShowUrlInvalid
-            }
-        }
-
-    private fun assignUrl(message: Message, url: String) {
-        when (message.event) {
-            Event.CLIPBOARD_URL -> clipboardUrl = url
-            Event.INTENT_ACTION_URL -> actionUrl = url
-            else -> Log.d("other event")
-        }
-    }
-
-    // TODO add network request to the url to check if response is ok
-    // TODO find a better way to check youtube video url
-    private fun isUrlValid(url: String): Boolean {
-        Log.d("url: $url")
-        if (url.isEmpty()) return false
-
-        if (url.contains("yout")) return true
-
-        return false
-    }
-
-    override fun onCleared() {
-        Log.d()
-        super.onCleared()
-
-        MainFragmentComponentManager.clearMainFragmentComponent()
-    }
 }
