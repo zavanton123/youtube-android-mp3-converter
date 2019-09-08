@@ -60,10 +60,6 @@ class DownloadService : Service(), IDownloadService {
     override fun startForeground() {
         Log.d()
 
-        // todo zavanton uncomment
-//        val activityIntent = Intent(this, MainActivity::class.java)
-//            .apply { addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP) }
-
         val activityIntent = Intent()
             .apply { addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP) }
 

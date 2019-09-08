@@ -7,9 +7,8 @@ object DownloadServiceComponentManager {
 
     private var downloadServiceComponent: DownloadServiceComponent? = null
 
-    fun getDownloadServiceComponent(): DownloadServiceComponent {
-
-        return downloadServiceComponent ?: DaggerDownloadServiceComponent
+    fun getDownloadServiceComponent(): DownloadServiceComponent =
+        downloadServiceComponent ?: DaggerDownloadServiceComponent
             .builder()
             .appApi(CoreComponentManager.getCoreComponent())
             .schedulerApi(CoreComponentManager.getCoreComponent())
@@ -19,7 +18,6 @@ object DownloadServiceComponentManager {
             .also {
                 downloadServiceComponent = it
             }
-    }
 
     fun clear() {
         Log.d()

@@ -6,9 +6,7 @@ import com.github.hiteshsondhi88.libffmpeg.LoadBinaryResponseHandler
 import com.github.hiteshsondhi88.libffmpeg.exceptions.FFmpegNotSupportedException
 import com.zavanton.yoump3.core.di.*
 import com.zavanton.yoump3.core.utils.Log
-import com.zavanton.yoump3.download.business.interactor.ConversionInteractor
 import com.zavanton.yoump3.download.business.interactor.DownloadInteractor
-import com.zavanton.yoump3.download.business.interactor.IConversionInteractor
 import com.zavanton.yoump3.download.business.interactor.IDownloadInteractor
 import com.zavanton.yoump3.download.data.ConversionService
 import com.zavanton.yoump3.download.data.DownloadRepository
@@ -58,9 +56,6 @@ abstract class DownloadServiceBindModule {
 
     @Binds
     abstract fun bindDownloadRepository(impl: DownloadRepository): IDownloadRepository
-
-    @Binds
-    abstract fun bindConvertInteractor(impl: ConversionInteractor): IConversionInteractor
 
     @Binds
     abstract fun bindConversionService(impl: ConversionService): IConversionService

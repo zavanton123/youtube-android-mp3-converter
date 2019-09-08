@@ -5,7 +5,6 @@ import com.zavanton.yoump3.core.di.IoThreadScheduler
 import com.zavanton.yoump3.core.di.MainThreadScheduler
 import com.zavanton.yoump3.core.di.ServiceScope
 import com.zavanton.yoump3.core.utils.Log
-import com.zavanton.yoump3.download.business.interactor.IConversionInteractor
 import com.zavanton.yoump3.download.business.interactor.IDownloadInteractor
 import com.zavanton.yoump3.download.business.model.Event
 import com.zavanton.yoump3.download.eventBus.EventBus
@@ -23,7 +22,6 @@ class DownloadServicePresenter @Inject constructor(
     @IoThreadScheduler
     private val ioThreadScheduler: Scheduler,
     private val downloadInteractor: IDownloadInteractor,
-    private val conversionInteractor: IConversionInteractor,
     private val eventBus: EventBus
 ) : IDownloadServicePresenter {
 
@@ -90,7 +88,9 @@ class DownloadServicePresenter @Inject constructor(
             url,
             DOWNLOADS_FOLDER,
             TARGET_FILENAME,
-            VIDEO_EXTENSION
+            VIDEO_EXTENSION,
+            "$DOWNLOADS_FOLDER/$TARGET_FILENAME.$VIDEO_EXTENSION",
+            "$DOWNLOADS_FOLDER/$TARGET_FILENAME.$AUDIO_EXTENSION"
         )
             .subscribeOn(ioThreadScheduler)
             .observeOn(mainThreadScheduler)
@@ -116,41 +116,5 @@ class DownloadServicePresenter @Inject constructor(
     private fun onDownloadComplete() {
         Log.d()
         eventBus.send(Event.DownloadSuccess)
-        convertToMp3()
-    }
-
-    private fun convertToMp3() {
-        Log.d()
-
-        eventBus.send(Event.ConversionStarted)
-
-        compositeDisposable.add(conversionInteractor.convertToMp3(
-            "$DOWNLOADS_FOLDER/$TARGET_FILENAME.$VIDEO_EXTENSION",
-            "$DOWNLOADS_FOLDER/$TARGET_FILENAME.$AUDIO_EXTENSION"
-        )
-            .subscribeOn(ioThreadScheduler)
-            .observeOn(mainThreadScheduler)
-            .subscribe(
-                { onConvertProgress(it) },
-                { onConvertError(it) },
-                { onConvertComplete() }
-            ))
-    }
-
-    private fun onConvertProgress(event: Event) {
-        Log.d("event: $event")
-        eventBus.send(event)
-    }
-
-    private fun onConvertError(error: Throwable) {
-        Log.e(error)
-        eventBus.send(Event.ConversionError)
-        service?.stopForeground()
-    }
-
-    private fun onConvertComplete() {
-        Log.d()
-        eventBus.send(Event.ConversionSuccess)
-        service?.stopForeground()
     }
 }
