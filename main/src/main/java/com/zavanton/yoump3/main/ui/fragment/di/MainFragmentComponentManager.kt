@@ -1,10 +1,8 @@
-package com.zavanton.yoump3.main.ui.fragment.di.manager
+package com.zavanton.yoump3.main.ui.fragment.di
 
-import com.zavanton.yoump3.main.di.MainActivityComponentManager
-import com.zavanton.yoump3.main.ui.fragment.di.component.MainFragmentComponent
-import com.zavanton.yoump3.main.ui.fragment.di.module.MainFragmentProvideModule
-import com.zavanton.yoump3.main.ui.fragment.view.MainFragmentViewModel
 import com.zavanton.yoump3.core.utils.Log
+import com.zavanton.yoump3.main.di.MainActivityComponentManager
+import com.zavanton.yoump3.main.ui.fragment.view.MainFragmentViewModel
 
 object MainFragmentComponentManager {
 

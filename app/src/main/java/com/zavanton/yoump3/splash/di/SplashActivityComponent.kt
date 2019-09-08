@@ -1,11 +1,11 @@
-package com.zavanton.yoump3.di
+package com.zavanton.yoump3.splash.di
 
 import androidx.fragment.app.FragmentActivity
 import com.tbruyelle.rxpermissions2.RxPermissions
 import com.zavanton.yoump3.core.di.*
-import com.zavanton.yoump3.ui.viewModel.ISplashActivityViewModel
-import com.zavanton.yoump3.ui.viewModel.SplashActivityViewModel
-import com.zavanton.yoump3.ui.viewModel.SplashActivityViewModelFactory
+import com.zavanton.yoump3.splash.ui.viewModel.ISplashActivityViewModel
+import com.zavanton.yoump3.splash.ui.viewModel.SplashActivityViewModel
+import com.zavanton.yoump3.splash.ui.viewModel.SplashActivityViewModelFactory
 import dagger.Binds
 import dagger.Component
 import dagger.Module

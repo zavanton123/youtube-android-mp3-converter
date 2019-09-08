@@ -1,4 +1,4 @@
-package com.zavanton.yoump3.ui.viewModel
+package com.zavanton.yoump3.splash.ui.viewModel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -7,7 +7,7 @@ import com.zavanton.yoump3.core.di.ActivityScope
 import com.zavanton.yoump3.core.eventBus.Event
 import com.zavanton.yoump3.core.eventBus.EventBus
 import com.zavanton.yoump3.core.eventBus.Message
-import com.zavanton.yoump3.di.SplashActivityComponentManager
+import com.zavanton.yoump3.splash.di.SplashActivityComponentManager
 import com.zavanton.yoump3.core.utils.Log
 import com.zavanton.yoump3.core.utils.Permissions
 import io.reactivex.disposables.CompositeDisposable

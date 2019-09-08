@@ -1,4 +1,4 @@
-package com.zavanton.yoump3.ui.view
+package com.zavanton.yoump3.splash.ui.view
 
 import android.content.Intent
 import android.os.Bundle
@@ -8,9 +8,9 @@ import androidx.lifecycle.ViewModelProviders
 import com.afollestad.materialdialogs.MaterialDialog
 import com.zavanton.yoump3.R
 import com.zavanton.yoump3.main.ui.activity.view.MainActivity
-import com.zavanton.yoump3.ui.viewModel.SplashActivityViewModel
-import com.zavanton.yoump3.ui.viewModel.SplashActivityViewModelFactory
-import com.zavanton.yoump3.ui.viewModel.SplashEvent
+import com.zavanton.yoump3.splash.ui.viewModel.SplashActivityViewModel
+import com.zavanton.yoump3.splash.ui.viewModel.SplashActivityViewModelFactory
+import com.zavanton.yoump3.splash.ui.viewModel.SplashEvent
 import com.zavanton.yoump3.core.utils.Log
 
 class SplashActivity : AppCompatActivity() {

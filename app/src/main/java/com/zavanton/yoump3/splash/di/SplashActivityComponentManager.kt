@@ -1,4 +1,4 @@
-package com.zavanton.yoump3.di
+package com.zavanton.yoump3.splash.di
 
 import androidx.fragment.app.FragmentActivity
 import com.zavanton.yoump3.core.di.CoreComponentManager
@@ -11,8 +11,8 @@ object SplashActivityComponentManager {
     fun get(activity: FragmentActivity): SplashActivityComponent? {
         Log.d()
 
-        return splashActivityComponent ?: DaggerSplashActivityComponent
-            .builder()
+        return splashActivityComponent
+            ?: DaggerSplashActivityComponent.builder()
             .splashActivityProvideModule(SplashActivityProvideModule(activity))
             .appApi(CoreComponentManager.getCoreComponent())
             .schedulerApi(CoreComponentManager.getCoreComponent())

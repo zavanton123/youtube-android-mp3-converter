@@ -2,8 +2,8 @@ package com.zavanton.yoump3.main.di
 
 import com.zavanton.yoump3.core.di.*
 import com.zavanton.yoump3.main.ui.activity.view.MainActivityViewModel
-import com.zavanton.yoump3.main.ui.fragment.di.component.MainFragmentComponent
-import com.zavanton.yoump3.main.ui.fragment.di.module.MainFragmentProvideModule
+import com.zavanton.yoump3.main.ui.fragment.di.MainFragmentComponent
+import com.zavanton.yoump3.main.ui.fragment.di.MainFragmentProvideModule
 import dagger.Component
 import dagger.Module
 

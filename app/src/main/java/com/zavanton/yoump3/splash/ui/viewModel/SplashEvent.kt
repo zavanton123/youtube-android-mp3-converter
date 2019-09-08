@@ -1,4 +1,4 @@
-package com.zavanton.yoump3.ui.viewModel
+package com.zavanton.yoump3.splash.ui.viewModel
 
 sealed class SplashEvent {
 
