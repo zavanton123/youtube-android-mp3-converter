@@ -1,13 +1,13 @@
 package com.zavanton.yoump3.download.business.interactor
 
 import com.zavanton.yoump3.core.di.ServiceScope
-import com.zavanton.yoump3.download.data.IDownloadService
+import com.zavanton.yoump3.download.data.IDownloadRepository
 import io.reactivex.Observable
 import javax.inject.Inject
 
 @ServiceScope
 class DownloadInteractor @Inject constructor(
-    private val downloadService: IDownloadService
+    private val downloadRepository: IDownloadRepository
 ) : IDownloadInteractor {
 
     override fun downloadFile(
@@ -15,7 +15,7 @@ class DownloadInteractor @Inject constructor(
         downloadsFolder: String,
         targetFilename: String,
         videoExtension: String
-    ): Observable<Int> = downloadService.download(
+    ): Observable<Int> = downloadRepository.download(
         urlLink,
         downloadsFolder,
         targetFilename,

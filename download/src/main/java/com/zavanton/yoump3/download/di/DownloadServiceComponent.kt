@@ -11,8 +11,9 @@ import com.zavanton.yoump3.download.business.interactor.DownloadInteractor
 import com.zavanton.yoump3.download.business.interactor.IConversionInteractor
 import com.zavanton.yoump3.download.business.interactor.IDownloadInteractor
 import com.zavanton.yoump3.download.data.ConversionService
+import com.zavanton.yoump3.download.data.DownloadRepository
 import com.zavanton.yoump3.download.data.IConversionService
-import com.zavanton.yoump3.download.data.IDownloadService
+import com.zavanton.yoump3.download.data.IDownloadRepository
 import com.zavanton.yoump3.download.eventBus.EventBus
 import com.zavanton.yoump3.download.ui.presenter.DownloadServicePresenter
 import com.zavanton.yoump3.download.ui.presenter.IDownloadServicePresenter
@@ -56,7 +57,7 @@ abstract class DownloadServiceBindModule {
     abstract fun bindDownloadInteractor(impl: DownloadInteractor): IDownloadInteractor
 
     @Binds
-    abstract fun bindDownloadService(impl: com.zavanton.yoump3.download.data.DownloadService): IDownloadService
+    abstract fun bindDownloadRepository(impl: DownloadRepository): IDownloadRepository
 
     @Binds
     abstract fun bindConvertInteractor(impl: ConversionInteractor): IConversionInteractor

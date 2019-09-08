@@ -25,13 +25,13 @@ import javax.inject.Inject
 
 @SuppressLint("StaticFieldLeak")
 @ServiceScope
-class DownloadService @Inject constructor(
+class DownloadRepository @Inject constructor(
     @ApplicationContext
     private val appContext: Context,
     private val client: OkHttpClient,
     @IoThreadScheduler
     private val ioThreadScheduler: Scheduler
-) : IDownloadService, YouTubeExtractor(appContext) {
+) : IDownloadRepository, YouTubeExtractor(appContext) {
 
     private var downloadsFolder: String = EMPTY_STRING
     private var targetFilename: String = EMPTY_STRING
@@ -62,12 +62,10 @@ class DownloadService @Inject constructor(
     private fun getUrl(ytFiles: SparseArray<YtFile>): String? {
         var youtubeFile: YtFile? = null
         for (tag in YoutubeTags.ALL) {
-
             if (ytFiles[tag] != null) {
                 youtubeFile = ytFiles[tag]
             }
         }
-
         return youtubeFile?.url
     }
 
@@ -93,13 +91,11 @@ class DownloadService @Inject constructor(
         }
     }
 
-    // TODO get the file size and send download progress relative to the total file size
     private fun writeToFile(
         inputStream: InputStream,
         file: File,
         emitter: ObservableEmitter<Int>?
     ) {
-        Log.d()
         try {
             val fileOutputStream = FileOutputStream(file)
             val buffer = ByteArray(1024)
