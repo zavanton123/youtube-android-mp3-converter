@@ -4,9 +4,8 @@ import android.content.ClipboardManager
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.zavanton.yoump3.core.di.FragmentScope
-import com.zavanton.yoump3.core.eventBus.Event
-import com.zavanton.yoump3.core.eventBus.EventBus
-import com.zavanton.yoump3.core.eventBus.Message
+import com.zavanton.yoump3.download.business.model.Event
+import com.zavanton.yoump3.download.eventBus.EventBus
 import com.zavanton.yoump3.core.utils.Constants.EMPTY_STRING
 import com.zavanton.yoump3.core.utils.Log
 import com.zavanton.yoump3.main.fragment.di.MainFragmentComponentManager
@@ -36,7 +35,7 @@ class MainFragmentViewModel @Inject constructor(
 
     override fun onViewCreated() {
         eventBusDisposable.add(
-            eventBus.listenForMessages()
+            eventBus.listen()
                 .subscribe { processMessage(it) }
         )
     }
@@ -63,14 +62,7 @@ class MainFragmentViewModel @Inject constructor(
     }
 
     override fun startDownloadService() {
-        Log.d()
-        eventBus.send(
-            Message(
-                Event.DOWNLOAD_URL,
-                actionUrl ?: clipboardUrl
-            )
-        )
-
+        eventBus.send(Event.SendDownloadUrl(actionUrl ?: clipboardUrl.orEmpty()))
         mainActionLiveData.value = MainAction.StartDownloadService
     }
 
@@ -90,35 +82,31 @@ class MainFragmentViewModel @Inject constructor(
             }
     }
 
-    private fun processMessage(message: Message) {
-        Log.i("$message")
+    private fun processMessage(event: Event) {
+        Log.i("$event")
 
-        mainActionLiveData.value = when (message.event) {
-            Event.INTENT_ACTION_URL -> getUrlActionFromIntent(message)
-            Event.DOWNLOAD_STARTED -> MainAction.ShowDownloadStarted
-            Event.DOWNLOAD_PROGRESS -> MainAction.ShowDownloadProgress(
-                formatDownloadProgress(message.text.orEmpty())
-            )
-            Event.DOWNLOAD_SUCCESS -> MainAction.ShowDownloadSuccess
-            Event.DOWNLOAD_ERROR -> MainAction.ShowDownloadError
-            Event.CONVERSION_STARTED -> MainAction.ShowConversionStarted
-            Event.CONVERSION_PROGRESS -> MainAction.ShowConversionProgress(
-                message.text.orEmpty()
-            )
-            Event.CONVERSION_SUCCESS -> MainAction.ShowConversionSuccess
-            Event.CONVERSION_ERROR -> MainAction.ShowConversionError
+        mainActionLiveData.value = when (event) {
+            is Event.SendActionUrl -> getUrlActionFromIntent(event)
+            is Event.DownloadStarted -> MainAction.ShowDownloadStarted
+            is Event.DownloadProgress -> MainAction.ShowDownloadProgress(formatDownloadProgress(event.progress))
+
+            Event.DownloadSuccess -> MainAction.ShowDownloadSuccess
+            Event.DownloadError -> MainAction.ShowDownloadError
+            Event.ConversionStarted -> MainAction.ShowConversionStarted
+            is Event.ConversionProgress -> MainAction.ShowConversionProgress(event.progress)
+
+            Event.ConversionSuccess -> MainAction.ShowConversionSuccess
+            Event.ConversionError -> MainAction.ShowConversionError
             else -> MainAction.OtherAction
         }
     }
 
-    private fun getUrlActionFromIntent(message: Message): MainAction =
-        message.text.orEmpty().let { url ->
-            if (isUrlValid(url)) {
-                actionUrl = url
-                MainAction.ShowUrlValid
-            } else {
-                MainAction.ShowUrlInvalid
-            }
+    private fun getUrlActionFromIntent(event: Event.SendActionUrl): MainAction =
+        if (isUrlValid(event.url)) {
+            actionUrl = event.url
+            MainAction.ShowUrlValid
+        } else {
+            MainAction.ShowUrlInvalid
         }
 
     private fun isUrlValid(url: String) = urlPattern.matcher(url).matches()

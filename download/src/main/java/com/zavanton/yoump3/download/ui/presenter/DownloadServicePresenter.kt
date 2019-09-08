@@ -4,12 +4,10 @@ import android.os.Environment
 import com.zavanton.yoump3.core.di.IoThreadScheduler
 import com.zavanton.yoump3.core.di.MainThreadScheduler
 import com.zavanton.yoump3.core.di.ServiceScope
-import com.zavanton.yoump3.core.eventBus.Event
-import com.zavanton.yoump3.core.eventBus.EventBus
-import com.zavanton.yoump3.core.eventBus.Message
 import com.zavanton.yoump3.core.utils.Log
-import com.zavanton.yoump3.download.interactor.convert.IConvertInteractor
-import com.zavanton.yoump3.download.interactor.download.IDownloadInteractor
+import com.zavanton.yoump3.download.business.interactor.IDownloadInteractor
+import com.zavanton.yoump3.download.business.model.Event
+import com.zavanton.yoump3.download.eventBus.EventBus
 import com.zavanton.yoump3.download.ui.view.IDownloadService
 import io.reactivex.Scheduler
 import io.reactivex.disposables.CompositeDisposable
@@ -23,9 +21,7 @@ class DownloadServicePresenter @Inject constructor(
     private val mainThreadScheduler: Scheduler,
     @IoThreadScheduler
     private val ioThreadScheduler: Scheduler,
-
     private val downloadInteractor: IDownloadInteractor,
-    private val convertInteractor: IConvertInteractor,
     private val eventBus: EventBus
 ) : IDownloadServicePresenter {
 
@@ -43,31 +39,13 @@ class DownloadServicePresenter @Inject constructor(
     private val compositeDisposable = CompositeDisposable()
     private val eventBusDisposable = CompositeDisposable()
 
-    init {
-        Log.d()
-    }
-
     override fun onStartCommand() {
-        Log.d()
-
-        listenForMessages()
-    }
-
-    private fun listenForMessages() {
-        Log.i()
-        eventBusDisposable.add(eventBus.listenForMessages()
-            .subscribe {
-                processMessage(it)
-            }
+        eventBusDisposable.add(
+            eventBus.listen()
+                .subscribe {
+                    processEvent(it)
+                }
         )
-    }
-
-    private fun processMessage(message: Message) {
-        Log.i("$message")
-        when (message.event) {
-            Event.DOWNLOAD_URL -> downloadAndConvert(message.text)
-            else -> Log.i("Other event received")
-        }
     }
 
     override fun bind(downloadService: IDownloadService) {
@@ -80,6 +58,15 @@ class DownloadServicePresenter @Inject constructor(
         service = null
         compositeDisposable.clear()
         eventBusDisposable.clear()
+    }
+
+    private fun processEvent(event: Event) {
+        Log.i("$event")
+        if (event is Event.SendDownloadUrl) {
+            downloadAndConvert(event.url)
+        } else {
+            Log.i("Other event received")
+        }
     }
 
     // TODO check if internet connection is ok
@@ -95,14 +82,15 @@ class DownloadServicePresenter @Inject constructor(
     private fun downloadFile(url: String) {
         Log.i("url: $url")
 
-        Log.i("${Message(Event.DOWNLOAD_STARTED)}")
-        eventBus.send(Message(Event.DOWNLOAD_STARTED))
+        eventBus.send(Event.DownloadStarted)
 
         compositeDisposable.add(downloadInteractor.downloadFile(
             url,
             DOWNLOADS_FOLDER,
             TARGET_FILENAME,
-            VIDEO_EXTENSION
+            VIDEO_EXTENSION,
+            "$DOWNLOADS_FOLDER/$TARGET_FILENAME.$VIDEO_EXTENSION",
+            "$DOWNLOADS_FOLDER/$TARGET_FILENAME.$AUDIO_EXTENSION"
         )
             .subscribeOn(ioThreadScheduler)
             .observeOn(mainThreadScheduler)
@@ -114,80 +102,19 @@ class DownloadServicePresenter @Inject constructor(
         )
     }
 
-    private fun onDownloadProgress(progress: Int) {
-        Log.d("progress: $progress")
-
-        Log.i("Message(Event.DOWNLOAD_PROGRESS, progress)")
-        eventBus.send(
-            Message(
-                Event.DOWNLOAD_PROGRESS,
-                progress.toString()
-            )
-        )
+    private fun onDownloadProgress(event: Event) {
+        Log.d("event: $event")
+        eventBus.send(event)
     }
 
     private fun onDownloadError(error: Throwable) {
         Log.e(error)
-        eventBus.send(Message(Event.DOWNLOAD_ERROR))
+        eventBus.send(Event.DownloadError)
         service?.stopForeground()
     }
 
     private fun onDownloadComplete() {
         Log.d()
-
-        Log.i("${Message(Event.DOWNLOAD_SUCCESS)}")
-        eventBus.send(Message(Event.DOWNLOAD_SUCCESS))
-
-        convertToMp3()
-    }
-
-    private fun convertToMp3() {
-        Log.d()
-
-        Log.i("${Message(Event.CONVERSION_STARTED)}")
-        eventBus.send(Message(Event.CONVERSION_STARTED))
-
-        compositeDisposable.add(convertInteractor.convertToMp3(
-            "$DOWNLOADS_FOLDER/$TARGET_FILENAME.$VIDEO_EXTENSION",
-            "$DOWNLOADS_FOLDER/$TARGET_FILENAME.$AUDIO_EXTENSION"
-        )
-            .subscribeOn(ioThreadScheduler)
-            .observeOn(mainThreadScheduler)
-            .subscribe(
-                { onConvertProgress(it) },
-                { onConvertError(it) },
-                { onConvertComplete() }
-            ))
-    }
-
-    private fun onConvertProgress(progress: String) {
-        Log.d("progress: $progress")
-
-        Log.i(
-            "${Message(
-                Event.CONVERSION_PROGRESS,
-                progress
-            )}"
-        )
-        eventBus.send(
-            Message(
-                Event.CONVERSION_PROGRESS,
-                progress
-            )
-        )
-    }
-
-    private fun onConvertError(error: Throwable) {
-        Log.e(error)
-        eventBus.send(Message(Event.CONVERSION_ERROR))
-        service?.stopForeground()
-    }
-
-    private fun onConvertComplete() {
-        Log.d()
-
-        Log.i("${Message(Event.CONVERSION_SUCCESS)}")
-        eventBus.send(Message(Event.CONVERSION_SUCCESS))
-        service?.stopForeground()
+        eventBus.send(Event.DownloadSuccess)
     }
 }

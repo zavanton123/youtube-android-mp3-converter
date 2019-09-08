@@ -128,7 +128,7 @@ class MainFragment : Fragment() {
     }
 
     private fun showDownloadProgress(downloadProgress: String?) {
-        Log.d()
+        Log.d("$downloadProgress")
         vStatus.text = getString(R.string.download_progress, downloadProgress)
     }
 
