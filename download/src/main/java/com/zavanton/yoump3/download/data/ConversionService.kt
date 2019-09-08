@@ -1,47 +1,21 @@
-package com.zavanton.yoump3.download.interactor.convert
+package com.zavanton.yoump3.download.data
 
 import com.github.hiteshsondhi88.libffmpeg.ExecuteBinaryResponseHandler
 import com.github.hiteshsondhi88.libffmpeg.FFmpeg
-import com.github.hiteshsondhi88.libffmpeg.LoadBinaryResponseHandler
 import com.github.hiteshsondhi88.libffmpeg.exceptions.FFmpegCommandAlreadyRunningException
-import com.github.hiteshsondhi88.libffmpeg.exceptions.FFmpegNotSupportedException
+import com.zavanton.yoump3.core.di.ServiceScope
 import com.zavanton.yoump3.core.utils.Log
 import io.reactivex.ObservableEmitter
 import javax.inject.Inject
 
-class ConversionService
-@Inject
-constructor(private val ffmpeg: FFmpeg) {
+@ServiceScope
+class ConversionService @Inject constructor(
+    private val ffmpeg: FFmpeg
+) : IConversionService {
 
     companion object {
         private const val TARGET = "time="
         private const val TARGET_OFFSET = 8
-    }
-
-    fun init() {
-        Log.d()
-        try {
-            ffmpeg.loadBinary(object : LoadBinaryResponseHandler() {
-
-                override fun onStart() {
-                    Log.d()
-                }
-
-                override fun onFailure() {
-                    Log.d()
-                }
-
-                override fun onSuccess() {
-                    Log.d()
-                }
-
-                override fun onFinish() {
-                    Log.d()
-                }
-            })
-        } catch (exception: FFmpegNotSupportedException) {
-            Log.e(exception)
-        }
     }
 
     fun convert(emitter: ObservableEmitter<String>, commands: Array<String>) {

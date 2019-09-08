@@ -1,4 +1,4 @@
-package com.zavanton.yoump3.download.interactor.download
+package com.zavanton.yoump3.download.business.interactor.download
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -9,7 +9,7 @@ import at.huber.youtubeExtractor.YtFile
 import com.zavanton.yoump3.core.di.ApplicationContext
 import com.zavanton.yoump3.core.di.IoThreadScheduler
 import com.zavanton.yoump3.core.utils.Log
-import com.zavanton.yoump3.core.utils.YoutubeTags
+import com.zavanton.yoump3.download.business.model.YoutubeTags
 import io.reactivex.Observable
 import io.reactivex.ObservableEmitter
 import io.reactivex.Scheduler

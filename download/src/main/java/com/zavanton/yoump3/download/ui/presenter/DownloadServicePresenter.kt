@@ -7,8 +7,8 @@ import com.zavanton.yoump3.core.di.ServiceScope
 import com.zavanton.yoump3.download.eventBus.Event
 import com.zavanton.yoump3.download.eventBus.EventBus
 import com.zavanton.yoump3.core.utils.Log
-import com.zavanton.yoump3.download.interactor.convert.IConvertInteractor
-import com.zavanton.yoump3.download.interactor.download.IDownloadInteractor
+import com.zavanton.yoump3.download.business.interactor.conversion.IConversionInteractor
+import com.zavanton.yoump3.download.business.interactor.download.IDownloadInteractor
 import com.zavanton.yoump3.download.ui.view.IDownloadService
 import io.reactivex.Scheduler
 import io.reactivex.disposables.CompositeDisposable
@@ -24,7 +24,7 @@ class DownloadServicePresenter @Inject constructor(
     private val ioThreadScheduler: Scheduler,
 
     private val downloadInteractor: IDownloadInteractor,
-    private val convertInteractor: IConvertInteractor,
+    private val conversionInteractor: IConversionInteractor,
     private val eventBus: EventBus
 ) : IDownloadServicePresenter {
 
@@ -135,7 +135,7 @@ class DownloadServicePresenter @Inject constructor(
 
         eventBus.send(Event.ConversionStarted)
 
-        compositeDisposable.add(convertInteractor.convertToMp3(
+        compositeDisposable.add(conversionInteractor.convertToMp3(
             "$DOWNLOADS_FOLDER/$TARGET_FILENAME.$VIDEO_EXTENSION",
             "$DOWNLOADS_FOLDER/$TARGET_FILENAME.$AUDIO_EXTENSION"
         )

@@ -1,8 +1,8 @@
-package com.zavanton.yoump3.download.interactor.convert
+package com.zavanton.yoump3.download.business.interactor.conversion
 
 import io.reactivex.Observable
 
-interface IConvertInteractor {
+interface IConversionInteractor {
 
     fun convertToMp3(videoFile: String, audioFile: String): Observable<String>
 }
