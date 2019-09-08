@@ -37,27 +37,6 @@ dependencies {
     implementation project (":main")
 
     kapt architecture_components.lifecycle_compiler
-
     kapt dagger.compiler
     kapt dagger.android_processor
-
-    // JUnit5
-    testImplementation junit.junit_jupiter_api
-    testImplementation junit.junit_jupiter_params
-
-    // Truth
-    testImplementation truth.core
-    androidTestImplementation truth.core
-
-    // Android Testing Library
-    androidTestImplementation android_testing.runner
-    androidTestImplementation android_testing.rules
-
-    // Espresso UI Testing
-    androidTestImplementation espresso.core
-    androidTestImplementation espresso.contrib
-    androidTestImplementation espresso.intents
-    androidTestImplementation espresso.accessibility
-    androidTestImplementation espresso.web
-    androidTestImplementation espresso.idling_concurrent
 }

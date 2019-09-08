@@ -8,7 +8,6 @@ android {
     compileSdkVersion 29
     buildToolsVersion "29.0.2"
 
-
     defaultConfig {
         minSdkVersion 15
         targetSdkVersion 29
@@ -16,7 +15,6 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-
     }
 
     buildTypes {
@@ -62,32 +60,14 @@ dependencies {
     api okhttp.core
     api okhttp.loggint_interceptor
 
-    // JUnit5
-    testImplementation junit.junit_jupiter_api
-    testImplementation junit.junit_jupiter_params
-
-    // Truth
-    testImplementation truth.core
-    androidTestImplementation truth.core
-
-    // Android Testing Library
-    androidTestImplementation android_testing.runner
-    androidTestImplementation android_testing.rules
-
-    // Espresso UI Testing
-    androidTestImplementation espresso.core
-    androidTestImplementation espresso.contrib
-    androidTestImplementation espresso.intents
-    androidTestImplementation espresso.accessibility
-    androidTestImplementation espresso.web
-    androidTestImplementation espresso.idling_concurrent
-    api espresso.idling_resource
-
+    // RxPermissions
     api rxpermissions.core
+
+    // Youtube extractor
     api youtube_extractor.core
+
+    // FFMPEG
     api ffmpeg.core
-
-
 
     /////////////////////// ANKO ///////////////////////
     api "org.jetbrains.anko:anko:0.10.8"
