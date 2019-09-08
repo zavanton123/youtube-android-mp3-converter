@@ -6,7 +6,6 @@ import com.zavanton.yoump3.core.di.MainThreadScheduler
 import com.zavanton.yoump3.core.di.ServiceScope
 import com.zavanton.yoump3.core.eventBus.Event
 import com.zavanton.yoump3.core.eventBus.EventBus
-import com.zavanton.yoump3.core.eventBus.Message
 import com.zavanton.yoump3.core.utils.Log
 import com.zavanton.yoump3.download.interactor.convert.IConvertInteractor
 import com.zavanton.yoump3.download.interactor.download.IDownloadInteractor
@@ -55,18 +54,19 @@ class DownloadServicePresenter @Inject constructor(
 
     private fun listenForMessages() {
         Log.i()
-        eventBusDisposable.add(eventBus.listenForMessages()
+        eventBusDisposable.add(eventBus.listen()
             .subscribe {
-                processMessage(it)
+                processEvent(it)
             }
         )
     }
 
-    private fun processMessage(message: Message) {
-        Log.i("$message")
-        when (message.event) {
-            Event.DOWNLOAD_URL -> downloadAndConvert(message.text)
-            else -> Log.i("Other event received")
+    private fun processEvent(event: Event) {
+        Log.i("$event")
+        if (event is Event.SendDownloadUrl) {
+            downloadAndConvert(event.url)
+        } else {
+            Log.i("Other event received")
         }
     }
 
@@ -95,7 +95,7 @@ class DownloadServicePresenter @Inject constructor(
     private fun downloadFile(url: String) {
         Log.i("url: $url")
 
-        eventBus.send(Message(Event.DOWNLOAD_STARTED))
+        eventBus.send(Event.DownloadStarted)
 
         compositeDisposable.add(downloadInteractor.downloadFile(
             url,
@@ -115,36 +115,25 @@ class DownloadServicePresenter @Inject constructor(
 
     private fun onDownloadProgress(progress: Int) {
         Log.d("progress: $progress")
-
-        Log.i("Message(Event.DOWNLOAD_PROGRESS, progress)")
-        eventBus.send(
-            Message(
-                Event.DOWNLOAD_PROGRESS,
-                progress.toString()
-            )
-        )
+        eventBus.send(Event.DownloadProgress(progress.toString()))
     }
 
     private fun onDownloadError(error: Throwable) {
         Log.e(error)
-        eventBus.send(Message(Event.DOWNLOAD_ERROR))
+        eventBus.send(Event.DownloadError)
         service?.stopForeground()
     }
 
     private fun onDownloadComplete() {
         Log.d()
-
-        Log.i("${Message(Event.DOWNLOAD_SUCCESS)}")
-        eventBus.send(Message(Event.DOWNLOAD_SUCCESS))
-
+        eventBus.send(Event.DownloadSuccess)
         convertToMp3()
     }
 
     private fun convertToMp3() {
         Log.d()
 
-        Log.i("${Message(Event.CONVERSION_STARTED)}")
-        eventBus.send(Message(Event.CONVERSION_STARTED))
+        eventBus.send(Event.ConversionStarted)
 
         compositeDisposable.add(convertInteractor.convertToMp3(
             "$DOWNLOADS_FOLDER/$TARGET_FILENAME.$VIDEO_EXTENSION",
@@ -161,32 +150,18 @@ class DownloadServicePresenter @Inject constructor(
 
     private fun onConvertProgress(progress: String) {
         Log.d("progress: $progress")
-
-        Log.i(
-            "${Message(
-                Event.CONVERSION_PROGRESS,
-                progress
-            )}"
-        )
-        eventBus.send(
-            Message(
-                Event.CONVERSION_PROGRESS,
-                progress
-            )
-        )
+        eventBus.send(Event.ConversionProgress(progress))
     }
 
     private fun onConvertError(error: Throwable) {
         Log.e(error)
-        eventBus.send(Message(Event.CONVERSION_ERROR))
+        eventBus.send(Event.ConversionError)
         service?.stopForeground()
     }
 
     private fun onConvertComplete() {
         Log.d()
-
-        Log.i("${Message(Event.CONVERSION_SUCCESS)}")
-        eventBus.send(Message(Event.CONVERSION_SUCCESS))
+        eventBus.send(Event.ConversionSuccess)
         service?.stopForeground()
     }
 }

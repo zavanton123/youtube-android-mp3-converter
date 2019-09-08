@@ -12,11 +12,11 @@ class EventBus @Inject constructor() {
         Log.i()
     }
 
-    private val channel = BehaviorSubject.create<Message>()
+    private val channel = BehaviorSubject.create<Event>()
 
-    fun listenForMessages(): BehaviorSubject<Message> = channel
+    fun listen(): BehaviorSubject<Event> = channel
 
-    fun send(message: Message) {
-        channel.onNext(message)
+    fun send(event: Event) {
+        channel.onNext(event)
     }
 }

@@ -7,7 +7,6 @@ import com.zavanton.yoump3.business.model.PermissionEvent
 import com.zavanton.yoump3.core.di.ActivityScope
 import com.zavanton.yoump3.core.eventBus.Event
 import com.zavanton.yoump3.core.eventBus.EventBus
-import com.zavanton.yoump3.core.eventBus.Message
 import com.zavanton.yoump3.core.utils.Log
 import com.zavanton.yoump3.splash.di.SplashActivityComponentManager
 import io.reactivex.disposables.CompositeDisposable
@@ -24,7 +23,7 @@ class SplashActivityViewModel @Inject constructor(
     private val compositeDisposable = CompositeDisposable()
 
     override fun processIntentExtra(extra: String) {
-        eventBus.send(Message(Event.INTENT_ACTION_URL, extra))
+        eventBus.send(Event.SendActionUrl(extra))
     }
 
     override fun checkPermissions() {

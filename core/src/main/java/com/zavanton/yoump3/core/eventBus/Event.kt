@@ -1,18 +1,17 @@
 package com.zavanton.yoump3.core.eventBus
 
-enum class Event {
+sealed class Event {
 
-    INTENT_ACTION_URL,
-    DOWNLOAD_URL,
+    data class SendActionUrl(val url: String) : Event()
+    data class SendDownloadUrl(val url: String) : Event()
 
-    DOWNLOAD_STARTED,
-    DOWNLOAD_PROGRESS,
-    DOWNLOAD_SUCCESS,
-    DOWNLOAD_ERROR,
+    object DownloadStarted : Event()
+    data class DownloadProgress(val progress: String) : Event()
+    object DownloadSuccess : Event()
+    object DownloadError : Event()
 
-    CONVERSION_STARTED,
-    CONVERSION_PROGRESS,
-    CONVERSION_SUCCESS,
-    CONVERSION_ERROR,
-
+    object ConversionStarted : Event()
+    data class ConversionProgress(val progress: String) : Event()
+    object ConversionSuccess : Event()
+    object ConversionError : Event()
 }
