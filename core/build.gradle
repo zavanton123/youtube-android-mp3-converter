@@ -63,9 +63,6 @@ dependencies {
     // RxPermissions
     api rxpermissions.core
 
-    // Youtube extractor
-    api youtube_extractor.core
-
     /////////////////////// ANKO ///////////////////////
     api "org.jetbrains.anko:anko:0.10.8"
 

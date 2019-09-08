@@ -30,6 +30,9 @@ dependencies {
 
     implementation project (":core")
 
+    // Youtube extractor
+    implementation youtube_extractor.core
+
     // FFMPEG
     implementation ffmpeg.core
 
