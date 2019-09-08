@@ -95,7 +95,6 @@ class DownloadServicePresenter @Inject constructor(
     private fun downloadFile(url: String) {
         Log.i("url: $url")
 
-        Log.i("${Message(Event.DOWNLOAD_STARTED)}")
         eventBus.send(Message(Event.DOWNLOAD_STARTED))
 
         compositeDisposable.add(downloadInteractor.downloadFile(

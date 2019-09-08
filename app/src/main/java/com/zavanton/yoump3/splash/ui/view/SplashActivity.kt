@@ -7,11 +7,11 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.afollestad.materialdialogs.MaterialDialog
 import com.zavanton.yoump3.R
+import com.zavanton.yoump3.business.model.PermissionEvent
+import com.zavanton.yoump3.core.utils.Log
 import com.zavanton.yoump3.main.activity.ui.MainActivity
 import com.zavanton.yoump3.splash.ui.viewModel.SplashActivityViewModel
 import com.zavanton.yoump3.splash.ui.viewModel.SplashActivityViewModelFactory
-import com.zavanton.yoump3.splash.ui.viewModel.SplashEvent
-import com.zavanton.yoump3.core.utils.Log
 
 class SplashActivity : AppCompatActivity() {
 
@@ -24,53 +24,57 @@ class SplashActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Log.d()
 
-        viewModel = ViewModelProviders.of(this,
-            SplashActivityViewModelFactory(this)
-        )
+        viewModel = ViewModelProviders.of(this, SplashActivityViewModelFactory(this))
             .get(SplashActivityViewModel::class.java)
 
-        setupUi()
+        listenForSplashEvents()
 
         viewModel.checkPermissions()
     }
 
-    private fun setupUi() {
-        viewModel.splashEvent.observe(this,
-            Observer<SplashEvent> { splashEvent ->
-                when (splashEvent) {
-                    SplashEvent.ProceedWithApp -> proceedWithApp()
-                    SplashEvent.RepeatRequestPermissions -> repeatRequestPermissions()
-                    SplashEvent.PositiveButtonClick -> onPositiveButtonClick()
-                    SplashEvent.NegativeButtonClick -> onNegativeButtonClick()
+    private fun listenForSplashEvents() {
+        viewModel.permissionEvent.observe(this,
+            Observer<PermissionEvent> {
+                when (it) {
+                    PermissionEvent.PermissionGranted -> proceedWithApp()
+                    PermissionEvent.RepeatPermissionRequest -> repeatPermissionRequest()
                 }
             }
         )
-    }
-
-    private fun proceedWithApp() {
-        Log.d()
-
-        processIntentExtras()
-        goToMainActivity()
-    }
-
-    private fun processIntentExtras() {
-        Log.d()
-        if (intent?.action == Intent.ACTION_SEND) {
-            processActionSend(intent)
-        } else {
-            Log.d("no extras found")
-        }
     }
 
     private fun processActionSend(intent: Intent) {
         Log.d("intent: $intent")
         if (TEXT_INTENT_TYPE == intent.type) {
             intent.getStringExtra(Intent.EXTRA_TEXT)?.let {
-                viewModel.processExtra(it)
+                viewModel.processIntentExtra(it)
             }
+        }
+    }
+
+    private fun repeatPermissionRequest() {
+        MaterialDialog.Builder(this)
+            .iconRes(R.drawable.ic_action_warning)
+            .limitIconToDefaultSize()
+            .title(getString(R.string.need_permissions))
+            .positiveText(getString(R.string.grant))
+            .negativeText(getString(R.string.do_not_grant))
+            .onPositive { _, _ -> proceedWithApp() }
+            .onNegative { _, _ -> finish() }
+            .show()
+    }
+
+    private fun proceedWithApp() {
+        processIntentExtras()
+        goToMainActivity()
+    }
+
+    private fun processIntentExtras() {
+        if (intent?.action == Intent.ACTION_SEND) {
+            processActionSend(intent)
+        } else {
+            Log.d("no extras found")
         }
     }
 
@@ -79,28 +83,5 @@ class SplashActivity : AppCompatActivity() {
             startActivity(this)
             finish()
         }
-    }
-
-    private fun repeatRequestPermissions() {
-        Log.d()
-        MaterialDialog.Builder(this)
-            .iconRes(R.drawable.ic_action_warning)
-            .limitIconToDefaultSize()
-            .title(getString(R.string.need_permissions))
-            .positiveText(getString(R.string.grant))
-            .negativeText(getString(R.string.do_not_grant))
-            .onPositive { _, _ -> viewModel.onPositiveButtonClick() }
-            .onNegative { _, _ -> viewModel.onNegativeButtonClick() }
-            .show()
-    }
-
-    private fun onPositiveButtonClick() {
-        Log.d()
-        proceedWithApp()
-    }
-
-    private fun onNegativeButtonClick() {
-        Log.d()
-        finish()
     }
 }
