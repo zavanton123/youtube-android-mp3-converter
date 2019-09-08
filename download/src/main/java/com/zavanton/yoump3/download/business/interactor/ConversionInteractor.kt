@@ -1,7 +1,7 @@
 package com.zavanton.yoump3.download.business.interactor
 
 import com.zavanton.yoump3.core.di.ServiceScope
-import com.zavanton.yoump3.core.utils.Log
+import com.zavanton.yoump3.download.business.model.Event
 import com.zavanton.yoump3.download.data.ConversionService
 import io.reactivex.Observable
 import javax.inject.Inject
@@ -11,8 +11,11 @@ class ConversionInteractor @Inject constructor(
     private val conversionService: ConversionService
 ) : IConversionInteractor {
 
-    override fun convertToMp3(videoFile: String, audioFile: String): Observable<String> {
-        Log.d()
-        return conversionService.convert(arrayOf("-i", videoFile, audioFile))
+    companion object {
+
+        private const val PREFIX = "-i"
     }
+
+    override fun convertToMp3(videoFile: String, audioFile: String): Observable<Event> =
+        conversionService.convert(arrayOf(PREFIX, videoFile, audioFile))
 }

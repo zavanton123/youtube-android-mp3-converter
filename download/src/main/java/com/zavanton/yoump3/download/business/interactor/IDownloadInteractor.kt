@@ -1,5 +1,6 @@
 package com.zavanton.yoump3.download.business.interactor
 
+import com.zavanton.yoump3.download.business.model.Event
 import io.reactivex.Observable
 
 interface IDownloadInteractor {
@@ -9,5 +10,5 @@ interface IDownloadInteractor {
         downloadsFolder: String,
         targetFilename: String,
         videoExtension: String
-    ): Observable<Int>
+    ): Observable<Event>
 }

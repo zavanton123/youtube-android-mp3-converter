@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import com.zavanton.yoump3.business.interactor.IPermissionInteractor
 import com.zavanton.yoump3.business.model.PermissionEvent
 import com.zavanton.yoump3.core.di.ActivityScope
-import com.zavanton.yoump3.download.eventBus.Event
+import com.zavanton.yoump3.download.business.model.Event
 import com.zavanton.yoump3.download.eventBus.EventBus
 import com.zavanton.yoump3.core.utils.Log
 import com.zavanton.yoump3.splash.di.SplashActivityComponentManager

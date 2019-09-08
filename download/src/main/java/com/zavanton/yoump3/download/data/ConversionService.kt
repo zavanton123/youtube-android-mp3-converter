@@ -6,6 +6,7 @@ import com.github.hiteshsondhi88.libffmpeg.exceptions.FFmpegCommandAlreadyRunnin
 import com.zavanton.yoump3.core.di.ServiceScope
 import com.zavanton.yoump3.core.utils.Constants
 import com.zavanton.yoump3.core.utils.Log
+import com.zavanton.yoump3.download.business.model.Event
 import io.reactivex.Observable
 import javax.inject.Inject
 
@@ -19,8 +20,8 @@ class ConversionService @Inject constructor(
         private const val TARGET = "time="
     }
 
-    override fun convert(commands: Array<String>): Observable<String> =
-        Observable.create<String> { emitter ->
+    override fun convert(commands: Array<String>): Observable<Event> =
+        Observable.create<Event> { emitter ->
             try {
                 ffmpeg.execute(commands, object : ExecuteBinaryResponseHandler() {
 
@@ -29,7 +30,7 @@ class ConversionService @Inject constructor(
                     }
 
                     override fun onProgress(message: String) {
-                        emitter.onNext(fetchProgress(message))
+                        emitter.onNext(Event.ConversionProgress(fetchProgress(message)))
                     }
 
                     override fun onFailure(message: String) {
@@ -37,7 +38,7 @@ class ConversionService @Inject constructor(
                     }
 
                     override fun onSuccess(message: String) {
-                        emitter.onNext(message)
+                        emitter.onNext(Event.ConversionSuccess)
                     }
 
                     override fun onFinish() {

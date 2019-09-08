@@ -1,6 +1,7 @@
 package com.zavanton.yoump3.download.business.interactor
 
 import com.zavanton.yoump3.core.di.ServiceScope
+import com.zavanton.yoump3.download.business.model.Event
 import com.zavanton.yoump3.download.data.IDownloadRepository
 import io.reactivex.Observable
 import javax.inject.Inject
@@ -15,7 +16,7 @@ class DownloadInteractor @Inject constructor(
         downloadsFolder: String,
         targetFilename: String,
         videoExtension: String
-    ): Observable<Int> = downloadRepository.download(
+    ): Observable<Event> = downloadRepository.download(
         urlLink,
         downloadsFolder,
         targetFilename,

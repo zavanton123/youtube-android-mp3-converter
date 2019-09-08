@@ -11,6 +11,7 @@ import com.zavanton.yoump3.core.di.IoThreadScheduler
 import com.zavanton.yoump3.core.di.ServiceScope
 import com.zavanton.yoump3.core.utils.Constants.EMPTY_STRING
 import com.zavanton.yoump3.core.utils.Log
+import com.zavanton.yoump3.download.business.model.Event
 import com.zavanton.yoump3.download.business.model.YoutubeTags
 import io.reactivex.Observable
 import io.reactivex.ObservableEmitter
@@ -36,15 +37,15 @@ class DownloadRepository @Inject constructor(
     private var downloadsFolder: String = EMPTY_STRING
     private var targetFilename: String = EMPTY_STRING
     private var videoExtension: String = EMPTY_STRING
-    private var emitter: ObservableEmitter<Int>? = null
+    private var emitter: ObservableEmitter<Event>? = null
 
     override fun download(
         urlLink: String,
         downloadsFolder: String,
         targetFilename: String,
         videoExtension: String
-    ): Observable<Int> =
-        Observable.create<Int> { emitter ->
+    ): Observable<Event> =
+        Observable.create<Event> { emitter ->
             this.downloadsFolder = downloadsFolder
             this.targetFilename = targetFilename
             this.videoExtension = videoExtension
@@ -74,7 +75,7 @@ class DownloadRepository @Inject constructor(
         downloadsFolder: String,
         targetFilename: String,
         videoExtension: String,
-        emitter: ObservableEmitter<Int>?
+        emitter: ObservableEmitter<Event>?
     ) {
         ioThreadScheduler.scheduleDirect {
             url?.apply {
@@ -94,7 +95,7 @@ class DownloadRepository @Inject constructor(
     private fun writeToFile(
         inputStream: InputStream,
         file: File,
-        emitter: ObservableEmitter<Int>?
+        emitter: ObservableEmitter<Event>?
     ) {
         try {
             val fileOutputStream = FileOutputStream(file)
@@ -105,7 +106,7 @@ class DownloadRepository @Inject constructor(
                 fileOutputStream.write(buffer, 0, length)
                 length = inputStream.read(buffer)
                 downloaded += length
-                emitter?.onNext(downloaded)
+                emitter?.onNext(Event.DownloadProgress(downloaded.toString()))
             }
             fileOutputStream.close()
             inputStream.close()

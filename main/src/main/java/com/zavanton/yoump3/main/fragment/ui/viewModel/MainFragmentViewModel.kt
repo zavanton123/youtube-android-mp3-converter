@@ -4,7 +4,7 @@ import android.content.ClipboardManager
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.zavanton.yoump3.core.di.FragmentScope
-import com.zavanton.yoump3.download.eventBus.Event
+import com.zavanton.yoump3.download.business.model.Event
 import com.zavanton.yoump3.download.eventBus.EventBus
 import com.zavanton.yoump3.core.utils.Constants.EMPTY_STRING
 import com.zavanton.yoump3.core.utils.Log

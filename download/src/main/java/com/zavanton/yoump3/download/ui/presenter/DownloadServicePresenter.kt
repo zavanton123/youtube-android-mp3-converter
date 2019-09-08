@@ -7,13 +7,11 @@ import com.zavanton.yoump3.core.di.ServiceScope
 import com.zavanton.yoump3.core.utils.Log
 import com.zavanton.yoump3.download.business.interactor.IConversionInteractor
 import com.zavanton.yoump3.download.business.interactor.IDownloadInteractor
-import com.zavanton.yoump3.download.eventBus.Event
+import com.zavanton.yoump3.download.business.model.Event
 import com.zavanton.yoump3.download.eventBus.EventBus
 import com.zavanton.yoump3.download.ui.view.IDownloadService
 import io.reactivex.Scheduler
-import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.schedulers.Schedulers
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
@@ -46,9 +44,9 @@ class DownloadServicePresenter @Inject constructor(
     override fun onStartCommand() {
         eventBusDisposable.add(
             eventBus.listen()
-            .subscribe {
-                processEvent(it)
-            }
+                .subscribe {
+                    processEvent(it)
+                }
         )
     }
 
@@ -104,9 +102,9 @@ class DownloadServicePresenter @Inject constructor(
         )
     }
 
-    private fun onDownloadProgress(progress: Int) {
-        Log.d("progress: $progress")
-        eventBus.send(Event.DownloadProgress(progress.toString()))
+    private fun onDownloadProgress(event: Event) {
+        Log.d("event: $event")
+        eventBus.send(event)
     }
 
     private fun onDownloadError(error: Throwable) {
@@ -139,9 +137,9 @@ class DownloadServicePresenter @Inject constructor(
             ))
     }
 
-    private fun onConvertProgress(progress: String) {
-        Log.d("progress: $progress")
-        eventBus.send(Event.ConversionProgress(progress))
+    private fun onConvertProgress(event: Event) {
+        Log.d("event: $event")
+        eventBus.send(event)
     }
 
     private fun onConvertError(error: Throwable) {

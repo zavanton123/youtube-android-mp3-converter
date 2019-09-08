@@ -1,5 +1,6 @@
 package com.zavanton.yoump3.download.data
 
+import com.zavanton.yoump3.download.business.model.Event
 import io.reactivex.Observable
 
 interface IDownloadRepository {
@@ -9,5 +10,5 @@ interface IDownloadRepository {
         downloadsFolder: String,
         targetFilename: String,
         videoExtension: String
-    ): Observable<Int>
+    ): Observable<Event>
 }

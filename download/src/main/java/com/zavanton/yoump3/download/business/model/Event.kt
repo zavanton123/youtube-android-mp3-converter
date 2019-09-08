@@ -1,4 +1,4 @@
-package com.zavanton.yoump3.download.eventBus
+package com.zavanton.yoump3.download.business.model
 
 sealed class Event {
 
