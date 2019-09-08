@@ -4,8 +4,9 @@ import com.github.hiteshsondhi88.libffmpeg.ExecuteBinaryResponseHandler
 import com.github.hiteshsondhi88.libffmpeg.FFmpeg
 import com.github.hiteshsondhi88.libffmpeg.exceptions.FFmpegCommandAlreadyRunningException
 import com.zavanton.yoump3.core.di.ServiceScope
+import com.zavanton.yoump3.core.utils.Constants
 import com.zavanton.yoump3.core.utils.Log
-import io.reactivex.ObservableEmitter
+import io.reactivex.Observable
 import javax.inject.Inject
 
 @ServiceScope
@@ -14,59 +15,44 @@ class ConversionService @Inject constructor(
 ) : IConversionService {
 
     companion object {
+
         private const val TARGET = "time="
-        private const val TARGET_OFFSET = 8
     }
 
-    fun convert(emitter: ObservableEmitter<String>, commands: Array<String>) {
-        try {
-            ffmpeg.execute(commands, object : ExecuteBinaryResponseHandler() {
+    override fun convert(commands: Array<String>): Observable<String> =
+        Observable.create<String> { emitter ->
+            try {
+                ffmpeg.execute(commands, object : ExecuteBinaryResponseHandler() {
 
-                override fun onStart() {
-                    Log.d()
-                }
+                    override fun onStart() {
+                        Log.d()
+                    }
 
-                override fun onProgress(message: String) {
-                    Log.d(message)
-                    val progress = fetchProgress(message)
-                    emitter.onNext(progress)
-                }
+                    override fun onProgress(message: String) {
+                        emitter.onNext(fetchProgress(message))
+                    }
 
-                override fun onFailure(message: String) {
-                    val throwable = Throwable(message)
-                    Log.e(throwable, message)
-                    emitter.onError(throwable)
-                }
+                    override fun onFailure(message: String) {
+                        emitter.onError(Throwable(message))
+                    }
 
-                override fun onSuccess(message: String) {
-                    Log.d(message)
-                    emitter.onNext(message)
-                }
+                    override fun onSuccess(message: String) {
+                        emitter.onNext(message)
+                    }
 
-                override fun onFinish() {
-                    Log.d()
-                    emitter.onComplete()
-                }
-            })
-        } catch (exception: FFmpegCommandAlreadyRunningException) {
-            Log.e(exception)
-            emitter.onError(exception)
+                    override fun onFinish() {
+                        emitter.onComplete()
+                    }
+                })
+            } catch (exception: FFmpegCommandAlreadyRunningException) {
+                emitter.onError(exception)
+            }
         }
-    }
 
-    private fun fetchProgress(message: String): String {
-        Log.d()
-
-        // TODO
-        return if (message.contains(TARGET)) {
+    private fun fetchProgress(message: String): String =
+        if (message.contains(TARGET)) {
             message
-
-//            val regex = "^[0-2][0-3]:[0-5][0-9]:[0-5][0-9]\$"
-//            val pattern = Pattern.compile(regex)
-//            val matcher = pattern.matcher(message)
-//            matcher.group(1)
         } else {
-            ""
+            Constants.EMPTY_STRING
         }
-    }
 }
