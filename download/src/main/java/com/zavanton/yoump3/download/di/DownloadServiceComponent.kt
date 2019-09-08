@@ -25,7 +25,6 @@ import dagger.Provides
     dependencies = [
         AppApi::class,
         SchedulerApi::class,
-        ClipboardApi::class,
         NetworkApi::class,
         EventBusApi::class,
         NotificationApi::class
