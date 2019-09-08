@@ -8,14 +8,15 @@ class MainActivityViewModel : ViewModel() {
 
     init {
         Log.d()
-        MainActivityComponentManager.getMainActivityComponent().inject(this)
+        MainActivityComponentManager.getMainActivityComponent()
+            .inject(this)
     }
 
     override fun onCleared() {
         super.onCleared()
         Log.d()
 
-        MainActivityComponentManager.clear()
+        MainActivityComponentManager.clearMainActivityComponent()
     }
 }
 

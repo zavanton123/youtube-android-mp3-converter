@@ -1,6 +1,8 @@
 package com.zavanton.yoump3.main.activity.di
 
-import com.zavanton.yoump3.core.di.*
+import com.zavanton.yoump3.core.di.ActivityScope
+import com.zavanton.yoump3.core.di.ClipboardApi
+import com.zavanton.yoump3.core.di.EventBusApi
 import com.zavanton.yoump3.main.activity.ui.MainActivityViewModel
 import com.zavanton.yoump3.main.fragment.di.MainFragmentComponent
 import com.zavanton.yoump3.main.fragment.di.MainFragmentProvideModule
@@ -9,17 +11,9 @@ import dagger.Module
 
 @ActivityScope
 @Component(
-    modules = [
-        MainActivityProvideModule::class,
-        MainActivityBindModule::class
-    ],
     dependencies = [
-        AppApi::class,
-        SchedulerApi::class,
         ClipboardApi::class,
-        NetworkApi::class,
-        EventBusApi::class,
-        NotificationApi::class
+        EventBusApi::class
     ]
 )
 interface MainActivityComponent {
@@ -28,9 +22,3 @@ interface MainActivityComponent {
 
     fun plusMainFragmentComponent(module: MainFragmentProvideModule): MainFragmentComponent
 }
-
-@Module
-class MainActivityProvideModule
-
-@Module
-abstract class MainActivityBindModule

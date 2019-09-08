@@ -7,22 +7,16 @@ object MainActivityComponentManager {
 
     private var mainActivityComponent: MainActivityComponent? = null
 
-    fun getMainActivityComponent(): MainActivityComponent {
-        return mainActivityComponent
-            ?: DaggerMainActivityComponent.builder()
-            .appApi(CoreComponentManager.getCoreComponent())
-            .schedulerApi(CoreComponentManager.getCoreComponent())
+    fun getMainActivityComponent(): MainActivityComponent =
+        mainActivityComponent ?: DaggerMainActivityComponent.builder()
             .clipboardApi(CoreComponentManager.getCoreComponent())
-            .networkApi(CoreComponentManager.getCoreComponent())
             .eventBusApi(CoreComponentManager.getCoreComponent())
-            .notificationApi(CoreComponentManager.getCoreComponent())
             .build()
             .also {
                 mainActivityComponent = it
             }
-    }
 
-    fun clear() {
+    fun clearMainActivityComponent() {
         Log.d()
         mainActivityComponent = null
     }
