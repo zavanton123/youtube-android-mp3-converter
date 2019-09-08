@@ -16,7 +16,6 @@ object MainActivityComponentManager {
             .networkApi(CoreComponentManager.getCoreComponent())
             .eventBusApi(CoreComponentManager.getCoreComponent())
             .notificationApi(CoreComponentManager.getCoreComponent())
-            .conversionApi(CoreComponentManager.getCoreComponent())
             .build()
             .also {
                 mainActivityComponent = it

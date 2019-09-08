@@ -1,4 +1,4 @@
-package com.zavanton.yoump3.core.business
+package com.zavanton.yoump3.download.interactor.convert
 
 import com.github.hiteshsondhi88.libffmpeg.ExecuteBinaryResponseHandler
 import com.github.hiteshsondhi88.libffmpeg.FFmpeg
@@ -9,7 +9,7 @@ import com.zavanton.yoump3.core.utils.Log
 import io.reactivex.ObservableEmitter
 import javax.inject.Inject
 
-class ConversionManager
+class ConversionService
 @Inject
 constructor(private val ffmpeg: FFmpeg) {
 

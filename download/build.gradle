@@ -30,8 +30,10 @@ dependencies {
 
     implementation project (":core")
 
-    kapt architecture_components.lifecycle_compiler
+    // FFMPEG
+    implementation ffmpeg.core
 
+    kapt architecture_components.lifecycle_compiler
     kapt dagger.compiler
     kapt dagger.android_processor
 }

@@ -23,8 +23,7 @@ import dagger.Provides
         ClipboardApi::class,
         NetworkApi::class,
         EventBusApi::class,
-        NotificationApi::class,
-        ConversionApi::class
+        NotificationApi::class
     ]
 )
 interface SplashActivityComponent {

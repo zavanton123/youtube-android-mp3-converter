@@ -19,8 +19,7 @@ import dagger.Module
         ClipboardApi::class,
         NetworkApi::class,
         EventBusApi::class,
-        NotificationApi::class,
-        ConversionApi::class
+        NotificationApi::class
     ]
 )
 interface MainActivityComponent {

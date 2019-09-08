@@ -66,9 +66,6 @@ dependencies {
     // Youtube extractor
     api youtube_extractor.core
 
-    // FFMPEG
-    api ffmpeg.core
-
     /////////////////////// ANKO ///////////////////////
     api "org.jetbrains.anko:anko:0.10.8"
 
