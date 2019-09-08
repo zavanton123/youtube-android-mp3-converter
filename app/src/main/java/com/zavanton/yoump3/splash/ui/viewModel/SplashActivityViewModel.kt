@@ -74,6 +74,6 @@ class SplashActivityViewModel @Inject constructor(
             compositeDisposable.dispose()
         }
 
-        SplashActivityComponentManager.clear()
+        SplashActivityComponentManager.clearSplashActivityComponent()
     }
 }

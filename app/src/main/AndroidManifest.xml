@@ -19,7 +19,7 @@
             tools:ignore="GoogleAppIndexingWarning">
 
         <activity
-                android:name="com.zavanton.yoump3.splash.ui.view.SplashActivity"
+                android:name=".splash.ui.view.SplashActivity"
                 android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>

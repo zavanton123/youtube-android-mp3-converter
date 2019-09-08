@@ -8,25 +8,22 @@ object SplashActivityComponentManager {
 
     private var splashActivityComponent: SplashActivityComponent? = null
 
-    fun get(activity: FragmentActivity): SplashActivityComponent? {
-        Log.d()
-
-        return splashActivityComponent
+    fun getSplashActivityComponent(activity: FragmentActivity): SplashActivityComponent? =
+        splashActivityComponent
             ?: DaggerSplashActivityComponent.builder()
-            .splashActivityProvideModule(SplashActivityProvideModule(activity))
-            .appApi(CoreComponentManager.getCoreComponent())
-            .schedulerApi(CoreComponentManager.getCoreComponent())
-            .clipboardApi(CoreComponentManager.getCoreComponent())
-            .networkApi(CoreComponentManager.getCoreComponent())
-            .eventBusApi(CoreComponentManager.getCoreComponent())
-            .notificationApi(CoreComponentManager.getCoreComponent())
-            .build()
-            .also {
-                splashActivityComponent = it
-            }
-    }
+                .splashActivityProvideModule(SplashActivityProvideModule(activity))
+                .appApi(CoreComponentManager.getCoreComponent())
+                .schedulerApi(CoreComponentManager.getCoreComponent())
+                .clipboardApi(CoreComponentManager.getCoreComponent())
+                .networkApi(CoreComponentManager.getCoreComponent())
+                .eventBusApi(CoreComponentManager.getCoreComponent())
+                .notificationApi(CoreComponentManager.getCoreComponent())
+                .build()
+                .also {
+                    splashActivityComponent = it
+                }
 
-    fun clear() {
+    fun clearSplashActivityComponent() {
         Log.d()
         splashActivityComponent = null
     }

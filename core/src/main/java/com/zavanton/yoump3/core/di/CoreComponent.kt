@@ -65,5 +65,10 @@ interface NetworkApi {
         NotificationModule::class
     ]
 )
-interface CoreComponent : AppApi, SchedulerApi, ClipboardApi, NetworkApi, EventBusApi, NotificationApi {
-}
+interface CoreComponent :
+    AppApi,
+    SchedulerApi,
+    ClipboardApi,
+    NetworkApi,
+    EventBusApi,
+    NotificationApi

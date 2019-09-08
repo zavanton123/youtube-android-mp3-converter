@@ -14,7 +14,7 @@ class SplashActivityViewModelFactory(
     lateinit var viewModel: ISplashActivityViewModel
 
     init {
-        SplashActivityComponentManager.get(activity)
+        SplashActivityComponentManager.getSplashActivityComponent(activity)
             ?.inject(this)
     }
 
