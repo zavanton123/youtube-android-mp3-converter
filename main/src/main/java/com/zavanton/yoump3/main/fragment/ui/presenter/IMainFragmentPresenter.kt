@@ -1,6 +1,6 @@
-package com.zavanton.yoump3.main.ui.fragment.presenter
+package com.zavanton.yoump3.main.fragment.ui.presenter
 
-import com.zavanton.yoump3.main.ui.fragment.view.IMainFragment
+import com.zavanton.yoump3.main.fragment.ui.view.IMainFragment
 
 interface IMainFragmentPresenter {
 

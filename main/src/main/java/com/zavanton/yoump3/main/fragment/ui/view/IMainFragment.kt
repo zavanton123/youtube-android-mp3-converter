@@ -1,4 +1,4 @@
-package com.zavanton.yoump3.main.ui.fragment.view
+package com.zavanton.yoump3.main.fragment.ui.view
 
 interface IMainFragment {
 

@@ -1,9 +1,9 @@
-package com.zavanton.yoump3.main.ui.activity.view
+package com.zavanton.yoump3.main.activity.ui
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProviders
-import com.zavanton.yoump3.main.ui.fragment.view.MainFragment
+import com.zavanton.yoump3.main.fragment.ui.view.MainFragment
 import com.zavanton.yoump3.core.utils.Log
 import com.zavanton.yoump3.main.R
 

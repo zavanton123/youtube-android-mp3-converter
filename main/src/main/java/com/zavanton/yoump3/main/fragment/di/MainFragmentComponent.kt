@@ -1,9 +1,9 @@
-package com.zavanton.yoump3.main.ui.fragment.di
+package com.zavanton.yoump3.main.fragment.di
 
 import com.zavanton.yoump3.core.di.FragmentScope
-import com.zavanton.yoump3.main.ui.fragment.presenter.IMainFragmentPresenter
-import com.zavanton.yoump3.main.ui.fragment.presenter.MainFragmentPresenter
-import com.zavanton.yoump3.main.ui.fragment.view.MainFragmentViewModel
+import com.zavanton.yoump3.main.fragment.ui.presenter.IMainFragmentPresenter
+import com.zavanton.yoump3.main.fragment.ui.presenter.MainFragmentPresenter
+import com.zavanton.yoump3.main.fragment.ui.view.MainFragmentViewModel
 import dagger.Binds
 import dagger.Module
 import dagger.Subcomponent

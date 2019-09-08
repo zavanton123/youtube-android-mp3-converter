@@ -1,11 +1,11 @@
-package com.zavanton.yoump3.main.ui.fragment.presenter
+package com.zavanton.yoump3.main.fragment.ui.presenter
 
 import android.content.ClipboardManager
 import com.zavanton.yoump3.core.di.FragmentScope
 import com.zavanton.yoump3.core.eventBus.Event
 import com.zavanton.yoump3.core.eventBus.EventBus
 import com.zavanton.yoump3.core.eventBus.Message
-import com.zavanton.yoump3.main.ui.fragment.view.IMainFragment
+import com.zavanton.yoump3.main.fragment.ui.view.IMainFragment
 import com.zavanton.yoump3.core.utils.Log
 import io.reactivex.disposables.CompositeDisposable
 import java.text.DecimalFormat

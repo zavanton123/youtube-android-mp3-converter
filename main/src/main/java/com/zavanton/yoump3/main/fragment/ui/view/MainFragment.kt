@@ -1,4 +1,4 @@
-package com.zavanton.yoump3.main.ui.fragment.view
+package com.zavanton.yoump3.main.fragment.ui.view
 
 import android.content.Intent
 import android.os.Bundle
@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import com.zavanton.yoump3.download.ui.view.DownloadService
-import com.zavanton.yoump3.main.ui.fragment.presenter.IMainFragmentPresenter
+import com.zavanton.yoump3.main.fragment.ui.presenter.IMainFragmentPresenter
 import com.zavanton.yoump3.core.utils.Log
 import com.zavanton.yoump3.main.R
 import kotlinx.android.synthetic.main.fmt_main.*
