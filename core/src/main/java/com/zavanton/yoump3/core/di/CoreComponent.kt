@@ -4,10 +4,8 @@ import android.app.NotificationManager
 import android.content.ClipboardManager
 import android.content.Context
 import androidx.core.app.NotificationCompat
-import com.github.hiteshsondhi88.libffmpeg.FFmpeg
-import com.zavanton.yoump3.core.business.ConversionManager
-import com.zavanton.yoump3.core.eventBus.EventBus
 import com.zavanton.yoump3.core.di.module.*
+import com.zavanton.yoump3.core.eventBus.EventBus
 import dagger.Component
 import io.reactivex.Scheduler
 import okhttp3.OkHttpClient
@@ -30,12 +28,6 @@ interface SchedulerApi {
 interface ClipboardApi {
 
     fun provideClipboardManager(): ClipboardManager
-}
-
-interface ConversionApi {
-
-    fun provideFFMpeg(): FFmpeg
-    fun provideFfmpegManager(): ConversionManager
 }
 
 interface NotificationApi {
@@ -70,9 +62,13 @@ interface NetworkApi {
         ClipboardModule::class,
         NetworkModule::class,
         EventBusModule::class,
-        NotificationModule::class,
-        ConversionModule::class
+        NotificationModule::class
     ]
 )
-interface CoreComponent : AppApi, SchedulerApi, ClipboardApi, NetworkApi, EventBusApi, NotificationApi, ConversionApi {
-}
+interface CoreComponent :
+    AppApi,
+    SchedulerApi,
+    ClipboardApi,
+    NetworkApi,
+    EventBusApi,
+    NotificationApi

@@ -1,6 +1,9 @@
 package com.zavanton.yoump3.download.di
 
+import android.content.Context
+import com.github.hiteshsondhi88.libffmpeg.FFmpeg
 import com.zavanton.yoump3.core.di.*
+import com.zavanton.yoump3.download.interactor.convert.ConversionService
 import com.zavanton.yoump3.download.interactor.convert.ConvertInteractor
 import com.zavanton.yoump3.download.interactor.convert.IConvertInteractor
 import com.zavanton.yoump3.download.interactor.download.DownloadInteractor
@@ -11,30 +14,26 @@ import com.zavanton.yoump3.download.ui.view.DownloadService
 import dagger.Binds
 import dagger.Component
 import dagger.Module
+import dagger.Provides
 
 @ServiceScope
 @Component(
     modules = [
-        DownloadServiceProvideModule::class,
-        DownloadServiceBindModule::class
+        DownloadServiceBindModule::class,
+        ConversionModule::class
     ],
     dependencies = [
         AppApi::class,
         SchedulerApi::class,
-        ClipboardApi::class,
         NetworkApi::class,
         EventBusApi::class,
-        NotificationApi::class,
-        ConversionApi::class
+        NotificationApi::class
     ]
 )
 interface DownloadServiceComponent {
 
     fun inject(downloadService: DownloadService)
 }
-
-@Module
-class DownloadServiceProvideModule
 
 @Module
 abstract class DownloadServiceBindModule {
@@ -47,4 +46,21 @@ abstract class DownloadServiceBindModule {
 
     @Binds
     abstract fun bindConvertInteractor(interactor: ConvertInteractor): IConvertInteractor
+}
+
+@Module
+class ConversionModule {
+
+    @ServiceScope
+    @Provides
+    fun provideFFMpeg(
+        @ApplicationContext context: Context
+    ): FFmpeg = FFmpeg.getInstance(context)
+
+    @ServiceScope
+    @Provides
+    fun provideFfmpegManager(ffmpeg: FFmpeg): ConversionService =
+        ConversionService(ffmpeg).apply {
+            init()
+        }
 }
