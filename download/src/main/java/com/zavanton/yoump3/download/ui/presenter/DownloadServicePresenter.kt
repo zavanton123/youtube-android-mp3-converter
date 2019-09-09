@@ -39,6 +39,10 @@ class DownloadServicePresenter @Inject constructor(
     private val compositeDisposable = CompositeDisposable()
     private val eventBusDisposable = CompositeDisposable()
 
+    init {
+        Log.d()
+    }
+
     override fun onStartCommand() {
         eventBusDisposable.add(
             eventBus.listen()
@@ -69,7 +73,6 @@ class DownloadServicePresenter @Inject constructor(
         }
     }
 
-    // TODO check if internet connection is ok
     private fun downloadAndConvert(url: String?) {
         Log.d("url: $url")
         service?.startForeground()
@@ -116,5 +119,6 @@ class DownloadServicePresenter @Inject constructor(
     private fun onDownloadComplete() {
         Log.d()
         eventBus.send(Event.DownloadSuccess)
+        service?.stopForeground()
     }
 }
