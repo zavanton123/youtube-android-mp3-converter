@@ -3,14 +3,14 @@ package com.zavanton.yoump3.download.business.interactor
 import com.zavanton.yoump3.core.di.ServiceScope
 import com.zavanton.yoump3.core.utils.Log
 import com.zavanton.yoump3.download.business.model.Event
-import com.zavanton.yoump3.download.data.IConversionService
-import com.zavanton.yoump3.download.data.IDownloadRepository
+import com.zavanton.yoump3.download.data.conversion.IConversionService
+import com.zavanton.yoump3.download.data.download.IDownloadRepositoryFactory
 import io.reactivex.Observable
 import javax.inject.Inject
 
 @ServiceScope
 class DownloadInteractor @Inject constructor(
-    private val downloadRepository: IDownloadRepository,
+    private val downloadRepositoryFactory: IDownloadRepositoryFactory,
     private val conversionService: IConversionService
 ) : IDownloadInteractor {
 
@@ -31,16 +31,17 @@ class DownloadInteractor @Inject constructor(
         videoFile: String,
         audioFile: String
     ): Observable<Event> =
-        downloadRepository.download(
-            urlLink,
-            downloadsFolder,
-            targetFilename,
-            videoExtension
-        ).flatMap {
-            if (it is Event.DownloadSuccess) {
-                conversionService.convert(arrayOf(PREFIX, videoFile, audioFile))
-            } else {
-                Observable.just(it)
+        downloadRepositoryFactory.newInstance()
+            .download(
+                urlLink,
+                downloadsFolder,
+                targetFilename,
+                videoExtension
+            ).flatMap {
+                if (it is Event.DownloadSuccess) {
+                    conversionService.convert(arrayOf(PREFIX, videoFile, audioFile))
+                } else {
+                    Observable.just(it)
+                }
             }
-        }
 }

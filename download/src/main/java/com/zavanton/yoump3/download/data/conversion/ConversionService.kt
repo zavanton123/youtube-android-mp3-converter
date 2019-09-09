@@ -1,4 +1,4 @@
-package com.zavanton.yoump3.download.data
+package com.zavanton.yoump3.download.data.conversion
 
 import com.github.hiteshsondhi88.libffmpeg.ExecuteBinaryResponseHandler
 import com.github.hiteshsondhi88.libffmpeg.FFmpeg
