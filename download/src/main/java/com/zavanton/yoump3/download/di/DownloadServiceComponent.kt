@@ -8,10 +8,10 @@ import com.zavanton.yoump3.core.di.*
 import com.zavanton.yoump3.core.utils.Log
 import com.zavanton.yoump3.download.business.interactor.DownloadInteractor
 import com.zavanton.yoump3.download.business.interactor.IDownloadInteractor
-import com.zavanton.yoump3.download.data.ConversionService
-import com.zavanton.yoump3.download.data.DownloadRepository
-import com.zavanton.yoump3.download.data.IConversionService
-import com.zavanton.yoump3.download.data.IDownloadRepository
+import com.zavanton.yoump3.download.data.conversion.ConversionService
+import com.zavanton.yoump3.download.data.conversion.IConversionService
+import com.zavanton.yoump3.download.data.download.DownloadRepositoryFactory
+import com.zavanton.yoump3.download.data.download.IDownloadRepositoryFactory
 import com.zavanton.yoump3.download.eventBus.EventBus
 import com.zavanton.yoump3.download.ui.presenter.DownloadServicePresenter
 import com.zavanton.yoump3.download.ui.presenter.IDownloadServicePresenter
@@ -55,7 +55,7 @@ abstract class DownloadServiceBindModule {
     abstract fun bindDownloadInteractor(impl: DownloadInteractor): IDownloadInteractor
 
     @Binds
-    abstract fun bindDownloadRepository(impl: DownloadRepository): IDownloadRepository
+    abstract fun bindDownloadRepositoryFactory(impl: DownloadRepositoryFactory): IDownloadRepositoryFactory
 
     @Binds
     abstract fun bindConversionService(impl: ConversionService): IConversionService

@@ -6,9 +6,8 @@ interface IMainFragmentViewModel {
 
     val mainActionLiveData: MutableLiveData<MainAction>
 
-    fun onViewCreated()
+    fun listenForEvents()
     fun onResume()
-    fun onDestroyView()
 
     fun startDownloadService()
 }

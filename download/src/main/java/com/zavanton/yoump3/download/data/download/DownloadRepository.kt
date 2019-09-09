@@ -1,4 +1,4 @@
-package com.zavanton.yoump3.download.data
+package com.zavanton.yoump3.download.data.download
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -8,7 +8,6 @@ import at.huber.youtubeExtractor.YouTubeExtractor
 import at.huber.youtubeExtractor.YtFile
 import com.zavanton.yoump3.core.di.ApplicationContext
 import com.zavanton.yoump3.core.di.IoThreadScheduler
-import com.zavanton.yoump3.core.di.ServiceScope
 import com.zavanton.yoump3.core.utils.Constants.EMPTY_STRING
 import com.zavanton.yoump3.core.utils.Log
 import com.zavanton.yoump3.download.business.model.Event
@@ -22,11 +21,9 @@ import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
 import java.io.InputStream
-import javax.inject.Inject
 
 @SuppressLint("StaticFieldLeak")
-@ServiceScope
-class DownloadRepository @Inject constructor(
+class DownloadRepository(
     @ApplicationContext
     private val appContext: Context,
     private val client: OkHttpClient,
