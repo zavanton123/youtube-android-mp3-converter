@@ -33,7 +33,7 @@ class MainFragmentViewModel @Inject constructor(
 
     private var eventBusDisposable = CompositeDisposable()
 
-    override fun onViewCreated() {
+    override fun listenForEvents() {
         eventBusDisposable.add(
             eventBus.listen()
                 .subscribe { processMessage(it) }
@@ -42,22 +42,14 @@ class MainFragmentViewModel @Inject constructor(
 
     override fun onResume() {
         val url = getUrlFromClipboard()
-        Log.d("the url from clipboard is $url")
-
         processClipboardUrl(url)
-    }
-
-    override fun onDestroyView() {
-        Log.d()
-
-        eventBusDisposable.clear()
-        eventBusDisposable = CompositeDisposable()
     }
 
     override fun onCleared() {
         Log.d()
         super.onCleared()
 
+        eventBusDisposable.clear()
         MainFragmentComponentManager.clearMainFragmentComponent()
     }
 

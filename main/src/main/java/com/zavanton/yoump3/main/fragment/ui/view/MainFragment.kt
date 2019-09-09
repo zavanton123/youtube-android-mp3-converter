@@ -35,7 +35,7 @@ class MainFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.onViewCreated()
+        viewModel.listenForEvents()
         initUI()
     }
 
@@ -43,13 +43,6 @@ class MainFragment : Fragment() {
         super.onResume()
 
         viewModel.onResume()
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        Log.d()
-
-        viewModel.onDestroyView()
     }
 
     private fun initUI() {
