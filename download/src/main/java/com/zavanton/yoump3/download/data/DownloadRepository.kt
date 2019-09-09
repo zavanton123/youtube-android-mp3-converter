@@ -39,6 +39,10 @@ class DownloadRepository @Inject constructor(
     private var videoExtension: String = EMPTY_STRING
     private var emitter: ObservableEmitter<Event>? = null
 
+    init {
+        Log.d()
+    }
+
     override fun download(
         urlLink: String,
         downloadsFolder: String,
@@ -111,6 +115,7 @@ class DownloadRepository @Inject constructor(
             fileOutputStream.close()
             inputStream.close()
 
+            emitter?.onNext(Event.DownloadSuccess)
             emitter?.onComplete()
 
         } catch (exception: IOException) {

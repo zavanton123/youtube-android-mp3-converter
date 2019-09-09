@@ -1,6 +1,7 @@
 package com.zavanton.yoump3.download.business.interactor
 
 import com.zavanton.yoump3.core.di.ServiceScope
+import com.zavanton.yoump3.core.utils.Log
 import com.zavanton.yoump3.download.business.model.Event
 import com.zavanton.yoump3.download.data.IConversionService
 import com.zavanton.yoump3.download.data.IDownloadRepository
@@ -18,6 +19,10 @@ class DownloadInteractor @Inject constructor(
         private const val PREFIX = "-i"
     }
 
+    init {
+        Log.d()
+    }
+
     override fun downloadFile(
         urlLink: String,
         downloadsFolder: String,
@@ -31,7 +36,11 @@ class DownloadInteractor @Inject constructor(
             downloadsFolder,
             targetFilename,
             videoExtension
-        ).concatMap {
-            conversionService.convert(arrayOf(PREFIX, videoFile, audioFile))
+        ).flatMap {
+            if (it is Event.DownloadSuccess) {
+                conversionService.convert(arrayOf(PREFIX, videoFile, audioFile))
+            } else {
+                Observable.just(it)
+            }
         }
 }
