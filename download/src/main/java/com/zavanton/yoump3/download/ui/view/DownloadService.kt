@@ -31,11 +31,16 @@ class DownloadService : Service(), IDownloadService {
     @field:NormalNotificationChannel
     lateinit var notificationBuilder: NotificationCompat.Builder
 
+    init {
+        Log.d()
+    }
+
     override fun onCreate() {
         super.onCreate()
         Log.d()
 
-        DownloadServiceComponentManager.getDownloadServiceComponent().inject(this)
+        DownloadServiceComponentManager.getDownloadServiceComponent()
+            .inject(this)
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
