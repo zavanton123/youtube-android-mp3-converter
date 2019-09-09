@@ -11,12 +11,6 @@ and clicks the floating button.
 Method 2: the user opens official youtube app, clicks the "share" button under the video
 and in the drop down list chooses the YouMP3 app.
 
-![alt text](img/1.png)
-![alt text](img/2.png)
-![alt text](img/3.png)
-![alt text](img/4.png)
-
-
 External Libraries:
 -------------------
 
