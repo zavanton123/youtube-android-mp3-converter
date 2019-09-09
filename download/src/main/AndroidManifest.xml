@@ -1,0 +1,9 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          package="com.zavanton.yoump3.download">
+
+    <application>
+        <service android:name=".ui.view.DownloadService"
+                 android:exported="false">
+        </service>
+    </application>
+</manifest>

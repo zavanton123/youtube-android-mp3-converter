@@ -1,0 +1,87 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
+apply from: '../versions.gradle'
+
+android {
+    compileSdkVersion 29
+    buildToolsVersion "29.0.2"
+
+    defaultConfig {
+        minSdkVersion 15
+        targetSdkVersion 29
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    // Kotlin
+    api kotlin.core
+
+    // AndroidX
+    api androidx.appcompet
+    api androidx.core_ktx
+    api androidx.constraintlayout
+
+    // ViewModel and LiveData
+    api architecture_components.lifecycle_extensions
+    kapt architecture_components.lifecycle_compiler
+
+    // RxJava
+    api rxjava.core
+    api rxjava.android
+
+    // Dagger 2
+    api dagger.core
+    kapt dagger.compiler
+    api dagger.android
+    api dagger.android_support
+    kapt dagger.android_processor
+
+    // Retrofit
+    api retrofit.core
+    api retrofit.gson_converter
+    api retrofit.rxjava2_adapter
+
+    // OkHttp
+    api okhttp.core
+    api okhttp.loggint_interceptor
+
+    // RxPermissions
+    api rxpermissions.core
+
+    /////////////////////// ANKO ///////////////////////
+    api "org.jetbrains.anko:anko:0.10.8"
+
+    //////////////////////// AndroidX ////////////////////////
+
+    api 'androidx.recyclerview:recyclerview:1.1.0-beta04'
+    api 'androidx.legacy:legacy-support-v4:1.0.0'
+    api 'androidx.cardview:cardview:1.0.0'
+    api 'androidx.preference:preference:1.1.0'
+    api 'com.google.android.material:material:1.1.0-alpha10'
+
+
+    // Coordinator layout
+    api 'androidx.coordinatorlayout:coordinatorlayout:1.0.0'
+
+    // Material dialogs
+    api 'com.afollestad.material-dialogs:core:0.9.6.0'
+    api 'com.afollestad.material-dialogs:commons:0.9.6.0'
+}
+repositories {
+    mavenCentral()
+}
