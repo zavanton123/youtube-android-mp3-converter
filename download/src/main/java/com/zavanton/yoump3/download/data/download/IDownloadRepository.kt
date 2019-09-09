@@ -1,4 +1,4 @@
-package com.zavanton.yoump3.download.data
+package com.zavanton.yoump3.download.data.download
 
 import com.zavanton.yoump3.download.business.model.Event
 import io.reactivex.Observable
